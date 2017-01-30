@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+<div>
+   Welcome to TootyFruity, the app for the open social media platform Mastodon.
+   You can also use other instances, just overwrite the default domain.
+ </div>
+  
+ <ion-item>
+    <ion-label floating>Instance domain</ion-label>
+    <ion-input type="text" id="instance" value="mastodon.social"></ion-input>
+  </ion-item>
+  <button (click)="startAuthentication()" ion-button round block>Authorize</button> 
+</ion-content>

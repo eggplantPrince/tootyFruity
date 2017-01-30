@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Timeline</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <div *ngFor="let toot of toots">
+      <ng-container *ngIf="!toot.reblog">
+        <ion-item>
+          <ion-avatar class="inTootAva" item-left>
+            <img src="{{toot.account.avatar}}">
+          </ion-avatar>  
+          <h2>{{toot.account.username}}</h2>
+          <div class="toot_content" [innerHTML]=toot.content></div>
+        </ion-item>  
+      </ng-container>  
+      <ng-container *ngIf="toot.reblog">
+        <ion-item>
+          <ion-avatar class="inTootAva" item-left>
+            <img src="{{toot.reblog.account.avatar}}">
+          </ion-avatar>  
+          <h2>{{toot.reblog.account.username}}</h2>
+          <div class="toot_content" [innerHTML]=toot.reblog.content></div>
+        </ion-item>  
+      </ng-container>  
+    </div>  
+  </ion-list>
+</ion-content>

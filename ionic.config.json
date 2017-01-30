@@ -1,0 +1,12 @@
+{
+  "name": "TootyFruity",
+  "app_id": "d1e6654c",
+  "v2": true,
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/oauth/token",
+      "proxyUrl": "https://mastodon.social/oauth/token"
+    }
+  ]
+}
