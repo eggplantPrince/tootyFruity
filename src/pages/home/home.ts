@@ -1,6 +1,6 @@
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { ItemSliding, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({
@@ -45,12 +45,49 @@ export class HomePage {
         if(data){
           this.toots = newToots.concat(this.toots);
         }
-        refresher.complete();
+        setTimeout(() => {
+          console.log('refresh completed');
+          refresher.complete();
+        }, 1500);
       },
       error => console.log(JSON.stringify(error))
     );
   }
 
+  favStatus(toot: Toot, slidingItem: ItemSliding){
+
+    if(toot.favourited){
+      slidingItem.close();
+      this.mastodon.unFavoriteStatus(toot.id)
+      .subscribe(() => {
+        console.log('Faving status...')
+        let originalClass = document.getElementById(toot.id).className;
+        document.getElementById(toot.id).className += ' newlyUnfaved'
+        setTimeout(() => {
+            document.getElementById(toot.id).className = originalClass;
+            toot.favourited = false;
+          }, 2000);
+       },
+      error => console.log(JSON.stringify(error))
+      );
+    } else {
+      slidingItem.close();
+      this.mastodon.favoriteStatus(toot.id)
+      .subscribe(() => {
+        console.log('Faving status...')
+        let originalClass = document.getElementById(toot.id).className;
+        document.getElementById(toot.id).className += ' newlyFaved'
+        toot.favourited = true;
+        setTimeout(() => {
+            document.getElementById(toot.id).className = originalClass;
+        
+          }, 2000);
+       },
+      error => console.log(JSON.stringify(error))
+      );
+      
+    }
+  }
 
   extractHTML(toots: Toot[]){
     for( let index = 0; index < toots.length; index ++){

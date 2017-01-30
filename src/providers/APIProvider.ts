@@ -59,12 +59,25 @@ export class APIProvider {
     return this.postRequest('/api/v1/statuses',body);    
   }
 
-  getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
+  unFavoriteStatus(tootID: string): Observable<Response>{
+    let data = {};
+    console.log(tootID)
+    return this.postRequest('/api/v1/statuses/'+tootID+'/unfavourite', data);
+  }
+
+  favoriteStatus(tootID: string): Observable<Response>{
+    let data = {};
+    console.log(tootID)
+    console.log('/api/v1/statuses/'+tootID+'/favourite');
+    return this.postRequest('/api/v1/statuses/'+tootID+'/favourite', data);
+  }
+
+  private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
     return this.http.get(this.base_url + url, requestOptions);
   }
 
-  postRequest(apiUrl:string, body:any): Observable<Response>{
+  private postRequest(apiUrl:string, body:any): Observable<Response>{
     let requestOptions = this.finalizeRequestOptions();
     return this.http.post(this.base_url + apiUrl, body, requestOptions);
   } 
@@ -81,7 +94,7 @@ export class APIProvider {
       })  
   }
 
-  finalizeRequestOptions(requestOptions?: RequestOptionsArgs){
+  private finalizeRequestOptions(requestOptions?: RequestOptionsArgs){
     console.log('finalizing RequestOptions....')
     let myHeader = new Headers({ 'Accept': 'application/json' });
     myHeader.append('Authorization', 'Bearer '+ this.access_token);

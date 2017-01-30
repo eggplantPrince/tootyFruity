@@ -8,26 +8,53 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list>
-    <div *ngFor="let toot of toots">
+  <ion-list can-swipe="true">
+    <ng-container *ngFor="let toot of toots">
       <ng-container *ngIf="!toot.reblog">
-        <ion-item>
-          <ion-avatar class="inTootAva" item-left>
-            <img src="{{toot.account.avatar}}">
-          </ion-avatar>  
-          <h2>{{toot.account.username}}</h2>
-          <div class="toot_content" [innerHTML]=toot.content></div>
-        </ion-item>  
+        <ion-item-sliding #slidingItem>
+          <ion-item id="{{toot.id}}">
+            <div class="favorited" item-right *ngIf="toot.favourited">
+              <ion-icon ios="ios-star" md="md-star"></ion-icon>
+            </div>
+            <ion-avatar class="inTootAva" item-left>
+              <img src="{{toot.account.avatar}}">
+            </ion-avatar>  
+            <h2 class="toot_author_label">{{toot.account.display_name}}</h2>
+            <div class="toot_content" [innerHTML]=toot.content></div>
+          </ion-item>  
+          <ion-item-options side="left">
+            <button (click)="favStatus(toot,slidingItem)" ion-button color="primary">
+              <ion-icon name="ios-star-outline"></ion-icon>
+            </button>
+            <button (click)="composeReplyTo(toot,slidingItem)" ion-button color="secondary">
+              <ion-icon name="return-left"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>  
       </ng-container>  
       <ng-container *ngIf="toot.reblog">
-        <ion-item>
+        <ion-item-sliding #slidingItem>
+        <ion-item id="{{toot.reblog.id}}">
+          <div class="favorited" item-right *ngIf="toot.reblog.favourited">
+              <ion-icon ios="ios-star" md="md-star"></ion-icon>
+          </div>
           <ion-avatar class="inTootAva" item-left>
             <img src="{{toot.reblog.account.avatar}}">
           </ion-avatar>  
-          <h2>{{toot.reblog.account.username}}</h2>
+          <h3 class="boost_label">
+            <ion-icon name="repeat"></ion-icon> 
+            {{toot.account.display_name}} boosted
+          </h3>  
+          <h2 class="toot_author_label">{{toot.reblog.account.display_name}}</h2>
           <div class="toot_content" [innerHTML]=toot.reblog.content></div>
         </ion-item>  
+        <ion-item-options side="left">
+          <button (click)="favStatus(toot.reblog,slidingItem)" ion-button color="primary">
+            <ion-icon name="ios-star-outline"></ion-icon>
+          </button>
+        </ion-item-options>
+        </ion-item-sliding>  
       </ng-container>  
-    </div>  
+    </ng-container>  
   </ion-list>
 </ion-content>

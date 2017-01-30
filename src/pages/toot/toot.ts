@@ -63,7 +63,7 @@ export class TootPage {
       localStorage.setItem('lastVisibility', this.newToot.visibility);
 
     }
-}
+  }
 
   toggleSpoilerText() {
     if(this.spoilerFieldState == 'hidden'){
@@ -73,5 +73,5 @@ export class TootPage {
     }
     Keyboard.disableScroll(true);
   }
-
+  
 }

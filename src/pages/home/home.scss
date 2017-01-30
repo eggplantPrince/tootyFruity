@@ -2,7 +2,59 @@
     overflow: initial;
     white-space: initial;
 }
+
 .inTootAva img{
     position:absolute;
     top: 10px ;
+}
+
+.toot_author_label {
+    font-weight: bold !important;
+}
+
+.favorited {
+    position:absolute;
+    top: 3px;
+    right: 7px;
+    color: #FFC400;
+}
+
+.newlyFaved {
+    div.favorited{
+        opacity:0;
+        animation-iteration-count: 1;
+        animation-name: spin_star;
+        animation-duration: 2s;
+        animation-timing-function: ease-out;
+    }
+}
+
+.newlyUnfaved {
+    div.favorited{
+        opacity:1;
+        animation-iteration-count: 1;
+        animation-name: spin_away;
+        animation-duration: 2s;
+        animation-timing-function: ease-in;
+    }
+}
+
+@keyframes spin_away {
+    from {transform: rotate(0deg)}
+    70% {opacity: 0;
+        }
+    to {
+        opacity: 0;
+        transform: rotate(1080deg)
+    }
+}
+
+@keyframes spin_star {
+    from {transform: rotate(1080deg)}
+    30% {opacity: 1;
+        }
+    to {
+        opacity: 1;
+        transform: rotate(0deg)
+    }
 }
