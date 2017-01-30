@@ -15,7 +15,7 @@
 
 <ion-content scroll="false" padding>
   <form (ngSubmit)="sendToot()">
-    <ion-item [@spoilerFieldState]="spoilerFieldState">
+    <ion-item *ngIf="spoilerToggle">
       <ion-input type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
     </ion-item>
     <ion-item>

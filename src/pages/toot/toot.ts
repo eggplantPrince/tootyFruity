@@ -14,19 +14,7 @@ import { APIProvider } from '../../providers/APIProvider';
 @Component({
   selector: 'page-toot',
   templateUrl: 'toot.html',
-  providers: [APIProvider],
-  animations: [
-    trigger('spoilerFieldState', [
-      state('hidden', style({
-        'margin-bottom': '-55px'
-      })),
-      state('visible', style({
-        'margin-bottom': ''
-      })),
-      transition('hidden => visible', animate('1s linear')),
-      transition('visible => hidden', animate('1s linear'))
-    ])
-  ]
+  providers: [APIProvider]
 })
 
 export class TootPage {
