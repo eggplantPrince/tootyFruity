@@ -19,14 +19,14 @@
             <ion-avatar class="inTootAva" item-left>
               <img src="{{toot.account.avatar}}">
             </ion-avatar>  
-            <h2 class="toot_author_label">{{toot.account.display_name}}</h2>
+            <h2 class="toot_author_label">{{toot.account.display_name}}</h2> <span class="toot_author_username">@{{toot.account.username}}</span>
             <div class="toot_content" [innerHTML]=toot.content></div>
           </ion-item>  
           <ion-item-options side="left">
-            <button (click)="favStatus(toot,slidingItem)" ion-button color="primary">
+            <button (click)="favStatus(toot,slidingItem)" ion-button class="orange">
               <ion-icon name="ios-star-outline"></ion-icon>
             </button>
-            <button (click)="composeReplyTo(toot,slidingItem)" ion-button color="secondary">
+            <button (click)="composeReplyTo(toot,slidingItem)" ion-button class="purple">
               <ion-icon name="return-left"></ion-icon>
             </button>
           </ion-item-options>
@@ -46,12 +46,16 @@
             {{toot.account.display_name}} boosted
           </h3>  
           <h2 class="toot_author_label">{{toot.reblog.account.display_name}}</h2>
+          <span class="toot_author_username">@{{toot.reblog.account.username}}</span>
           <div class="toot_content" [innerHTML]=toot.reblog.content></div>
         </ion-item>  
         <ion-item-options side="left">
-          <button (click)="favStatus(toot.reblog,slidingItem)" ion-button color="primary">
+          <button (click)="favStatus(toot.reblog,slidingItem)" ion-button class="orange">
             <ion-icon name="ios-star-outline"></ion-icon>
           </button>
+          <button (click)="composeReplyTo(toot.reblog,slidingItem)" ion-button color="purple">
+              <ion-icon name="return-left"></ion-icon>
+            </button>
         </ion-item-options>
         </ion-item-sliding>  
       </ng-container>  

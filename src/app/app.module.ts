@@ -1,3 +1,4 @@
+import { ReplyTootPage } from '../pages/reply-toot/reply-toot';
 import { APIProvider } from '../providers/APIProvider';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -16,7 +17,8 @@ import { Storage } from '@ionic/storage';
     TootPage,
     NotificationsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ReplyTootPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -28,7 +30,8 @@ import { Storage } from '@ionic/storage';
     TootPage,
     NotificationsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ReplyTootPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

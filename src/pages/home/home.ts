@@ -1,6 +1,7 @@
+import { ReplyTootPage } from '../reply-toot/reply-toot';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
-import { ItemSliding, NavController } from 'ionic-angular';
+import { ItemSliding, NavController, ModalController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({
@@ -11,7 +12,7 @@ import { Toot } from '../../apiClasses/toot';
 export class HomePage {
   public toots : Toot[];
 
-  constructor(public navCtrl: NavController, public mastodon: APIProvider) {
+  constructor(public navCtrl: NavController, public mastodon: APIProvider, public modalController: ModalController) {
     this.loadTimeline();
   }
 
@@ -87,6 +88,12 @@ export class HomePage {
       );
       
     }
+  }
+
+  composeReplyTo(toot: Toot,slidingItem: ItemSliding) {
+    let myModal = this.modalController.create(ReplyTootPage, { 'replyingToot' : toot});
+    myModal.present();
+    slidingItem.close();
   }
 
   extractHTML(toots: Toot[]){
