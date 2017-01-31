@@ -21,7 +21,7 @@ export class HomePage {
     this.mastodon.getTimeline('home')
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.extractHTML(tempToots);
+      return this.beautifyToots(tempToots);
     })
     .subscribe(
       data=>  {
@@ -38,7 +38,7 @@ export class HomePage {
     this.mastodon.getTimeline('home',undefined,id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.extractHTML(tempToots)
+      return this.beautifyToots(tempToots)
     })
     .subscribe(
       data=>  {
@@ -96,12 +96,18 @@ export class HomePage {
     slidingItem.close();
   }
 
-  extractHTML(toots: Toot[]){
+  beautifyToots(toots: Toot[]){
     for( let index = 0; index < toots.length; index ++){
-          toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
           if(toots[index].reblog){
-             toots[index].reblog.content = toots[index].reblog.content.replace(/(<([^>]+)>)/ig, '');         
+            // switch booster and boosted for easier display logic
+            let boosterToot = toots[index];
+            toots[index] = toots[index].reblog
+            toots[index].reblog = boosterToot;
+            toots[index].reblog.reblog = null;
           }
+          console.log(toots[index].content);
+          toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
+          console.log(toots[index].content);
       }
     return toots;  
   }

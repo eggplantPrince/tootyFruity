@@ -10,15 +10,18 @@
   </ion-refresher>
   <ion-list can-swipe="true">
     <ng-container *ngFor="let toot of toots">
-      <ng-container *ngIf="!toot.reblog">
         <ion-item-sliding #slidingItem>
           <ion-item id="{{toot.id}}">
-            <div class="favorited" item-right *ngIf="toot.favourited">
-              <ion-icon ios="ios-star" md="md-star"></ion-icon>
-            </div>
+            <h3 *ngIf="toot.reblog" class="boost_label">
+              <ion-icon name="repeat"></ion-icon> 
+              {{toot.reblog.account.display_name | emojify}} boosted
+            </h3>  
             <ion-avatar class="inTootAva" item-left>
               <img src="{{toot.account.avatar}}">
             </ion-avatar>  
+            <div class="favorited" item-right *ngIf="toot.favourited">
+              <ion-icon ios="ios-star" md="md-star"></ion-icon>
+            </div>
             <h2 class="toot_author_label">{{toot.account.display_name | emojify}}</h2> <span class="toot_author_username">@{{toot.account.username}}</span>
             <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
           </ion-item>  
@@ -32,33 +35,5 @@
           </ion-item-options>
         </ion-item-sliding>  
       </ng-container>  
-      <ng-container *ngIf="toot.reblog">
-        <ion-item-sliding #slidingItem>
-        <ion-item id="{{toot.reblog.id}}">
-          <div class="favorited" item-right *ngIf="toot.reblog.favourited">
-              <ion-icon ios="ios-star" md="md-star"></ion-icon>
-          </div>
-          <ion-avatar class="inTootAva" item-left>
-            <img src="{{toot.reblog.account.avatar}}">
-          </ion-avatar>  
-          <h3 class="boost_label">
-            <ion-icon name="repeat"></ion-icon> 
-            {{toot.account.display_name | emojify}} boosted
-          </h3>  
-          <h2 class="toot_author_label">{{toot.reblog.account.display_name | emojify}}</h2>
-          <span class="toot_author_username">@{{toot.reblog.account.username}}</span>
-          <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
-        </ion-item>  
-        <ion-item-options side="left">
-          <button (click)="favStatus(toot.reblog,slidingItem)" ion-button class="orange">
-            <ion-icon name="ios-star-outline"></ion-icon>
-          </button>
-          <button (click)="composeReplyTo(toot.reblog,slidingItem)" ion-button color="purple">
-              <ion-icon name="return-left"></ion-icon>
-            </button>
-        </ion-item-options>
-        </ion-item-sliding>  
-      </ng-container>  
-    </ng-container>  
   </ion-list>
 </ion-content>
