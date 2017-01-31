@@ -9,6 +9,7 @@ import { TootPage } from '../pages/toot/toot';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { LoginPage } from '../pages/login/login';
 import { Storage } from '@ionic/storage';
+import { EmojifyModule } from 'angular2-emojify';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { Storage } from '@ionic/storage';
     ReplyTootPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    EmojifyModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

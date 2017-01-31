@@ -19,8 +19,8 @@
             <ion-avatar class="inTootAva" item-left>
               <img src="{{toot.account.avatar}}">
             </ion-avatar>  
-            <h2 class="toot_author_label">{{toot.account.display_name}}</h2> <span class="toot_author_username">@{{toot.account.username}}</span>
-            <div class="toot_content" [innerHTML]=toot.content></div>
+            <h2 class="toot_author_label">{{toot.account.display_name | emojify}}</h2> <span class="toot_author_username">@{{toot.account.username}}</span>
+            <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
           </ion-item>  
           <ion-item-options side="left">
             <button (click)="favStatus(toot,slidingItem)" ion-button class="orange">
@@ -43,11 +43,11 @@
           </ion-avatar>  
           <h3 class="boost_label">
             <ion-icon name="repeat"></ion-icon> 
-            {{toot.account.display_name}} boosted
+            {{toot.account.display_name | emojify}} boosted
           </h3>  
-          <h2 class="toot_author_label">{{toot.reblog.account.display_name}}</h2>
+          <h2 class="toot_author_label">{{toot.reblog.account.display_name | emojify}}</h2>
           <span class="toot_author_username">@{{toot.reblog.account.username}}</span>
-          <div class="toot_content" [innerHTML]=toot.reblog.content></div>
+          <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
         </ion-item>  
         <ion-item-options side="left">
           <button (click)="favStatus(toot.reblog,slidingItem)" ion-button class="orange">
