@@ -106,12 +106,14 @@ export class HomePage {
             toots[index].reblog.reblog = null;
           }
           console.log(toots[index].content);
-          toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
+          //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
           console.log(toots[index].content);
       }
     return toots;  
   }
 
- 
-
+  toggleSpoiler(toot: Toot){
+    toot.spoiler_visible = ! toot.spoiler_visible;
+  }
+  
 }

@@ -11,19 +11,31 @@
   <ion-list can-swipe="true">
     <ng-container *ngFor="let toot of toots">
         <ion-item-sliding #slidingItem>
-          <ion-item id="{{toot.id}}">
-            <h3 *ngIf="toot.reblog" class="boost_label">
+          <ion-item id="{{toot.id}}" (click)="toggleSpoiler(toot)">
+            <h4 *ngIf="toot.reblog" class="boost_label">
               <ion-icon name="repeat"></ion-icon> 
               {{toot.reblog.account.display_name | emojify}} boosted
-            </h3>  
+            </h4>  
             <ion-avatar class="inTootAva" item-left>
               <img src="{{toot.account.avatar}}">
             </ion-avatar>  
             <div class="favorited" item-right *ngIf="toot.favourited">
               <ion-icon ios="ios-star" md="md-star"></ion-icon>
             </div>
-            <h2 class="toot_author_label">{{toot.account.display_name | emojify}}</h2> <span class="toot_author_username">@{{toot.account.username}}</span>
-            <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
+            <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> <span class="toot_author_username">@{{toot.account.username}}</span>
+            
+            <div *ngIf="!toot.spoiler_text" class="toot_content" [innerHTML]='toot.content | emojify'></div>
+            <div *ngIf="toot.spoiler_text" class="toot_content">
+              <div>
+                <p>{{toot.spoiler_text}}</p>
+                <p>
+                  <ion-badge class="show_badge" color="dark" [hidden]="toot.spoiler_visible">Show more...</ion-badge>
+                  <ion-badge class="show_badge" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
+                </p>  
+             </div> 
+              <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}" [innerHTML]='toot.content | emojify'>
+              </div>    
+            </div>    
           </ion-item>  
           <ion-item-options side="left">
             <button (click)="favStatus(toot,slidingItem)" ion-button class="orange">

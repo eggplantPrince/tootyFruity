@@ -6,9 +6,6 @@
   <content src="index.html"/>
   <access origin="*"/>
   <allow-navigation href="http://ionic.local/*"/>
-  <allow-navigation href="https://mastodon.social/*"/>
-  <allow-navigation href="https://*/*"/>
-  <allow-navigation href="http://kevinegli.ch/*"/>
   <allow-navigation href="http://192.168.0.80:8100/*"/>
   <allow-navigation href="http://172.20.10.3:8100"/>
   <allow-navigation href="http://192.168.0.80:8100"/>

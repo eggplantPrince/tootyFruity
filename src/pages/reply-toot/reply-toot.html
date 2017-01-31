@@ -21,19 +21,19 @@
       <ion-avatar item-left> 
         <img src="{{replyingToot.account.avatar}}"/>
       </ion-avatar>
-      <h2 style="font-weight: bold">{{replyingToot.account.display_name}}</h2> 
+      <h2 style="font-weight: bold">{{replyingToot.account.display_name | emojify}}</h2> 
     </ion-item>
     <ion-card-content>
-      <p style="font-size: 14px" [innerHTML]=replyingToot.content></p>
+      <p style="font-size: 14px" [innerHTML]="replyingToot.content | emojify"></p>
     </ion-card-content>
   </ion-card>  
 
   <form (ngSubmit)="sendToot()">
     <ion-item *ngIf="spoilerToggle">
-      <ion-input type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
+      <ion-input type="text" (ngModelChange)="countTootLength()" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="primary" id="characterCounter" floating> {{remainingCharacters}}</ion-label>
+      <ion-label style="color: grey" id="characterCounter" floating> {{remainingCharacters}}</ion-label>
       <ion-textarea [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
     </ion-item>
     <!-- ion-item>

@@ -54,9 +54,13 @@ export class APIProvider {
         body['media_ids'][i] = newToot.media_ids[i];
       }
     }
-
     console.log(JSON.stringify(body));
     return this.postRequest('/api/v1/statuses',body);    
+  }
+
+
+  newLinesToHTML(val: string) : string{
+    return '<p>' + val.replace(/[\r\n]+/g, '</p><p>') + '</p>';
   }
 
   unFavoriteStatus(tootID: string): Observable<Response>{

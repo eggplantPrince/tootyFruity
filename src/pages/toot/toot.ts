@@ -22,7 +22,7 @@ export class TootPage {
   newToot: TootForm;
   spoilerFieldState: string = 'hidden';
   spoilerToggle: Boolean;
-  remainingCharacters: string= "500";
+  remainingCharacters: number = 500;
 
   constructor(public toaster: ToastController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
     Keyboard.disableScroll(true);
@@ -41,7 +41,15 @@ export class TootPage {
         position: 'top'
       });
       toast.present();  
-    } else {
+    } else if(this.remainingCharacters < 0) {
+      let toast = this.toaster.create({
+        message: 'Wow! You used too many characters, try shortening it down',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    } 
+    else {
       console.log('posting new toot...')
       if(!this.spoilerToggle){
         this.newToot.spoiler_text = null;
@@ -76,7 +84,11 @@ export class TootPage {
   }
 
   countTootLength(){
-    this.remainingCharacters = 500 - this.newToot.status.length + "";
+    let spoilerTextLength = 0;
+    if(this.newToot.spoiler_text) {
+      spoilerTextLength = this.newToot.spoiler_text.length;
+    }  
+    this.remainingCharacters = 500 - this.newToot.status.length - spoilerTextLength;
     console.log(this.remainingCharacters);
   }
   

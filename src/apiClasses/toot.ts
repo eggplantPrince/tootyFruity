@@ -9,6 +9,7 @@ export class Toot {
   account: Account;
   in_reply_to_id: string;
   reblog: Toot;
+  spoiler_visible: boolean = false;
   content: string;
   created_at: string;
   reblogs_count: string;

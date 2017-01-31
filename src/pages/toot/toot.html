@@ -16,10 +16,10 @@
 <ion-content scroll="false" padding>
   <form (ngSubmit)="sendToot()">
     <ion-item *ngIf="spoilerToggle">
-      <ion-input type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
+      <ion-input (ngModelChange)="countTootLength()" type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="primary" id="characterCounter" stacked> {{remainingCharacters}}</ion-label>
+      <ion-label style="color: grey" id="characterCounter" stacked> {{remainingCharacters}}</ion-label>
       <ion-textarea [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
     </ion-item>
     <!-- ion-item>

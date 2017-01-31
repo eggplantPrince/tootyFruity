@@ -24,7 +24,7 @@ export class ReplyTootPage {
   newToot: TootForm;
   spoilerFieldState: string = 'hidden';
   spoilerToggle: Boolean;
-  remainingCharacters: string;
+  remainingCharacters: number;
   
   constructor(
     public viewCtrl: ViewController,
@@ -89,9 +89,14 @@ export class ReplyTootPage {
   
 
   countTootLength(){
-    this.remainingCharacters = 500 - this.newToot.status.length + "";
+    let spoilerTextLength = 0;
+    if(this.newToot.spoiler_text) {
+      spoilerTextLength = this.newToot.spoiler_text.length;
+    }  
+    this.remainingCharacters = 500 - this.newToot.status.length - spoilerTextLength;
+    console.log(this.remainingCharacters);
   }
-
+  
 
 
 
