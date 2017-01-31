@@ -22,6 +22,7 @@ export class TootPage {
   newToot: TootForm;
   spoilerFieldState: string = 'hidden';
   spoilerToggle: Boolean;
+  remainingCharacters: string= "500";
 
   constructor(public toaster: ToastController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
     Keyboard.disableScroll(true);
@@ -72,6 +73,11 @@ export class TootPage {
       this.spoilerFieldState = 'hidden'
     }
     Keyboard.disableScroll(true);
+  }
+
+  countTootLength(){
+    this.remainingCharacters = 500 - this.newToot.status.length + "";
+    console.log(this.remainingCharacters);
   }
   
 }

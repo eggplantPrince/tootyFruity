@@ -24,6 +24,7 @@ export class ReplyTootPage {
   newToot: TootForm;
   spoilerFieldState: string = 'hidden';
   spoilerToggle: Boolean;
+  remainingCharacters: string;
   
   constructor(
     public viewCtrl: ViewController,
@@ -36,6 +37,7 @@ export class ReplyTootPage {
     this.newToot = new TootForm();
     this.newToot.in_reply_to_id = this.replyingToot.id;
     this.newToot.status = "@"+this.replyingToot.account.username; 
+    this.countTootLength();
     Keyboard.disableScroll(true);
   }
 
@@ -85,5 +87,12 @@ export class ReplyTootPage {
     Keyboard.disableScroll(true);
   }
   
+
+  countTootLength(){
+    this.remainingCharacters = 500 - this.newToot.status.length + "";
+  }
+
+
+
 
 }
