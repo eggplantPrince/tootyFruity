@@ -1,8 +1,57 @@
-<!--
-  Generated template for the MediaAttachments component.
-
-  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
-  for more info on Angular 2 Components.
--->
-
-{{text}}
+<div *ngIf="mediaAttachments[0] != null">
+  <div *ngIf="mediaAttachments.length == 1" class="singleMedia">
+    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
+      <div class="nsfw_warning" (click)="toggleWarning()">
+        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
+        <div class="nsfw_text_wrapper">
+          <p>This image has been marked as NSFW / Sensitive.</p>
+          <p>Tab on the box to reveal it </p>
+        </div>
+      </div>
+    </div> 
+    <img src="{{mediaAttachments[0].preview_url}}"/> 
+  </div>  
+  <div *ngIf="mediaAttachments.length > 1">
+    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
+      <div class="nsfw_warning" (click)="toggleWarning()">
+        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
+        <div class="nsfw_text_wrapper">
+          <p>This image has been marked as NSFW / Sensitive.</p>
+          <p>Tab on the box to reveal it </p>
+        </div>
+      </div>
+    </div>  
+  <div class="two" *ngIf="mediaAttachments.length == 2">
+    <div class="first"
+       [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
+    </div>
+    <div class="second" 
+        [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
+    </div>
+  </div>  
+  <div class="three" *ngIf="mediaAttachments.length == 3">
+      <div class="first"
+        [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
+      </div>
+        <div class="second" 
+          [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
+        </div>
+        <div class="third" 
+          [style.background-image]="'url(' + mediaAttachments[2].preview_url + ')'">
+        </div>  
+  </div>  
+  <div class="four" *ngIf="mediaAttachments.length == 4">
+      <div class="first"
+        [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
+      </div>
+        <div class="second" 
+          [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
+        </div>
+        <div class="third" 
+          [style.background-image]="'url(' + mediaAttachments[2].preview_url + ')'">
+        </div>  
+        <div class="fourth" 
+          [style.background-image]="'url(' + mediaAttachments[3].preview_url + ')'">
+        </div>  
+  </div> 
+</div>

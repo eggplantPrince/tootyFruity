@@ -11,6 +11,7 @@ export class Toot {
   reblog: Toot;
   spoiler_visible: boolean = false;
   content: string;
+  sensitive: boolean;
   created_at: string;
   reblogs_count: string;
   favourites_count: string;

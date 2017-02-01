@@ -121,6 +121,5 @@ export class APIProvider {
     if (body.data == undefined) return body
     else return body.data;
   }
-
   
 }

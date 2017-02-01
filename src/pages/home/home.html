@@ -29,7 +29,10 @@
             </div>  
             <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> <span class="toot_author_username">@{{toot.account.username}}</span>
             
-            <div *ngIf="!toot.spoiler_text" class="toot_content" [innerHTML]='toot.content | emojify'></div>
+            <div *ngIf="!toot.spoiler_text">
+              <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
+                <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
+            </div>
             <div *ngIf="toot.spoiler_text" class="toot_content">
               <div>
                 <p>{{toot.spoiler_text}}</p>
@@ -38,12 +41,11 @@
                   <ion-badge class="show_badge" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
                 </p>  
              </div> 
-              <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}" [innerHTML]='toot.content | emojify'>
-              </div>    
-              <div *ngIf="toot.media_attachments">
-                <media-attachments></media-attachments>
-              </div>  
-            </div>    
+              <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}">
+                <div [innerHTML]='toot.content | emojify'></div>
+                <media-attachments [mediaAttachments]="toot.media_attachments"></media-attachments>
+              </div>     
+            </div> 
           </ion-item>  
           <!--- left slide options -->
           <ion-item-options (ionSwipe)="favStatus(toot,slidingItem)" side="left">

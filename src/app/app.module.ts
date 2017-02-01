@@ -1,3 +1,4 @@
+import { MediaAttachmentsComponent } from '../components/media-attachments/media-attachments';
 import { ReplyTootPage } from '../pages/reply-toot/reply-toot';
 import { APIProvider } from '../providers/APIProvider';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -19,7 +20,8 @@ import { EmojifyModule } from 'angular2-emojify';
     NotificationsPage,
     HomePage,
     TabsPage,
-    ReplyTootPage
+    ReplyTootPage,
+    MediaAttachmentsComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),

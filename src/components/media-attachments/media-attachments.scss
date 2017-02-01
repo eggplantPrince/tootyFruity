@@ -1,3 +1,119 @@
 media-attachments {
+    $maxHeightMulti: 200px;
+    $maxHeightSingle: 300px;
 
+
+    .singleMedia{
+        max-height: $maxHeightSingle;
+    }
+    .first,.second,.third,.fourth{
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        float:left;
+    }
+
+    .singleMedia {
+        img {
+            max-width: 100%;
+            max-height: $maxHeightSingle;
+            margin:0 auto;
+        }
+        .nsfw_warning {
+            min-height: $maxHeightSingle;
+            max-width: 100%;
+            z-index: 100;
+        }
+    }
+
+    .nsfw_warning{
+        min-height:$maxHeightMulti;
+        background: black;
+        width:100%;
+        position: absolute;
+        color:white;
+        ion-icon{
+            font-size: 70px;
+            text-align: center;
+            padding-top: 35px;
+            display: block;
+        }
+
+        .nsfw_text_wrapper{
+            width: 100%;
+            padding: 0 10px;
+            text-align: center;
+            display:inline-block;
+            white-space: normal;
+            word-wrap: normal;
+        }
+    }
+
+    .nsfw_wrapper{
+        position:relative;
+    }
+
+    .two, .three, .four {
+        width: 100%;
+        height: $maxHeightMulti;
+    }
+
+    .four {
+        .first, .second, .third, .fourth {
+            height: 50%;
+            width: 50%;
+        }
+
+        .first, .second {
+            border-bottom: 1px solid white;
+        }
+
+        .first, .third {
+            border-right: 1px solid white;
+        }
+
+        .second, .fourth {
+            border-left: 1px solid white
+        }
+
+        .third, .fourth {
+            border-top: 1px solid white;
+        }
+    }
+
+    .two {
+        .first, .second {
+            height: 100%;
+            width: 50%;
+        }
+
+        .first {
+            border-right: 1px solid white;
+        }
+
+        .second {
+            border-left: 1px solid white;
+        }
+    }
+
+    .three {
+        .first {
+            height: 100%;
+            width: 50%;
+            border-right: 1px solid white;
+        }
+        .second, .third {
+            height: 50%;
+            width: 50%;
+            border-left: 1px solid white;
+        }
+
+        .second {
+            border-bottom: 1px solid white;
+        }
+
+        .third{
+            border-top: 1px solid white;
+        }
+    }
 }

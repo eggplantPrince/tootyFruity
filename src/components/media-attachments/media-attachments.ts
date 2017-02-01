@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { MediaAttachment } from '../../apiClasses/media-attachment';
+import { Component, Input } from '@angular/core';
 
 /*
   Generated class for the MediaAttachments component.
@@ -12,11 +13,23 @@ import { Component } from '@angular/core';
 })
 export class MediaAttachmentsComponent {
 
-  text: string;
+
+  @Input()
+  mediaAttachments: MediaAttachment[];
+
+  @Input()
+  mediaIsSensitive: boolean;
+
+  hideWarning = false;
 
   constructor() {
-    console.log('Hello MediaAttachments Component');
-    this.text = 'Hello World';
   }
+
+  toggleWarning(){
+    console.log('toggling warning')
+    this.hideWarning = !this.hideWarning;
+  }
+
+
 
 }

@@ -1,3 +1,5 @@
+import { MediaAttachment } from '../../apiClasses/media-attachment';
+import { MediaAttachmentsComponent } from '../../components/media-attachments/media-attachments';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../reply-toot/reply-toot';
 import { APIProvider } from '../../providers/APIProvider';
@@ -22,7 +24,7 @@ export class HomePage {
     this.mastodon.getTimeline('home')
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.beautifyToots(tempToots);
+      return this.replaceWithTestData(tempToots);
     })
     .subscribe(
       data=>  {
@@ -134,15 +136,30 @@ export class HomePage {
             toots[index].reblog = boosterToot;
             toots[index].reblog.reblog = null;
           }
-          console.log(toots[index].content);
           if(toots[index].content.indexOf('<p>') == -1){
             toots[index].content = '<p>' + toots[index].content + '</p>'
           }
           //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
-          console.log(toots[index].content);
       }
     return toots;  
   }
+
+  private replaceWithTestData(toots:Toot[]): Toot[]{
+    let attach = new MediaAttachment;
+    attach.preview_url = "https://upload.wikimedia.org/wikipedia/en/3/38/Troye_Sivan_-_Blue_Neighbourhood.png";
+    let attach2 = new MediaAttachment;
+    attach2.preview_url = "https://pabloclementeperez.files.wordpress.com/2014/02/screenshot-1.jpg"
+    let attach3 = new MediaAttachment;
+    attach3.preview_url = "http://cdn.sixthman.net/2016/parahoycze8/images/artists/2994.jpg";
+    let attach4 = new MediaAttachment;
+    attach4.preview_url = "https://img-s3.onedio.com/id-57d76160bc4e36984410f587/rev-0/raw/s-d08275e5a9d4eec7750162eaf3df3b2083ad5a4e.jpg";
+    for( let index = 0; index < toots.length; index ++){
+      toots[index].media_attachments =   [attach, attach2, attach3, attach4];
+      toots[index].sensitive = true;
+    }
+    return toots;
+  }
+
 
   toggleSpoiler(toot: Toot){
     toot.spoiler_visible = ! toot.spoiler_visible;
