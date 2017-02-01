@@ -24,7 +24,7 @@ export class HomePage {
     this.mastodon.getTimeline('home')
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.replaceWithTestData(tempToots);
+      return this.beautifyToots(tempToots);
     })
     .subscribe(
       data=>  {
@@ -144,21 +144,25 @@ export class HomePage {
     return toots;  
   }
 
-  private replaceWithTestData(toots:Toot[]): Toot[]{
-    let attach = new MediaAttachment;
-    attach.preview_url = "https://upload.wikimedia.org/wikipedia/en/3/38/Troye_Sivan_-_Blue_Neighbourhood.png";
-    let attach2 = new MediaAttachment;
-    attach2.preview_url = "https://pabloclementeperez.files.wordpress.com/2014/02/screenshot-1.jpg"
-    let attach3 = new MediaAttachment;
-    attach3.preview_url = "http://cdn.sixthman.net/2016/parahoycze8/images/artists/2994.jpg";
-    let attach4 = new MediaAttachment;
-    attach4.preview_url = "https://img-s3.onedio.com/id-57d76160bc4e36984410f587/rev-0/raw/s-d08275e5a9d4eec7750162eaf3df3b2083ad5a4e.jpg";
-    for( let index = 0; index < toots.length; index ++){
-      toots[index].media_attachments =   [attach, attach2, attach3, attach4];
-      toots[index].sensitive = true;
-    }
-    return toots;
-  }
+  // private replaceWithTestData(toots:Toot[]): Toot[]{
+  //   let attach = new MediaAttachment;
+  //   attach.preview_url = "https://upload.wikimedia.org/wikipedia/en/3/38/Troye_Sivan_-_Blue_Neighbourhood.png";
+  //   attach.url = "https://upload.wikimedia.org/wikipedia/en/3/38/Troye_Sivan_-_Blue_Neighbourhood.png";
+  //   attach.type = "image";
+  //   let attach2 = new MediaAttachment;
+  //   attach2.preview_url = "https://pabloclementeperez.files.wordpress.com/2014/02/screenshot-1.jpg"
+  //   attach2.url = "https://pabloclementeperez.files.wordpress.com/2014/02/screenshot-1.jpg"
+  //   attach2.type = "image";
+  //   let attach3 = new MediaAttachment;
+  //   attach3.preview_url = "http://cdn.sixthman.net/2016/parahoycze8/images/artists/2994.jpg";
+  //   let attach4 = new MediaAttachment;
+  //   attach4.preview_url = "https://img-s3.onedio.com/id-57d76160bc4e36984410f587/rev-0/raw/s-d08275e5a9d4eec7750162eaf3df3b2083ad5a4e.jpg";
+  //   for( let index = 0; index < toots.length; index ++){
+  //     toots[index].media_attachments =   [attach, attach2];
+  //     toots[index].sensitive = false;
+  //   }
+  //   return toots;
+  // }
 
 
   toggleSpoiler(toot: Toot){

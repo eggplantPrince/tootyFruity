@@ -1,5 +1,8 @@
+import { ImageSliderPage } from '../../pages/image-slider/image-slider';
+import { ModalController } from 'ionic-angular/components/modal/modal';
+import { Slides } from 'ionic-angular';
 import { MediaAttachment } from '../../apiClasses/media-attachment';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 /*
   Generated class for the MediaAttachments component.
@@ -9,25 +12,34 @@ import { Component, Input } from '@angular/core';
 */
 @Component({
   selector: 'media-attachments',
-  templateUrl: 'media-attachments.html'
+  templateUrl: 'media-attachments.html',
+  entryComponents: [ImageSliderPage]
 })
 export class MediaAttachmentsComponent {
 
-
   @Input()
-  mediaAttachments: MediaAttachment[];
+  public mediaAttachments: MediaAttachment[];
 
   @Input()
   mediaIsSensitive: boolean;
 
   hideWarning = false;
 
-  constructor() {
+  hideSlides = true;
+
+  constructor(public modalController: ModalController) {
   }
 
   toggleWarning(){
     console.log('toggling warning')
     this.hideWarning = !this.hideWarning;
+  }
+
+  showSlideShowFrom(index: number){
+    console.log('show slides is called')
+    console.log('warning already gone')
+    let myModal = this.modalController.create(ImageSliderPage, { 'mediaAttachments' : this.mediaAttachments, 'slideFromNumber': index});
+    myModal.present();
   }
 
 

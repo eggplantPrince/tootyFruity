@@ -1,3 +1,4 @@
+import { ImageSliderPage } from '../pages/image-slider/image-slider';
 import { MediaAttachmentsComponent } from '../components/media-attachments/media-attachments';
 import { ReplyTootPage } from '../pages/reply-toot/reply-toot';
 import { APIProvider } from '../providers/APIProvider';
@@ -21,7 +22,8 @@ import { EmojifyModule } from 'angular2-emojify';
     HomePage,
     TabsPage,
     ReplyTootPage,
-    MediaAttachmentsComponent
+    MediaAttachmentsComponent,
+    ImageSliderPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -35,7 +37,8 @@ import { EmojifyModule } from 'angular2-emojify';
     NotificationsPage,
     HomePage,
     TabsPage,
-    ReplyTootPage
+    ReplyTootPage,
+    ImageSliderPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

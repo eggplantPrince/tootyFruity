@@ -15,13 +15,13 @@ media-attachments {
 
     .singleMedia {
         img {
-            max-width: 100%;
+            min-width: 100%;
             max-height: $maxHeightSingle;
             margin:0 auto;
         }
         .nsfw_warning {
             min-height: $maxHeightSingle;
-            max-width: 100%;
+            min-width: 100%;
             z-index: 100;
         }
     }
