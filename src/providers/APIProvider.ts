@@ -65,17 +65,23 @@ export class APIProvider {
 
   unFavoriteStatus(tootID: string): Observable<Response>{
     let data = {};
-    console.log(tootID)
     return this.postRequest('/api/v1/statuses/'+tootID+'/unfavourite', data);
   }
 
   favoriteStatus(tootID: string): Observable<Response>{
     let data = {};
-    console.log(tootID)
-    console.log('/api/v1/statuses/'+tootID+'/favourite');
     return this.postRequest('/api/v1/statuses/'+tootID+'/favourite', data);
   }
 
+  boostStatus(tootID: string): Observable<Response>{
+    let data = {};
+    return this.postRequest('/api/v1/statuses/'+tootID+'/reblog', data);
+  }
+
+  unBoostStatus(tootID: string): Observable<Response>{
+    let data = {};
+    return this.postRequest('/api/v1/statuses/'+tootID+'/unreblog', data);
+  }
   private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
     return this.http.get(this.base_url + url, requestOptions);

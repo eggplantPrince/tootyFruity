@@ -27,11 +27,53 @@
 }
 
 .favorited {
-    position:absolute;
-    top: 3px;
-    right: 7px;
+    float: right;
     color: #FFC400;
 }
+
+.symbols {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+
+.boosted {
+    float:right;
+    ion-badge {
+        margin: 0;
+        max-width: 20px;
+        max-height: 20px;
+        ion-icon {
+            transform: translate(-30%, -5%);
+        }
+   }
+}
+
+.newly_boosted {
+    div.boosted {
+        ion-badge {
+            opacity: 1;
+            animation-iteration-count: 1;
+            animation-name: threeSixty;
+            animation-duration: 1s;
+            animation-timing-function: ease-in;
+        }
+    }
+}
+
+.newly_unboosted {
+    div.boosted {
+        ion-badge {
+            opacity: 1;
+            animation-iteration-count: 1;
+            animation-name: threeSixty_reverse;
+            animation-duration: 1s;
+            animation-timing-function: ease-out;
+            animation-delay: 500ms
+        }
+    }
+}
+
 
 .newlyFaved {
     div.favorited{
@@ -70,6 +112,28 @@
     to {
         opacity: 1;
         transform: rotate(0deg)
+    }
+}
+
+@keyframes threeSixty {
+    from {transform: rotate(-270deg);
+          opacity: 0;}
+    50% {opacity: 1;
+        }
+    to {
+        opacity: 1;
+        transform: rotate(0deg)
+    }
+}
+
+@keyframes threeSixty_reverse {
+    from {transform: rotate(0deg);
+          opacity: 1;}
+    70% {opacity: 0;
+        }
+    to {
+        opacity: 0;
+        transform: rotate(-270deg)
     }
 }
 

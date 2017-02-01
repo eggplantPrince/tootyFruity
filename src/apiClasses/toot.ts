@@ -17,6 +17,7 @@ export class Toot {
   reblogged: boolean;
   favourited: boolean;
   media_attachments: MediaAttachment[];
+  visibility: string;
   mentions: Mention[];
   application: {
     name: string;

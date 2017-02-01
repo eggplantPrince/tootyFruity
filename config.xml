@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="ch.kevinegli.tootyfruity221258" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ch.kevinegli.tootyfruity221258" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>TootyFruity</name>
   <description>A mastodon client.</description>
   <author email="mail@kevinegli.ch" href="http://kevinegli.ch/">eggplantPrince</author>
@@ -11,6 +11,7 @@
   <allow-navigation href="http://192.168.0.80:8100"/>
   <allow-navigation href="http://192.168.0.220:8100"/>
   <allow-navigation href="http://10.0.1.64:8100"/>
+  <allow-navigation href="http://10.0.1.64:8101"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>

@@ -1,3 +1,4 @@
+import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../reply-toot/reply-toot';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
@@ -12,7 +13,7 @@ import { Toot } from '../../apiClasses/toot';
 export class HomePage {
   public toots : Toot[];
 
-  constructor(public navCtrl: NavController, public mastodon: APIProvider, public modalController: ModalController) {
+  constructor(public navCtrl: NavController, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
     this.loadTimeline();
   }
 
@@ -53,6 +54,34 @@ export class HomePage {
       },
       error => console.log(JSON.stringify(error))
     );
+  }
+
+  boostToot(toot: Toot, slidingItem:ItemSliding){
+    if(toot.reblogged){
+      console.log('unboosting')
+      slidingItem.close()
+      this.mastodon.unBoostStatus(toot.id)
+      .subscribe(() => {
+        let originalClass = document.getElementById(toot.id).className;
+        document.getElementById(toot.id).className += ' newly_unboosted';
+        setTimeout(() => {
+            document.getElementById(toot.id).className = originalClass;
+            toot.reblogged = false;    
+          }, 1500);
+      })
+    } else {
+      console.log('boosting')
+      slidingItem.close()
+      this.mastodon.boostStatus(toot.id)
+      .subscribe(() => {
+        let originalClass = document.getElementById(toot.id).className;
+        document.getElementById(toot.id).className += ' newly_boosted'
+        toot.reblogged = true;    
+        setTimeout(() => {
+            document.getElementById(toot.id).className = originalClass;
+          }, 2000);
+       })
+    }
   }
 
   favStatus(toot: Toot, slidingItem: ItemSliding){
@@ -106,6 +135,9 @@ export class HomePage {
             toots[index].reblog.reblog = null;
           }
           console.log(toots[index].content);
+          if(toots[index].content.indexOf('<p>') == -1){
+            toots[index].content = '<p>' + toots[index].content + '</p>'
+          }
           //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
           console.log(toots[index].content);
       }
@@ -116,4 +148,14 @@ export class HomePage {
     toot.spoiler_visible = ! toot.spoiler_visible;
   }
   
+
+  showPrivateInfoToast(slidingItem: ItemSliding){
+    let toast = this.toaster.create({
+            message: "This Toot can't be boosted cuz it's marked as private",
+            duration: 5000,
+            position: 'top'
+          });
+    toast.present();
+    slidingItem.close();          
+  }
 }
