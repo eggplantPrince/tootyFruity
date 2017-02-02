@@ -18,8 +18,8 @@ export class MyApp {
 
   constructor(platform: Platform, storage: Storage) {
    platform.ready().then(() => {
-
-      window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
+     
+     window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
      if(localStorage.getItem('access_token') == null){
           this.rootPage = LoginPage
      } else {

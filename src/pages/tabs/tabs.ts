@@ -1,5 +1,5 @@
-import { NavController } from 'ionic-angular';
-import { Component } from '@angular/core';
+import { NavController, Tabs, Tab } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
 import { HomePage } from '../home/home';
 import { NotificationsPage } from '../notifications/notifications';
 import { TootPage } from '../toot/toot'
@@ -15,7 +15,13 @@ export class TabsPage {
   tab2Root: any = NotificationsPage;
   tab3Root: any = TootPage;
 
+  @ViewChild('myTabs') tabRef: Tabs;
+
   constructor(public storage: Storage, public navCtrl: NavController) {     
+  }
+
+
+  scrollToTop(clickedIndex : number){
   }
 
 }

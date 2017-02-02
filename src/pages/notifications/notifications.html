@@ -12,7 +12,20 @@
 
 </ion-header>
 
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-<ion-content padding>
-...coming
+  <ion-list can-swipe="true">
+    <ng-container *ngFor="let notification of notifications">
+      <slidable-toot *ngIf="notification.type == 'mention'" [toot]="notification.status"></slidable-toot>
+      <notification-item id=""*ngIf="notification.type != 'mention'" [notification]="notification"></notification-item>
+    </ng-container>
+  </ion-list>  
+  <ion-infinite-scroll (ionInfinite)="loadOlderNotifications($event)" threshold="100px">
+    <ion-infinite-scroll-content
+      loadingText="Loading Notifications">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>      
 </ion-content>

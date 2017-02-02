@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="ch.kevinegli.tootyfruity221258" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ch.kevinegli.tootyfruity221258" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>TootyFruity</name>
   <description>A mastodon client.</description>
   <author email="mail@kevinegli.ch" href="http://kevinegli.ch/">eggplantPrince</author>

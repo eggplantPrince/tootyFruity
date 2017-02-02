@@ -10,62 +10,14 @@
   </ion-refresher>
   <ion-list can-swipe="true">
     <ng-container *ngFor="let toot of toots">
-        <ion-item-sliding #slidingItem>
-          <ion-item id="{{toot.id}}" (click)="toggleSpoiler(toot)">
-            <h4 *ngIf="toot.reblog" class="boost_label">
-              <ion-icon name="repeat"></ion-icon> 
-              {{toot.reblog.account.display_name | emojify}} boosted
-            </h4>  
-            <ion-avatar class="inTootAva" item-left>
-              <img src="{{toot.account.avatar}}">
-            </ion-avatar>  
-            <div class="symbols">
-              <div class="favorited" item-left *ngIf="toot.favourited">
-                <ion-icon ios="ios-star" md="md-star"></ion-icon>
-              </div>
-              <div class="boosted" item-left *ngIf="toot.reblogged">
-                <ion-badge class="purple boost_badge"> <ion-icon name="repeat"></ion-icon> </ion-badge>
-              </div>
-            </div>  
-            <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> <span class="toot_author_username">@{{toot.account.username}}</span>
-            
-            <div *ngIf="!toot.spoiler_text">
-              <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
-                <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
-            </div>
-            <div *ngIf="toot.spoiler_text" class="toot_content">
-              <div>
-                <p>{{toot.spoiler_text}}</p>
-                <p>
-                  <ion-badge class="show_badge" color="dark" [hidden]="toot.spoiler_visible">Show more...</ion-badge>
-                  <ion-badge class="show_badge" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
-                </p>  
-             </div> 
-              <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}">
-                <div [innerHTML]='toot.content | emojify'></div>
-                <media-attachments [mediaAttachments]="toot.media_attachments"></media-attachments>
-              </div>     
-            </div> 
-          </ion-item>  
-          <!--- left slide options -->
-          <ion-item-options (ionSwipe)="favStatus(toot,slidingItem)" side="left">
-            <button expandable (click)="favStatus(toot,slidingItem)" ion-button class="orange">
-              <ion-icon name="ios-star-outline"></ion-icon>
-            </button>
-            <button *ngIf="toot.visibility=='public' || toot.visibility=='unlisted'" (click)="boostToot(toot,slidingItem)" ion-button class="purple">
-              <ion-icon name="repeat"></ion-icon> 
-            </button>
-            <button *ngIf="toot.visibility=='private'" ion-button color="dark" (click)="showPrivateInfoToast(slidingItem)">
-              <ion-icon ios="ios-lock" md="md-lock"></ion-icon>
-            </button>
-          </ion-item-options>
-          <!--- right slide options -->
-          <ion-item-options (ionSwipe)="composeReplyTo(toot,slidingItem)" side="right">
-            <button expandable (click)="composeReplyTo(toot,slidingItem)" ion-button color="primary">
-              <ion-icon name="return-left"></ion-icon>
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>  
+        <slidable-toot [toot]="toot"></slidable-toot>
       </ng-container>  
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadOlderToots($event)" threshold="100px">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="More toots, coming up 🎉🎉🎉...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

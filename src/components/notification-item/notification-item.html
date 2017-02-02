@@ -1,0 +1,26 @@
+<ion-item>
+    <ion-avatar class="inTootAva" item-left>
+      <a href="{{notification.account.url}}">
+        <img src="{{notification.account.avatar}}">
+        <div class="wrapper" item-left *ngIf="notification.type=='favourite'">
+          <ion-badge class="yellow fav_badge"> <ion-icon ios="ios-star" md="md-star"></ion-icon></ion-badge>
+        </div>
+        <div class="wrapper" item-left *ngIf="notification.type=='reblog'">
+          <ion-badge class="purple boost_badge"> <ion-icon name="repeat"></ion-icon> </ion-badge>
+        </div>
+        <div class="wrapper" item-left *ngIf="notification.type=='follow'">
+          <ion-badge class="teal follow_badge"> <ion-icon ios="ios-person-add" md="md-person-add"></ion-icon> </ion-badge>
+        </div>
+      </a>
+    </ion-avatar>
+  <h3 class="toot_author_label">
+    @{{notification.account.username}}
+  </h3>  
+  <span class="notification_type_label" *ngIf="notification.type=='follow'">followed you</span>
+  <span class="notification_type_label" *ngIf="notification.type=='reblog'">boosted your status</span>
+  <span class="notification_type_label" *ngIf="notification.type=='favourite'">favourited your status</span>  
+
+  <div *ngIf="notification.type!='follow'" class="toot_content" 
+  [innerHTML]="notification.status.content | emojify"></div>
+  <p *ngIf="notification.type=='follow'" style="opacity:0">New Follower!</p>
+</ion-item>

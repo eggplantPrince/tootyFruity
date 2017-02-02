@@ -1,5 +1,4 @@
 import { TootForm } from '../apiClasses/tootForm';
-import { Toot } from '../apiClasses/toot';
 import { RequestOptionsArgs } from '@angular/http/src/interfaces';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
@@ -16,6 +15,23 @@ export class APIProvider {
   constructor(public http: Http, public storage: Storage) {
     this.access_token = localStorage.getItem('access_token')
     this.base_url = localStorage.getItem('base_url');
+  }
+
+  getNotifications(max_id?: string, since_id?: string): Observable<Response>{
+    if(max_id == undefined && since_id == undefined){
+      return this.getRequest('/api/v1/notifications')
+    } else {
+      let requestOptions: RequestOptions = new RequestOptions();
+      let params: URLSearchParams = new URLSearchParams();
+      if(max_id){
+        params.set('max_id', max_id)
+      }
+      if(since_id){
+        params.set('since_id', since_id)
+      }
+      requestOptions.search = params;
+      return this.getRequest("/api/v1/notifications", requestOptions);
+    }
   }
 
   getTimeline(type: string,  max_id?: string, since_id?: string): Observable<Response> {
@@ -36,8 +52,6 @@ export class APIProvider {
   }
 
   postToot(newToot:TootForm): Observable<Response>{
-    let requestOptions: RequestOptions = new RequestOptions();
-    let params: URLSearchParams = new URLSearchParams();
     let body = {'status': newToot.status,
                 'visibility': newToot.visibility};
     
