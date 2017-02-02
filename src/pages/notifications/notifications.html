@@ -23,7 +23,7 @@
       <notification-item id=""*ngIf="notification.type != 'mention'" [notification]="notification"></notification-item>
     </ng-container>
   </ion-list>  
-  <ion-infinite-scroll (ionInfinite)="loadOlderNotifications($event)" threshold="100px">
+  <ion-infinite-scroll (ionInfinite)="loadOlderNotifications($event)" threshold="300px">
     <ion-infinite-scroll-content
       loadingText="Loading Notifications">
     </ion-infinite-scroll-content>

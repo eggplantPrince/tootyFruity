@@ -2,7 +2,7 @@ import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../reply-toot/reply-toot';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
-import { InfiniteScroll, ItemSliding, ModalController, NavController } from 'ionic-angular';
+import { Content, InfiniteScroll, ItemSliding, ModalController, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({

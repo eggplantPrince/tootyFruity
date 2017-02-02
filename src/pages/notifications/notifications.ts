@@ -73,6 +73,7 @@ export class NotificationsPage {
           for(var i = 0; i < newNotifications.length; i++){
             this.notifications.push(newNotifications[i]);
           }
+          infiniteScroll.complete();
         }
       }),
       error => {

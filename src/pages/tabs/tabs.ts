@@ -15,8 +15,6 @@ export class TabsPage {
   tab2Root: any = NotificationsPage;
   tab3Root: any = TootPage;
 
-  @ViewChild('myTabs') tabRef: Tabs;
-
   constructor(public storage: Storage, public navCtrl: NavController) {     
   }
 
