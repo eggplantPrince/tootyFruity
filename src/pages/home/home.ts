@@ -14,7 +14,18 @@ export class HomePage {
   public toots : Toot[];
 
   constructor(public navCtrl: NavController, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
-    this.loadTimeline();
+    let tootCacheString = localStorage.getItem('tootCache')
+    if(tootCacheString){
+      console.log('toots loading from cache....')
+      this.toots = JSON.parse(tootCacheString);
+    } else {
+      this.loadTimeline();
+    }
+  }
+
+  public cacheContent(){
+    console.log('home is cached!')
+    localStorage.setItem('tootCache', JSON.stringify(this.toots));
   }
 
    loadTimeline() {
@@ -28,14 +39,21 @@ export class HomePage {
       data=>  {
         let tempToots: Toot[] = data;
         this.toots = tempToots;
+        this.cacheContent();
       },
       error => console.log(JSON.stringify(error))
     );
   }
 
+  actualTootID(toot: Toot): string {
+    if(toot.reblog)
+      return toot.reblog.id;
+    else 
+      return toot.id;  
+  }
 
   doRefresh(refresher) {
-    let id = this.toots[0].id;
+    let id = this.actualTootID(this.toots[0]);
     this.mastodon.getTimeline('home',undefined,id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
@@ -45,12 +63,17 @@ export class HomePage {
       data=>  {
         let newToots: Toot[] = data;
         if(data){
-          this.toots = newToots.concat(this.toots);
-        }
+          if(newToots.length < 20 && this.toots.length < 250 ) {
+            this.toots = newToots.concat(this.toots);
+          } else {
+            this.toots = newToots;  
+          }
+        }    
         setTimeout(() => {
           console.log('refresh completed');
           refresher.complete();
-        }, 1500);
+          this.cacheContent();
+        }, 500);
       },
       error => console.log(JSON.stringify(error))
     );

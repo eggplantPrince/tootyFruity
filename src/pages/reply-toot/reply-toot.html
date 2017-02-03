@@ -34,7 +34,7 @@
     </ion-item>
     <ion-item>
       <ion-label style="color: grey" id="characterCounter" floating> {{remainingCharacters}}</ion-label>
-      <ion-textarea [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
+      <ion-textarea id="textarea" [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" value="{{newToot.status}}"name="status" placeholder="What's up?"></ion-textarea>
     </ion-item>
     <!-- ion-item>
       <ion-label>NSFW? 🙈</ion-label>

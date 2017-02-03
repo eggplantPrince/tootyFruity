@@ -18,7 +18,13 @@ export class NotificationsPage {
   notifications: Notification[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
-    this.getNotifications();
+    let notificationCacheString = localStorage.getItem('notificationsCache');
+    if(notificationCacheString){
+      console.log('notifications loading from cache....')
+      this.notifications = JSON.parse(notificationCacheString);
+    } else {
+      this.getNotifications();
+    }
   }
 
   getNotifications(){
@@ -29,6 +35,7 @@ export class NotificationsPage {
     .subscribe(
       data=>  {
         this.notifications = data;
+        this.cacheContent();
       },
       error => console.log(JSON.stringify(error))
     );
@@ -46,11 +53,16 @@ export class NotificationsPage {
       data=>  {
         if(data){
           let newNotifications: Notification[] = data;
-          this.notifications = newNotifications.concat(this.notifications)
+          if(newNotifications.length < 20 && this.notifications.length < 100){
+            this.notifications = newNotifications.concat(this.notifications)
+          } else {
+            this.notifications = newNotifications;
+          }
+          this.cacheContent();
           setTimeout(() => {
             console.log('refresh completed');
             refresher.complete();
-          }, 1500);
+          }, 500);
         }
       },
       error => console.log(JSON.stringify(error))
@@ -79,5 +91,10 @@ export class NotificationsPage {
         infiniteScroll.complete();
     }
   };
+
+  public cacheContent(){
+    localStorage.setItem('notificationsCache', JSON.stringify(this.notifications))
+    console.log('notifications are cached!')
+  }
 
 }

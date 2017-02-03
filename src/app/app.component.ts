@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { NotificationsPage } from '../pages/notifications/notifications';
+import { HomePage } from '../pages/home/home';
+import { Component, ViewChild } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -14,18 +16,19 @@ declare var window: any;
 })
 export class MyApp {
   rootPage;
-  
 
   constructor(platform: Platform, storage: Storage) {
-   platform.ready().then(() => {
-    window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
-    this.setRootPage();
-    // Okay, so the platform is ready and our plugins are available.
-    // Here you can do any higher level native things you might need.
-    StatusBar.styleDefault();
-    Splashscreen.hide();
-  });
+    platform.ready().then(() => {
+      window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
+      this.setRootPage();
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      StatusBar.styleDefault();
+      Splashscreen.hide();
+    });
  }
+
+
 
 
  ionViewDidEnter(){

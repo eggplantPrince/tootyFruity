@@ -23,7 +23,6 @@ export class SlidableTootComponent {
   toot: Toot;
 
   constructor(private mastodon: APIProvider, private modalController: ModalController, private toaster: ToastController) {
-    console.log('Hello SlidableToot Component');
   }
 
   boostToot(toot: Toot, slidingItem:ItemSliding){
