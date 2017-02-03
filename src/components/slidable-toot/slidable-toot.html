@@ -17,8 +17,8 @@
         <ion-badge class="purple boost_badge"> <ion-icon name="repeat"></ion-icon> </ion-badge>
       </div>
     </div>  
-    <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> <span class="toot_author_username">@{{toot.account.username}}</span>
-    
+    <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> 
+    <span class="toot_author_username">@{{toot.account.username}}</span>
     <div *ngIf="!toot.spoiler_text">
       <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
         <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>

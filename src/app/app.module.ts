@@ -14,6 +14,7 @@ import { NotificationsPage } from '../pages/notifications/notifications';
 import { LoginPage } from '../pages/login/login';
 import { Storage } from '@ionic/storage';
 import { EmojifyModule } from 'angular2-emojify';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { EmojifyModule } from 'angular2-emojify';
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    EmojifyModule
+    EmojifyModule,
+    MomentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

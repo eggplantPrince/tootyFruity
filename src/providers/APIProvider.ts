@@ -92,6 +92,10 @@ export class APIProvider {
     return this.postRequest('/api/v1/statuses/'+tootID+'/reblog', data);
   }
 
+  getAuthenticatedUser(): Observable<Response> {
+    return this.getRequest('/api/v1/accounts/verify_credentials');
+  }
+
   unBoostStatus(tootID: string): Observable<Response>{
     let data = {};
     return this.postRequest('/api/v1/statuses/'+tootID+'/unreblog', data);

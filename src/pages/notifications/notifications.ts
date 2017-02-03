@@ -21,7 +21,13 @@ export class NotificationsPage {
     let notificationCacheString = localStorage.getItem('notificationsCache');
     if(notificationCacheString){
       console.log('notifications loading from cache....')
-      this.notifications = JSON.parse(notificationCacheString);
+      let cachedNotifications = JSON.parse(notificationCacheString);
+      if(cachedNotifications.length == 0) {
+        console.log('cached notifications are weird.. reloading them')
+        this.getNotifications();
+      } else {
+        this.notifications = JSON.parse(notificationCacheString);
+      }
     } else {
       this.getNotifications();
     }
@@ -43,30 +49,42 @@ export class NotificationsPage {
   }
 
   doRefresh(refresher) {
-    let id = this.notifications[0].id;
-    this.mastodon.getNotifications(undefined,id)
-    .map( res => {
-      let tempNotifications: Notification[] = JSON.parse(res['_body']);
-      return tempNotifications;
-    })
-    .subscribe(
-      data=>  {
-        if(data){
-          let newNotifications: Notification[] = data;
-          if(newNotifications.length < 20 && this.notifications.length < 100){
-            this.notifications = newNotifications.concat(this.notifications)
-          } else {
-            this.notifications = newNotifications;
-          }
-          this.cacheContent();
-          setTimeout(() => {
-            console.log('refresh completed');
+    let forceRefresh = localStorage.getItem('notificationRefreshNeeded');
+    if(forceRefresh == 'true'){
+      console.log('force reload needed in notifications because favs / boosts have changed');
+      this.getNotifications();
+      localStorage.setItem('notificationRefreshNeeded', 'false');
+      setTimeout(() => {
+            console.log('force refresh completed in notifications');
             refresher.complete();
+            return;
           }, 500);
-        }
-      },
-      error => console.log(JSON.stringify(error))
-    );
+    } else {
+      let id = this.notifications[0].id;
+      this.mastodon.getNotifications(undefined,id)
+      .map( res => {
+        let tempNotifications: Notification[] = JSON.parse(res['_body']);
+        return tempNotifications;
+      })
+      .subscribe(
+        data=>  {
+          if(data){
+            let newNotifications: Notification[] = data;
+            if(newNotifications.length < 20 && this.notifications.length < 100){
+              this.notifications = newNotifications.concat(this.notifications)
+            } else {
+              this.notifications = newNotifications;
+            }
+            this.cacheContent();
+            setTimeout(() => {
+              console.log('refresh completed');
+              refresher.complete();
+            }, 500);
+          }
+        },
+        error => console.log(JSON.stringify(error))
+      );
+    }
   }
 
   loadOlderNotifications(infiniteScroll: InfiniteScroll){

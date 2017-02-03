@@ -1,3 +1,4 @@
+import { Account } from '../../apiClasses/account';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../../pages/reply-toot/reply-toot';
 import { ModalController } from 'ionic-angular/components/modal/modal';
@@ -26,6 +27,8 @@ export class SlidableTootComponent {
   }
 
   boostToot(toot: Toot, slidingItem:ItemSliding){
+    localStorage.setItem('homeRefreshNeeded', 'true');
+    localStorage.setItem('notificationRefreshNeeded', 'true');
     if(toot.reblogged){
       console.log('unboosting')
       slidingItem.close()
@@ -55,11 +58,17 @@ export class SlidableTootComponent {
 
   favStatus(toot: Toot, slidingItem: ItemSliding){
 
+    let user: Account = JSON.parse(localStorage.getItem('user'));
+    if(toot.content.indexOf(user.username) != -1) {
+      console.log('special toot has been faved. setting force refresh to true')
+      localStorage.setItem('homeRefreshNeeded', 'true');
+      localStorage.setItem('notificationRefreshNeeded', 'true');
+    }
     if(toot.favourited){
       slidingItem.close();
       this.mastodon.unFavoriteStatus(toot.id)
       .subscribe(() => {
-        console.log('Faving status...')
+        console.log('Unfaving status...')
         let originalClass = document.getElementById(toot.id).className;
         document.getElementById(toot.id).className += ' newlyUnfaved'
         setTimeout(() => {

@@ -1,3 +1,5 @@
+import { Account } from '../apiClasses/account';
+import { APIProvider } from '../providers/APIProvider';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
 import { Component, ViewChild } from '@angular/core';
@@ -12,12 +14,13 @@ import { InAppBrowser } from 'ionic-native';
 declare var window: any;
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [APIProvider]
 })
 export class MyApp {
   rootPage;
 
-  constructor(platform: Platform, storage: Storage) {
+  constructor(platform: Platform, storage: Storage, public mastodon: APIProvider) {
     platform.ready().then(() => {
       window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
       this.setRootPage();
@@ -42,6 +45,14 @@ export class MyApp {
           this.rootPage = LoginPage
      } else {
           this.rootPage = TabsPage;
+          this.mastodon.getAuthenticatedUser().map( res => {
+            let loggedInUser: Account = JSON.parse(res['_body']);
+            return loggedInUser;
+          })
+          .subscribe(data => {
+            let account: Account = data;
+            localStorage.setItem('user', JSON.stringify(account));
+          })
     } 
  }
 

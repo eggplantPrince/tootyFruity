@@ -17,7 +17,13 @@ export class HomePage {
     let tootCacheString = localStorage.getItem('tootCache')
     if(tootCacheString){
       console.log('toots loading from cache....')
-      this.toots = JSON.parse(tootCacheString);
+      let cachedToots: Toot[] = JSON.parse(tootCacheString);
+      if(cachedToots.length == 0) {
+        console.log('cachedToots are weird.. reloading them')
+        this.loadTimeline();
+      } else {
+        this.toots = JSON.parse(tootCacheString);
+      }
     } else {
       this.loadTimeline();
     }
@@ -53,30 +59,43 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-    let id = this.actualTootID(this.toots[0]);
-    this.mastodon.getTimeline('home',undefined,id)
-    .map( res => {
-      let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.beautifyToots(tempToots)
-    })
-    .subscribe(
-      data=>  {
-        let newToots: Toot[] = data;
-        if(data){
-          if(newToots.length < 20 && this.toots.length < 250 ) {
-            this.toots = newToots.concat(this.toots);
-          } else {
-            this.toots = newToots;  
-          }
-        }    
-        setTimeout(() => {
-          console.log('refresh completed');
-          refresher.complete();
-          this.cacheContent();
-        }, 500);
-      },
-      error => console.log(JSON.stringify(error))
-    );
+    let forceRefresh = localStorage.getItem('homeRefreshNeeded');
+    if(forceRefresh == 'true'){
+      console.log('force reload needed in home because favs / boosts have changed');
+      this.loadTimeline();
+      localStorage.setItem('homeRefreshNeeded', 'false')
+      setTimeout(() => {
+        console.log('force refresh completed in home');
+        refresher.complete();
+        ;
+      }, 500);
+      return ;
+    } else {
+      let id = this.actualTootID(this.toots[0]);
+      this.mastodon.getTimeline('home',undefined,id)
+      .map( res => {
+        let tempToots: Toot[] = JSON.parse(res['_body']);
+        return this.beautifyToots(tempToots)
+      })
+      .subscribe(
+        data=>  {
+          let newToots: Toot[] = data;
+          if(data){
+            if(newToots.length < 20 && this.toots.length < 250) {
+              this.toots = newToots.concat(this.toots);
+            } else {
+              this.toots = newToots;  
+            }
+          }    
+          setTimeout(() => {
+            console.log('refresh completed');
+            refresher.complete();
+            this.cacheContent();
+          }, 500);
+        },
+        error => console.log(JSON.stringify(error))
+      );
+    }
   }
 
   beautifyToots(toots: Toot[]){
@@ -102,7 +121,6 @@ export class HomePage {
     this.mastodon.getTimeline('home', id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])
-      console.log(JSON.stringify(tempToots));
       return this.beautifyToots(tempToots);
     })
     .subscribe(
