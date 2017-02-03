@@ -18,17 +18,30 @@ export class MyApp {
 
   constructor(platform: Platform, storage: Storage) {
    platform.ready().then(() => {
-     
-     window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
-     if(localStorage.getItem('access_token') == null){
-          this.rootPage = LoginPage
-     } else {
-          this.rootPage = TabsPage;
-    }   
+    window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
+    this.setRootPage();
     // Okay, so the platform is ready and our plugins are available.
     // Here you can do any higher level native things you might need.
     StatusBar.styleDefault();
     Splashscreen.hide();
   });
  }
+
+
+ ionViewDidEnter(){
+   if(this.rootPage == LoginPage){
+     this.setRootPage();
+   }
+ }
+
+ setRootPage() {
+   if (localStorage.getItem('access_token') == null){
+          this.rootPage = LoginPage
+     } else {
+          this.rootPage = TabsPage;
+    } 
+ }
+
 }
+
+

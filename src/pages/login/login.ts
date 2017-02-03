@@ -1,3 +1,4 @@
+import { MyApp } from '../../app/app.component';
 import { APIProvider } from '../../providers/APIProvider';
 import { MastodonCredentials } from '../../assets/auth.ts';
 import { OAuthCredentials}  from '../../apiClasses/OAuthCredentials';
@@ -100,7 +101,7 @@ export class LoginPage {
         console.log('access token: ' + result.access_token);
         console.log('scope: ' + result.scope)
         localStorage.setItem('access_token', result.access_token);
-        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.setRoot(MyApp);
         //this.navCtrl.parent.select(0);
       })  
 

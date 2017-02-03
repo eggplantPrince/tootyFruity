@@ -46,9 +46,7 @@ export class NotificationsPage {
       data=>  {
         if(data){
           let newNotifications: Notification[] = data;
-          for(var i = 0; i < newNotifications.length; i++){
-            this.notifications.unshift(newNotifications[i]);
-          }
+          this.notifications = newNotifications.concat(this.notifications)
           setTimeout(() => {
             console.log('refresh completed');
             refresher.complete();
