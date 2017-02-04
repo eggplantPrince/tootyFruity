@@ -1,3 +1,4 @@
+import { TootFormComponent } from '../components/toot-form/toot-form';
 import { NotificationItemComponent } from '../components/notification-item/notification-item';
 import { SlidableTootComponent } from '../components/slidable-toot/slidable-toot';
 import { ImageSliderPage } from '../pages/image-slider/image-slider';
@@ -28,7 +29,8 @@ import { MomentModule } from 'angular2-moment';
     MediaAttachmentsComponent,
     ImageSliderPage,
     SlidableTootComponent,
-    NotificationItemComponent
+    NotificationItemComponent,
+    TootFormComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -46,7 +48,8 @@ import { MomentModule } from 'angular2-moment';
     ReplyTootPage,
     ImageSliderPage,
     SlidableTootComponent,
-    NotificationItemComponent
+    NotificationItemComponent,
+    TootFormComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

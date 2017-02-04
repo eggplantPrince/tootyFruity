@@ -70,7 +70,7 @@ export class NotificationsPage {
         data=>  {
           if(data){
             let newNotifications: Notification[] = data;
-            if(newNotifications.length < 20 && this.notifications.length < 100){
+            if(newNotifications.length < 20){
               this.notifications = newNotifications.concat(this.notifications)
             } else {
               this.notifications = newNotifications;

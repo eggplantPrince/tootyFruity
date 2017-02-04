@@ -81,7 +81,7 @@ export class HomePage {
         data=>  {
           let newToots: Toot[] = data;
           if(data){
-            if(newToots.length < 20 && this.toots.length < 250) {
+            if(newToots.length < 20) {
               this.toots = newToots.concat(this.toots);
             } else {
               this.toots = newToots;  
