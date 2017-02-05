@@ -1,8 +1,7 @@
 import { ToastController } from 'ionic-angular/components/toast/toast';
-import { ReplyTootPage } from '../reply-toot/reply-toot';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
-import { Content, InfiniteScroll, ItemSliding, ModalController, NavController } from 'ionic-angular';
+import { InfiniteScroll, ModalController, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({
@@ -12,6 +11,7 @@ import { Toot } from '../../apiClasses/toot';
 })
 export class HomePage {
   public toots : Toot[];
+  timelineType: string = "home";
 
   constructor(public navCtrl: NavController, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
     let tootCacheString = localStorage.getItem('tootCache')
@@ -36,7 +36,7 @@ export class HomePage {
 
    loadTimeline() {
     console.log('loading tl..')
-    this.mastodon.getTimeline('home')
+    this.mastodon.getTimeline(this.timelineType)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
       return this.beautifyToots(tempToots);
@@ -72,7 +72,7 @@ export class HomePage {
       return ;
     } else {
       let id = this.actualTootID(this.toots[0]);
-      this.mastodon.getTimeline('home',undefined,id)
+      this.mastodon.getTimeline(this.timelineType,undefined,id)
       .map( res => {
         let tempToots: Toot[] = JSON.parse(res['_body']);
         return this.beautifyToots(tempToots)
@@ -91,7 +91,7 @@ export class HomePage {
             console.log('refresh completed');
             refresher.complete();
             this.cacheContent();
-          }, 500);
+          }, 600);
         },
         error => console.log(JSON.stringify(error))
       );
@@ -118,7 +118,7 @@ export class HomePage {
 
   loadOlderToots(infiniteScroll: InfiniteScroll) {
     let id = this.toots[this.toots.length -1].id;
-    this.mastodon.getTimeline('home', id)
+    this.mastodon.getTimeline(this.timelineType, id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])
       return this.beautifyToots(tempToots);
@@ -138,5 +138,18 @@ export class HomePage {
         infiniteScroll.complete();
       } 
     );
+  }
+
+  toggleTimelineType(){
+    switch(this.timelineType){
+      case('home'):
+        this.timelineType = 'public'
+        this.loadTimeline();
+        break;
+      case('public'):
+        this.timelineType = 'home';
+        this.loadTimeline();
+        break;
+    }
   }
 }

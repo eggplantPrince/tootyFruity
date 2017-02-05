@@ -1,8 +1,6 @@
 import { Account } from '../apiClasses/account';
 import { APIProvider } from '../providers/APIProvider';
-import { NotificationsPage } from '../pages/notifications/notifications';
-import { HomePage } from '../pages/home/home';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -31,9 +29,6 @@ export class MyApp {
     });
  }
 
-
-
-
  ionViewDidEnter(){
    if(this.rootPage == LoginPage){
      this.setRootPage();
@@ -41,18 +36,22 @@ export class MyApp {
  }
 
  setRootPage() {
+   console.log('setting root page...')
    if (localStorage.getItem('access_token') == null){
           this.rootPage = LoginPage
      } else {
           this.rootPage = TabsPage;
-          this.mastodon.getAuthenticatedUser().map( res => {
-            let loggedInUser: Account = JSON.parse(res['_body']);
-            return loggedInUser;
-          })
-          .subscribe(data => {
-            let account: Account = data;
-            localStorage.setItem('user', JSON.stringify(account));
-          })
+          if(!localStorage.getItem('user')){
+            //fetching users stuff once for internal stuff
+            this.mastodon.getAuthenticatedUser().map( res => {
+              let loggedInUser: Account = JSON.parse(res['_body']);
+              return loggedInUser;
+            })
+            .subscribe(data => {
+              let account: Account = data;
+              localStorage.setItem('user', JSON.stringify(account));
+            })
+          }
     } 
  }
 

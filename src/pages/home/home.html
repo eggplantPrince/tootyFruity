@@ -1,11 +1,17 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Timeline</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="toggleTimelineType()">
+        <span *ngIf="timelineType == 'home'">🌏</span>
+        <span *ngIf="timelineType == 'public'">🏠</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher pullMin="100" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list can-swipe="true">

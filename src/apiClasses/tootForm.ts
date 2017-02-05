@@ -1,4 +1,3 @@
-import { $x } from '@angular/compiler/src/chars';
 export class TootForm{
     status: string;
     in_reply_to_id: string;

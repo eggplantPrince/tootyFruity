@@ -2,7 +2,6 @@ import { MyApp } from '../../app/app.component';
 import { APIProvider } from '../../providers/APIProvider';
 import { MastodonCredentials } from '../../assets/auth.ts';
 import { OAuthCredentials}  from '../../apiClasses/OAuthCredentials';
-import { TabsPage } from '../tabs/tabs';
 import { Component } from '@angular/core';
 import { App, NavController, ViewController } from 'ionic-angular';
 import { InAppBrowser } from 'ionic-native';
@@ -47,7 +46,7 @@ export class LoginPage {
       let credentials: OAuthCredentials;
       let data = {
         client_name: 'TootyFruity',
-        redirect_uris: 'http://tootyfruity.kevinegli</redirect',
+        redirect_uris: 'http://tootyfruity.kevinegli/redirect',
         scopes: 'read write follow'
       }
       let final_url = this.instanceRootURL + '/api/v1/apps'

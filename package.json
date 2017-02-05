@@ -39,6 +39,11 @@
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
     "cordova-plugin-inappbrowser",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-image-picker",
+    "cordova.plugins.diagnostic",
+    "cordova-plugin-actionsheet",
+    "cordova-plugin-camera",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],

@@ -1,8 +1,7 @@
 import { ImageSliderPage } from '../../pages/image-slider/image-slider';
 import { ModalController } from 'ionic-angular/components/modal/modal';
-import { Slides } from 'ionic-angular';
 import { MediaAttachment } from '../../apiClasses/media-attachment';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /*
   Generated class for the MediaAttachments component.

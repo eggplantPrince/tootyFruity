@@ -1,6 +1,6 @@
 import { ModalController } from 'ionic-angular/components/modal/modal';
 import { MediaAttachment } from '../../apiClasses/media-attachment';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 @Component({
   selector: 'page-image-slider',

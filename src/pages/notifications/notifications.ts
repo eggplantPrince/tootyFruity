@@ -79,7 +79,7 @@ export class NotificationsPage {
             setTimeout(() => {
               console.log('refresh completed');
               refresher.complete();
-            }, 500);
+            }, 600);
           }
         },
         error => console.log(JSON.stringify(error))

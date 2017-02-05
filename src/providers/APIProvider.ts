@@ -1,5 +1,7 @@
+import { FileUploadOptions, FileUploadResult } from 'ionic-native/dist/esm';
 import { TootForm } from '../apiClasses/tootForm';
 import { RequestOptionsArgs } from '@angular/http/src/interfaces';
+import { Transfer } from 'ionic-native';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions, Response, URLSearchParams } from '@angular/http';
@@ -9,8 +11,11 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class APIProvider {
-  access_token;
-  base_url;
+  access_token: string;
+  base_url:string;
+  fileTransfer: Transfer;
+
+  mediaUploadsProgress:any = {};
 
   constructor(public http: Http, public storage: Storage) {
     this.access_token = localStorage.getItem('access_token')
@@ -32,6 +37,51 @@ export class APIProvider {
       requestOptions.search = params;
       return this.getRequest("/api/v1/notifications", requestOptions);
     }
+  }
+
+  uploadMedia(fileURL: string): Promise<FileUploadResult>{
+    this.fileTransfer = new Transfer();
+    let options: any = {};
+    let mediaType = fileURL.substring(fileURL.lastIndexOf('.'));
+    //.GIF?BSDFH
+    mediaType = mediaType.toLowerCase();
+    let cutSymbolPosition = mediaType.indexOf('?');
+    if(cutSymbolPosition != -1){
+      mediaType = mediaType.substring(0,cutSymbolPosition);
+    }
+    console.log(mediaType);
+
+    switch(mediaType){
+      case('.jpg' || '.jpeg'):
+        options.mimeType = "image/jpeg"
+        options.fileName = "tootyFruity_image.jpg"
+        break;
+      case('.png'):
+        options.mimeType = "image/png"  
+        options.fileName = "tootyFruity_image.png"
+        break;
+      case('.gif'):
+        options.mimeType = "image/gif"    
+        options.fileName = "tootyFruity_image.gif"
+        options.chunkedMode = false;
+        break;
+      default:
+        return null;  
+    }
+    options.headers = {'Authorization' : 'Bearer '+ this.access_token}
+    console.log(fileURL);
+    console.log(JSON.stringify(options))
+    let uploadOptions: FileUploadOptions;
+    uploadOptions = options;
+    console.log(uploadOptions)
+    // this.fileTransfer.onProgress((progressEvent: ProgressEvent) : void => {
+    //   if(progressEvent.lengthComputable){
+    //     this.mediaUploadsProgress.maxValue = progressEvent.total;
+    //     this.mediaUploadsProgress.loadedValue = progressEvent.loaded;
+    //     console.log(JSON.stringify(this.mediaUploadsProgress))
+    //   }
+    // })
+    return this.fileTransfer.upload(fileURL, this.base_url + "/api/v1/media", uploadOptions);
   }
 
   getTimeline(type: string,  max_id?: string, since_id?: string): Observable<Response> {
@@ -63,12 +113,11 @@ export class APIProvider {
     }
 
     if(newToot.media_ids != null){
-      body['sensitive'] = newToot.sensitive;
-      for(let i = 0; i <= newToot.media_ids.length - 1; i++){
-        body['media_ids'][i] = newToot.media_ids[i];
+      if(newToot.sensitive) {
+        body['sensitive'] = newToot.sensitive;
       }
+      body['media_ids'] = newToot.media_ids;
     }
-    console.log(JSON.stringify(body));
     return this.postRequest('/api/v1/statuses',body);    
   }
 
@@ -100,6 +149,7 @@ export class APIProvider {
     let data = {};
     return this.postRequest('/api/v1/statuses/'+tootID+'/unreblog', data);
   }
+
   private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
     return this.http.get(this.base_url + url, requestOptions);

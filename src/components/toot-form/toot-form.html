@@ -6,10 +6,10 @@
     <ion-label style="color: grey" id="characterCounter" stacked> {{remainingCharacters}}</ion-label>
     <ion-textarea [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
   </ion-item>
-  <!-- ion-item>
-    <ion-label>NSFW? 🙈</ion-label>
+  <ion-item *ngIf="newToot.media_ids">
+    <ion-label>Sensitive Media?</ion-label>
     <ion-checkbox [(ngModel)]="newToot.sensitive" name="sensitive"></ion-checkbox>
-  </ion-item -->
+  </ion-item>
   <ion-item>
     <ion-label>Spoiler Warning?</ion-label>
     <ion-checkbox [(ngModel)]="spoilerToggle" name="spoilerToggle" (ngModelChange)="toggleSpoilerText();"></ion-checkbox>
@@ -22,5 +22,27 @@
       <ion-option value="private">Private</ion-option>
     </ion-select>
   </ion-item>
-  <button type="submit" ion-button round block>Toot</button>    
+  <ion-grid>
+    <ion-row>
+      <ion-col width-80>
+        <button type="submit" ion-button round block>Toot</button>    
+      </ion-col>
+      <ion-col width-20>
+        <button *ngIf="!isUploading" type="button" ion-button round block (click)="handleImagePicking()">
+           <ion-icon ios="ios-image" md="md-image"></ion-icon>
+        </button>
+        <ion-spinner *ngIf="isUploading" name="crescent"></ion-spinner>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="newToot.media_ids">
+      <ion-col *ngFor="let media of attachedMedia" width-25>
+          <img src="{{media.preview_url}}">
+      </ion-col>
+    </ion-row>  
+    <ion-row *ngIf="newToot.media_ids">
+      <ion-col *ngFor="let media of attachedMedia" width-25>
+        <button ion-button type="button" style="font-size: 13px;max-height:50px;" block color="dark" (click)="removeAttachment(media)">Remove</button>
+      </ion-col>
+    </ion-row>    
+  </ion-grid>
 </form>
