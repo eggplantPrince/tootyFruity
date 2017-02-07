@@ -3,7 +3,7 @@ import { UploadedMedia } from '../../apiClasses/uploaded-media';
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams, Platform, ToastController, ViewController } from 'ionic-angular';
 import { TootForm } from '../../apiClasses/tootForm'
-import { Keyboard, ActionSheet, ImagePicker, Diagnostic } from 'ionic-native';
+import { Keyboard, ActionSheet } from 'ionic-native';
 import { APIProvider } from '../../providers/APIProvider';
 /*
   Generated class for the TootForm component.
@@ -65,14 +65,6 @@ export class TootFormComponent {
     } 
     else {
       console.log('posting new toot...')
-      if(!this.spoilerToggle){
-        this.newToot.spoiler_text = null;
-      }
-      if(this.navCtrl.parent) {
-        this.navCtrl.parent.select(0);
-      } else {
-        this.viewCtrl.dismiss();
-      }
       this.mastodon.postToot(this.newToot)
       .subscribe(
         data=> {
@@ -83,13 +75,20 @@ export class TootFormComponent {
             cssClass: 'success_toast'
           });
         toast.present();  
+        this.newToot = new TootForm();
+        this.countTootLength();
+        localStorage.setItem('lastVisibility', this.newToot.visibility);
         },
         error => console.log(JSON.stringify(error))
       );
-      this.newToot = new TootForm();
-      this.countTootLength();
-      localStorage.setItem('lastVisibility', this.newToot.visibility);
-
+      if(!this.spoilerToggle){
+        this.newToot.spoiler_text = null;
+      }
+      if(this.navCtrl.parent) {
+        this.navCtrl.parent.select(0);
+      } else {
+        this.viewCtrl.dismiss();
+      }
     }
   }
 
@@ -112,57 +111,37 @@ export class TootFormComponent {
   }
 
   handleImagePicking(){
-    this.checkPermissions();
-    let buttonLabels = ['Images', 'GIF'];
+    if(this.attachedMedia.length == 4){
+      let toast = this.toaster.create({
+          message: 'You picked too many images. I added all that fit, sorry about that :( ',
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        return;
+    }
+    let buttonLabels = ['Compressed', 'Not Compressed (GIFs!)'];
     ActionSheet.show({
-      'title': 'What do you want to upload?',
+      'title': 'How do you want to upload?',
       'buttonLabels': buttonLabels,
       'addCancelButtonWithLabel': 'Cancel',
       'androidTheme' : 5
     }).then((buttonIndex: number) => {
       switch(buttonIndex){
         case(1):
-          this.multiImagePicker();
+          this.picturePickerOptions.quality = 60;
+          this.picturePickerOptions.targetWidth = 800;
+          this.picturePickerOptions.targetHeight = 800;
+          this.singleImagePicker();
           break;
         case(2):
+          this.picturePickerOptions.quality = 100;
+          this.picturePickerOptions.targetWidth = 0;
+          this.picturePickerOptions.targetHeight = 0;
           this.singleImagePicker();
           break;
       }
     });
-  }
-
-  checkPermissions(){
-    if(!Diagnostic.isCameraAuthorized()){
-      Diagnostic.requestCameraAuthorization();
-    }
-  }
-
-  multiImagePicker(){
-    let numberOfAttachedMedia = 0
-    if(this.attachedMedia) {
-      numberOfAttachedMedia = this.attachedMedia.length;
-    }
-    let maxNewImgs: number = 4-numberOfAttachedMedia ;
-    let options = {
-      maximumImagesCount: maxNewImgs,
-      width: 800,
-      height: 800,
-      quality: 100
-    }
-
-    ImagePicker.getPictures(options).then((results) => {
-      for (var i = 0; i < results.length && i != maxNewImgs; i++) {
-          this.uploadMedia(results[i]);
-      }
-      if(results.length > maxNewImgs){
-        let toast = this.toaster.create({
-            message: 'You picked too many images. I added all that fit, sorry about that :( ',
-            duration: 3000,
-            position: 'top'
-          });
-          toast.present();
-      }
-    }, (err) => { });
   }
 
   singleImagePicker(){
@@ -210,9 +189,6 @@ export class TootFormComponent {
 
   removeAttachment(media:UploadedMedia){
     
-    // TODO this doesn't really work yet when deleting first image after multipick
-
-
     //remove attachment from view
     let index = this.attachedMedia.indexOf(media);
     this.attachedMedia.splice(index,1);

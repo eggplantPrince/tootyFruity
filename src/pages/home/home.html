@@ -2,7 +2,8 @@
   <ion-navbar>
     <ion-title>Timeline</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="toggleTimelineType()">
+      <ion-spinner *ngIf="timelineSwitching"></ion-spinner>
+      <button *ngIf="!timelineSwitching" ion-button icon-only (click)="toggleTimelineType()">
         <span *ngIf="timelineType == 'home'">🌏</span>
         <span *ngIf="timelineType == 'public'">🏠</span>
       </button>

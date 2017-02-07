@@ -1,7 +1,7 @@
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
-import { Component } from '@angular/core';
-import { InfiniteScroll, ModalController, NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, InfiniteScroll, ModalController, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({
@@ -12,6 +12,8 @@ import { Toot } from '../../apiClasses/toot';
 export class HomePage {
   public toots : Toot[];
   timelineType: string = "home";
+  timelineSwitching: boolean = false;
+  @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
     let tootCacheString = localStorage.getItem('tootCache')
@@ -46,6 +48,7 @@ export class HomePage {
         let tempToots: Toot[] = data;
         this.toots = tempToots;
         this.cacheContent();
+        this.timelineSwitching = false;
       },
       error => console.log(JSON.stringify(error))
     );
@@ -141,6 +144,8 @@ export class HomePage {
   }
 
   toggleTimelineType(){
+    this.timelineSwitching = true;
+    this.content.scrollToTop(0);
     switch(this.timelineType){
       case('home'):
         this.timelineType = 'public'
