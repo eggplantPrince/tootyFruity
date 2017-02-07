@@ -5,13 +5,10 @@
   Ionic pages and navigation.
 -->
 
-<ion-content>
-  <ion-slides initialSlide="{{slideFromNumber}}"  #slides loop="true" style="background-color: black">
+<ion-content on-tap="dismiss()">
+  <ion-slides zoom loop="false" initialSlide="{{slideFromNumber}}"  #slides style="background-color: black">
   <ion-slide *ngFor="let image of mediaAttachments">
     <img src="{{image.url}}">
   </ion-slide>
 </ion-slides>
-<ion-fab bottom left>
-  <button ion-fab color="dark" (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
-</ion-fab>
 </ion-content>

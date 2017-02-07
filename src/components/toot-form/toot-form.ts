@@ -1,3 +1,5 @@
+import { ImageSliderPage } from '../../pages/image-slider/image-slider';
+import { ModalController } from 'ionic-angular/components/modal/modal';
 import { Camera, CameraOptions, FileUploadResult } from 'ionic-native/dist/esm';
 import { UploadedMedia } from '../../apiClasses/uploaded-media';
 import { Component, Input } from '@angular/core';
@@ -30,7 +32,7 @@ export class TootFormComponent {
   attachedMedia: UploadedMedia[] = [];
 
 
-  constructor(platform: Platform, public toaster: ToastController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public viewCtrl: ViewController) {
+  constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public viewCtrl: ViewController) {
     let options : any = {}
     options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
     options.mediaType=Camera.MediaType.ALLMEDIA;
@@ -76,7 +78,6 @@ export class TootFormComponent {
           });
         toast.present();  
         this.newToot = new TootForm();
-        this.countTootLength();
         localStorage.setItem('lastVisibility', this.newToot.visibility);
         },
         error => console.log(JSON.stringify(error))
@@ -113,14 +114,14 @@ export class TootFormComponent {
   handleImagePicking(){
     if(this.attachedMedia.length == 4){
       let toast = this.toaster.create({
-          message: 'You picked too many images. I added all that fit, sorry about that :( ',
+          message: 'You picked too many images. I cannot add more, sorry about that :( ',
           duration: 3000,
           position: 'top'
         });
         toast.present();
         return;
     }
-    let buttonLabels = ['Compressed', 'Not Compressed (GIFs!)'];
+    let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
     ActionSheet.show({
       'title': 'How do you want to upload?',
       'buttonLabels': buttonLabels,
@@ -217,5 +218,12 @@ export class TootFormComponent {
     this.countTootLength();
   }
 
+
+  showSlideShowFrom(index: number){
+    console.log('show slides is called')
+    console.log('warning already gone')
+    let myModal = this.modalController.create(ImageSliderPage, { 'mediaAttachments' : this.attachedMedia, 'slideFromNumber': index});
+    myModal.present();
+  }
   
 }

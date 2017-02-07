@@ -36,7 +36,7 @@
     </ion-row>
     <ion-row *ngIf="newToot.media_ids">
       <ion-col *ngFor="let media of attachedMedia" width-25>
-          <img src="{{media.preview_url}}">
+          <img  (click)="showSlideShowFrom(index)" src="{{media.preview_url}}">
       </ion-col>
     </ion-row>  
     <ion-row *ngIf="newToot.media_ids">

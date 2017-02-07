@@ -12,7 +12,7 @@ import { InAppBrowser } from 'ionic-native';
 })
 export class LoginPage {
 
-  private instanceRootURL: string;
+  instanceRootURL: string = "mastodon.social";
 
   constructor(
       public viewCtrl: ViewController,
@@ -27,10 +27,7 @@ export class LoginPage {
   }
 
   startAuthentication() {
-
-    // get isntance
-    this.instanceRootURL= document.getElementById("instance").getAttribute("value");
-
+    console.log(this.instanceRootURL);
     //add https://
     if(this.instanceRootURL.search('https://') == -1){
       this.instanceRootURL = 'https://'+this.instanceRootURL;
