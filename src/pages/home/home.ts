@@ -120,7 +120,9 @@ export class HomePage {
   
 
   loadOlderToots(infiniteScroll: InfiniteScroll) {
-    let id = this.toots[this.toots.length -1].id;
+    let lastToot = this.toots[this.toots.length -1];
+    let id;
+    lastToot.reblog ? id=lastToot.reblog : id=lastToot.id;
     this.mastodon.getTimeline(this.timelineType, id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])

@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>@{{user.acct}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher pullMin="100" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <div class="image_header"
+    [style.background-image]="'url(' +user.header + ')'">
+  </div>
+  <div class="wrapper">
+    <div class="button_wrapper">
+      <button (click)="followAction()" class="followButton teal" ion-button small>Follow</button>
+    </div>
+    <ion-avatar> 
+      <img src="{{user.avatar}}">
+    </ion-avatar> 
+    <div class="display_name">
+      {{user.display_name | emojify}} <br>
+      <div [innerHTML]="user.note | emojify"> </div>
+    </div>  
+    <ion-grid>
+      <ion-row>
+        <ion-col class="left" width-50>{{user.following_count}} Follows</ion-col>
+        <ion-col  class="right" width-50>{{user.followers_count}} Followers</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-spinner class="initialLoader"*ngIf="!userToots">
+  </ion-spinner>
+
+  <ion-list can-swipe="true">
+    <ng-container *ngFor="let toot of userToots">
+        <slidable-toot [toot]="toot"></slidable-toot>
+    </ng-container>  
+  </ion-list>
+
+
+  <ion-infinite-scroll (ionInfinite)="loadOlderToots($event)" threshold="100px">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="More toots, coming up 🎉🎉🎉...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

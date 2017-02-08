@@ -5,9 +5,7 @@
       {{toot.reblog.account.display_name | emojify}} boosted
     </h4>  
     <ion-avatar [ngClass]="{'boosted_avatar': toot.reblog}" class="inTootAva" item-left>
-      <a href="{{toot.account.url}}">
-        <img src="{{toot.account.avatar}}">
-      </a>
+        <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}">
     </ion-avatar>  
     <div class="symbols">
       <div class="favorited" item-left *ngIf="toot.favourited">

@@ -2,6 +2,7 @@ import { TootFormComponent } from '../components/toot-form/toot-form';
 import { NotificationItemComponent } from '../components/notification-item/notification-item';
 import { SlidableTootComponent } from '../components/slidable-toot/slidable-toot';
 import { ImageSliderPage } from '../pages/image-slider/image-slider';
+import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { MediaAttachmentsComponent } from '../components/media-attachments/media-attachments';
 import { ReplyTootPage } from '../pages/reply-toot/reply-toot';
 import { APIProvider } from '../providers/APIProvider';
@@ -30,6 +31,7 @@ import { MomentModule } from 'angular2-moment';
     ImageSliderPage,
     SlidableTootComponent,
     NotificationItemComponent,
+    UserProfilePage,
     TootFormComponent
   ],
   imports: [
@@ -40,16 +42,13 @@ import { MomentModule } from 'angular2-moment';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    TabsPage,
     LoginPage,
+    HomePage,
     TootPage,
     NotificationsPage,
-    HomePage,
-    TabsPage,
-    ReplyTootPage,
-    ImageSliderPage,
-    SlidableTootComponent,
-    NotificationItemComponent,
-    TootFormComponent
+    UserProfilePage,
+    ImageSliderPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

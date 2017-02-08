@@ -1,8 +1,9 @@
+import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { Account } from '../../apiClasses/account';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../../pages/reply-toot/reply-toot';
 import { ModalController } from 'ionic-angular/components/modal/modal';
-import { ItemSliding } from 'ionic-angular';
+import { ItemSliding, NavController } from 'ionic-angular';
 import { APIProvider } from '../../providers/APIProvider';
 import { Toot } from '../../apiClasses/toot';
 import { Component, Input } from '@angular/core';
@@ -23,7 +24,7 @@ export class SlidableTootComponent {
   @Input()
   toot: Toot;
 
-  constructor(private mastodon: APIProvider, private modalController: ModalController, private toaster: ToastController) {
+  constructor(private mastodon: APIProvider, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
   }
 
   boostToot(toot: Toot, slidingItem:ItemSliding){
@@ -118,4 +119,7 @@ export class SlidableTootComponent {
     slidingItem.close();          
   }
 
+  goToUserProfile(account: Account){
+    this.navController.push(UserProfilePage, {'account' : account})
+  }
 }

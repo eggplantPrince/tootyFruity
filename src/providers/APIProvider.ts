@@ -22,6 +22,24 @@ export class APIProvider {
     this.base_url = localStorage.getItem('base_url');
   }
 
+  getTootsOfUser(account_id: string, max_id?: string, since_id?: string): Observable<Response>{
+    if(max_id == undefined && since_id == undefined){
+      return this.getRequest('/api/v1/accounts/'+account_id+'/statuses');
+    } else {
+      console.log('other params defined assigning max_id: '+max_id +' and since_id: '+ since_id)
+      let requestOptions: RequestOptions = new RequestOptions();
+      let params: URLSearchParams = new URLSearchParams();
+      if(max_id){
+        params.set('max_id', max_id)
+      }
+      if(since_id){
+        params.set('since_id', since_id)
+      }
+      requestOptions.search = params;
+      return this.getRequest('/api/v1/accounts/'+account_id+'/statuses',requestOptions);
+    }
+  }
+
   getNotifications(max_id?: string, since_id?: string): Observable<Response>{
     if(max_id == undefined && since_id == undefined){
       return this.getRequest('/api/v1/notifications')
