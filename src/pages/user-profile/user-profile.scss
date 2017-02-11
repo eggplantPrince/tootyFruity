@@ -55,14 +55,21 @@ page-user-profile {
         .display_name{
             font-weight: bold;
             width: 100%;
+            margin-top: 3px;
             padding: 0 5px;
             text-align: center;
             div {
-                display: flex-wrap;
+                display: flex;
+                flex-wrap: wrap;
                 align-items: center;
                 flex-direction: column;
-                font-weight: normal !important;
+                display: -webkit-flex;
+                -webkit-flex-wrap: wrap; 
                 justify-content: center;
+                -webkit-align-items: center;
+                -webkit-flex-direction: column;
+                -webkit-justify-content: center;
+                font-weight: normal !important;
                 min-height: 80px;
                 color: #212121;
             }

@@ -1,4 +1,3 @@
-import { MastodonCredentials } from '../../assets/auth';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component, ViewChild, Renderer } from '@angular/core';

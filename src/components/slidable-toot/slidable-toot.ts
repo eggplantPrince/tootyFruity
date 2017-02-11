@@ -1,5 +1,3 @@
-import { Mention } from '../../apiClasses/mention';
-import { CompileMetadataWithIdentifier } from '@angular/compiler';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { Account } from '../../apiClasses/account';
 import { ToastController } from 'ionic-angular/components/toast/toast';

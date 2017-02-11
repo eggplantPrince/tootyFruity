@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { UserOptionsPage } from '../user-options/user-options';
 import { TootPage } from '../toot/toot';
 import { ModalController } from 'ionic-angular/components/modal/modal';

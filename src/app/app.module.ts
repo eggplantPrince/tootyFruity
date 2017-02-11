@@ -1,6 +1,5 @@
 import { PersonalOptionsPage } from '../pages/personal-options/personal-options';
 import { UserOptionsPage } from '../pages/user-options/user-options';
-import { SanitizeHtml } from '../pipes/sanitizeHtml';
 import { TootFormComponent } from '../components/toot-form/toot-form';
 import { NotificationItemComponent } from '../components/notification-item/notification-item';
 import { SlidableTootComponent } from '../components/slidable-toot/slidable-toot';
