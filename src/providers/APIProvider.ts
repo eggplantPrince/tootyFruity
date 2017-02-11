@@ -22,6 +22,37 @@ export class APIProvider {
     this.base_url = localStorage.getItem('base_url');
   }
 
+  blockUser(account_id: string){
+    return this.postRequest('/api/v1/accounts/' + account_id + '/block', {})
+  }
+
+  unblockUser(account_id: string){
+    return this.postRequest('/api/v1/accounts/' + account_id + '/unblock', {})
+  }
+
+
+  followUser(account_id: string){
+    let data = {};
+    return this.postRequest('/api/v1/accounts/'+ account_id + '/follow', data);
+  }
+
+  unfollowUser(account_id: string){
+    let data = {};
+    return this.postRequest('/api/v1/accounts/'+ account_id + '/unfollow', data);
+  }
+
+  getRelationshipOfAccount(account_id: string){
+    let requestOptions: RequestOptions = new RequestOptions();
+    let params: URLSearchParams = new URLSearchParams;
+    params.set('id', account_id);
+    requestOptions.search= params;
+    return this.getRequest('/api/v1/accounts/relationships', requestOptions);
+  }
+
+  getAccount(account_id: string){
+    return this.getRequest('/api/v1/accounts/'+account_id);
+  }
+
   getTootsOfUser(account_id: string, max_id?: string, since_id?: string): Observable<Response>{
     if(max_id == undefined && since_id == undefined){
       return this.getRequest('/api/v1/accounts/'+account_id+'/statuses');

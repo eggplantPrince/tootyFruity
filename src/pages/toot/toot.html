@@ -2,6 +2,9 @@
 
   <ion-navbar>
     <ion-title>Toot Composer</ion-title>
+    <ion-buttons *ngIf="isModal" start>
+      <button ion-button (click)="dismiss()">Close</button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

@@ -40,7 +40,7 @@ export class NotificationsPage {
     })
     .subscribe(
       data=>  {
-        this.notifications = data;
+        this.notifications = this.beautifyMentions(data);
         this.cacheContent();
       },
       error => console.log(JSON.stringify(error))
@@ -64,7 +64,7 @@ export class NotificationsPage {
       this.mastodon.getNotifications(undefined,id)
       .map( res => {
         let tempNotifications: Notification[] = JSON.parse(res['_body']);
-        return tempNotifications;
+        return this.beautifyMentions(tempNotifications);
       })
       .subscribe(
         data=>  {
@@ -113,6 +113,29 @@ export class NotificationsPage {
   public cacheContent(){
     localStorage.setItem('notificationsCache', JSON.stringify(this.notifications))
     console.log('notifications are cached!')
+  }
+
+  beautifyMentions(notifications: Notification[]){
+    for( let index = 0; index < notifications.length; index ++){
+      if(notifications[index].type=="mention"){
+        if(notifications[index].status.content.indexOf('<p>') == -1){
+          notifications[index].status.content = '<p>' + notifications[index].status.content + '</p>'
+        }
+        //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
+          let domParser = new DOMParser();
+          let parsedString = domParser.parseFromString(notifications[index].status.content,"text/html");
+          let mentions = parsedString.getElementsByTagName('a');
+          for(let index = 0; index < mentions.length; index ++){
+            if(mentions[index].innerHTML.indexOf("@") !=  -1){
+              mentions[index].setAttribute('href', '#');
+            }
+          }
+          if(parsedString){
+            notifications[index].status.content = parsedString.documentElement.innerHTML;
+          }
+        }
+      }
+    return notifications;  
   }
 
 }

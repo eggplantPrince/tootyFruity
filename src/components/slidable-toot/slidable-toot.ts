@@ -1,3 +1,5 @@
+import { Mention } from '../../apiClasses/mention';
+import { CompileMetadataWithIdentifier } from '@angular/compiler';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { Account } from '../../apiClasses/account';
 import { ToastController } from 'ionic-angular/components/toast/toast';
@@ -6,7 +8,7 @@ import { ModalController } from 'ionic-angular/components/modal/modal';
 import { ItemSliding, NavController } from 'ionic-angular';
 import { APIProvider } from '../../providers/APIProvider';
 import { Toot } from '../../apiClasses/toot';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, Renderer } from '@angular/core';
 
 /*
   Generated class for the SlideableToot component.
@@ -24,8 +26,36 @@ export class SlidableTootComponent {
   @Input()
   toot: Toot;
 
-  constructor(private mastodon: APIProvider, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
+  relationship: string;
+
+  constructor(private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
   }
+
+
+  ngAfterViewInit(){
+    if(this.toot.mentions != undefined && this.toot.mentions.length > 0){
+      let elements = this.elRef.nativeElement.querySelectorAll('a');
+      for(let index = 0; index < elements.length; index++){
+        elements[index].addEventListener('click', (event) => {
+          let target = event.target || event.srcElement || event.currentTarget;
+          let username = event.target.innerHTML;
+          console.log(username)
+          for(let i = 0; i<this.toot.mentions.length; i++){
+            if(username.indexOf("@") == 0){
+              username = username.substring(1)
+            }
+            if(this.toot.mentions[i].acct.indexOf(username) != -1){
+              this.navController.push(UserProfilePage, {'mention' : this.toot.mentions[i]});
+            }
+          }
+        }); 
+
+      }
+    }
+  }
+
+
+
 
   boostToot(toot: Toot, slidingItem:ItemSliding){
     localStorage.setItem('homeRefreshNeeded', 'true');
@@ -122,4 +152,5 @@ export class SlidableTootComponent {
   goToUserProfile(account: Account){
     this.navController.push(UserProfilePage, {'account' : account})
   }
+
 }

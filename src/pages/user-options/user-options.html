@@ -1,0 +1,5 @@
+<div class="wrapper">
+  <button *ngIf="!isBlocked" (click)="blockUser()" padding ion-button color="danger">Block</button>
+  <button *ngIf="isBlocked" (click)="unblockUser()" padding ion-button color="danger">Unblock</button>
+  <!--<button (click)="logoutUser()"  padding ion-button color="danger">Logout</button>-->
+</div>

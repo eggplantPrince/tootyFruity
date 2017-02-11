@@ -5,25 +5,37 @@ page-user-profile {
         background-size: cover;
         float:left;
         min-width: 100%;
-        min-height: 210px;
+        min-height: 220px;
     }
     
     .wrapper {
-        background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,1));
+        background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0.8), rgba(255,255,255,1));
         float:left;
         position: absolute;
         width: 100%;
-        min-height: 210px;
+        min-height: 220px;
         
         .button_wrapper {
             position: absolute;
             width: 100%;
-            min-height:210px;
+            min-height:220px;
 
             .followButton {
-                margin: 23px auto 0 auto;
-                transform: translate(+120%,0);
+                width: 90px;
+                margin: 21px auto 0 auto;
+                transform: translate(+110%,0);
                 display: block;
+            }
+
+            ion-badge{
+                display:block;
+                width: 90px;
+                background: rgba(255,255,255,0.7);
+                color: black;
+                transform: translate(+110%,0);
+                font-size: 11px;
+                font-weight: normal;
+                margin: 10px auto 0 auto;
             }
         }
 
@@ -41,12 +53,17 @@ page-user-profile {
         }
 
         .display_name{
-
+            font-weight: bold;
             width: 100%;
             padding: 0 5px;
             text-align: center;
-            p{
-                margin: 5px 0 0 0;
+            div {
+                display: flex-wrap;
+                align-items: center;
+                flex-direction: column;
+                font-weight: normal !important;
+                justify-content: center;
+                min-height: 80px;
                 color: #212121;
             }
         }

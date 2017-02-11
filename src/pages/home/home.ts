@@ -1,6 +1,7 @@
+import { MastodonCredentials } from '../../assets/auth';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Renderer } from '@angular/core';
 import { Content, InfiniteScroll, ModalController, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
@@ -15,7 +16,7 @@ export class HomePage {
   timelineSwitching: boolean = false;
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
+  constructor(public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
     let tootCacheString = localStorage.getItem('tootCache')
     if(tootCacheString){
       console.log('toots loading from cache....')
@@ -113,7 +114,18 @@ export class HomePage {
           if(toots[index].content.indexOf('<p>') == -1){
             toots[index].content = '<p>' + toots[index].content + '</p>'
           }
-          //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
+          
+          if(toots[index].mentions && toots[index].mentions.length > 0){
+            let domParser = new DOMParser();
+            let parsedString = domParser.parseFromString(toots[index].content,"text/html");
+            let mentions = parsedString.getElementsByTagName('a');
+            for(let index = 0; index < mentions.length; index ++){
+              if(mentions[index].innerHTML.indexOf("@") !=  -1){
+                mentions[index].setAttribute('href', '#');
+              }
+            }
+            toots[index].content = parsedString.documentElement.innerHTML;
+          }
       }
     return toots;  
   }
@@ -121,8 +133,7 @@ export class HomePage {
 
   loadOlderToots(infiniteScroll: InfiniteScroll) {
     let lastToot = this.toots[this.toots.length -1];
-    let id;
-    lastToot.reblog ? id=lastToot.reblog : id=lastToot.id;
+    let id = this.actualTootID(lastToot);
     this.mastodon.getTimeline(this.timelineType, id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])

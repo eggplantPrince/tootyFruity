@@ -1,3 +1,6 @@
+import { Account } from '../../apiClasses/account';
+import { UserProfilePage } from '../../pages/user-profile/user-profile';
+import { NavController } from 'ionic-angular';
 import { Notification } from '../../apiClasses/notification';
 import { Component, Input } from '@angular/core';
 
@@ -16,8 +19,12 @@ export class NotificationItemComponent {
   @Input()
   notification: Notification;
 
-  constructor() {
+  constructor(private navController: NavController) {
     
+  }
+
+  goToUserProfile(account: Account){
+    this.navController.push(UserProfilePage, {'account' : account})
   }
 
 }

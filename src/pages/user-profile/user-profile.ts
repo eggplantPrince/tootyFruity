@@ -1,7 +1,14 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { UserOptionsPage } from '../user-options/user-options';
+import { TootPage } from '../toot/toot';
+import { ModalController } from 'ionic-angular/components/modal/modal';
+import { Relationships } from '../../apiClasses/relationships';
+import { Mention } from '../../apiClasses/mention';
 import { APIProvider } from '../../providers/APIProvider';
 import { Toot } from '../../apiClasses/toot';
 import { Account } from '../../apiClasses/account';
 import { Component } from '@angular/core';
+import { PersonalOptionsPage } from '../personal-options/personal-options'
 import { InfiniteScroll, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 /*
@@ -18,24 +25,83 @@ export class UserProfilePage {
 
   user: Account;
   userToots: Toot[]
-  loggedInUser: Account;
+  loggedInUser: Account = null;
+  relationships: Relationships;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public popOverController: PopoverController) {
+  constructor(private modalController: ModalController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public popOverController: PopoverController) {
     
-    this.loggedInUser = JSON.parse(localStorage.getItem('user'));
     let paramUser = navParams.get('account');
+    let paramMention: Mention = navParams.get('mention');
     if(paramUser){
       this.user = paramUser;
-    } else {
+      console.log(this.user.header)
+      console.log(this.user.avatar)
+      this.getToots();
+      this.loadRelationships();
+    } else if(paramMention){
+      this.user = new Account();
+      this.user.acct = paramMention.acct;
+      this.mastodon.getAccount(paramMention.id)
+      .map( 
+        res => {
+          return JSON.parse(res['_body'])
+      })
+      .subscribe(
+        data => {
+          this.user = data;
+          this.getToots();
+          this.loadRelationships();
+        }
+      )
+    } 
+    else {
+      this.loggedInUser = JSON.parse(localStorage.getItem('user'));
       this.user = this.loggedInUser;
+      this.getToots();
     }
-    console.log(this.user.header)
-    this.getToots();
+
+    if(this.user.header == '/headers/original/missing.png'){
+      this.user.header = '../assets/img/pineapple_header.png';
+    }
+  }
+
+  createNewMention(){
+    let modal = this.modalController.create(TootPage, {"tootStatus": "@"+this.user.acct});
+    modal.present();
+  }
+
+  loadRelationships(){
+    this.mastodon.getRelationshipOfAccount(this.user.id).map((res) =>{
+      let tempRelationships: Relationships[] = JSON.parse(res['_body']);
+      return tempRelationships;
+    }) .subscribe((data) => {
+      console.log(JSON.stringify(data))
+      this.relationships = data[0];
+      console.log(this.relationships.following)
+    })
   }
 
   followAction(){
-    // TODO
+    this.mastodon.followUser(this.user.id).map((res) =>{
+      let tempRelationships: Relationships = JSON.parse(res['_body']);
+      return tempRelationships;
+    }) .subscribe((data) => {
+        console.log(JSON.stringify(data))
+        this.relationships = data;
+        console.log(this.relationships.following)
+    });
+  }
+
+  unfollowAction(){
+    this.mastodon.unfollowUser(this.user.id).map((res) =>{
+      let tempRelationships: Relationships = JSON.parse(res['_body']);
+      return tempRelationships;
+    }) .subscribe((data) => {
+        console.log(JSON.stringify(data))
+        this.relationships = data;
+        console.log(this.relationships.following)
+    });
   }
 
 
@@ -52,7 +118,7 @@ export class UserProfilePage {
   }
 
   doRefresh(refresher) {
-    if(this.user.id == this.loggedInUser.id){
+    if(this.loggedInUser){
       this.mastodon.getAuthenticatedUser().map( res => {
         let loggedInUser: Account = JSON.parse(res['_body']);
         return loggedInUser;
@@ -121,9 +187,56 @@ export class UserProfilePage {
             toots[index].content = '<p>' + toots[index].content + '</p>'
           }
           //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
+          if(toots[index].mentions && toots[index].mentions.length > 0){
+            let domParser = new DOMParser();
+            let parsedString = domParser.parseFromString(toots[index].content,"text/html");
+            let mentions = parsedString.getElementsByTagName('a');
+            for(let index = 0; index < mentions.length; index ++){
+              if(mentions[index].innerHTML.indexOf("@") !=  -1){
+                mentions[index].setAttribute('href', '#');
+              }
+            }
+            if(parsedString){
+              toots[index].content = parsedString.documentElement.innerHTML;
+            }
+          }
+
+          // if(toots[index].account.avatar == "/avatars/original/missing.png"){
+          //   toots[index].account.avatar = 'assets/img/pineapple_avatar.png' 
+          // }
       }
     return toots;  
   }
   
+
+  showOptions(ev: UIEvent){
+    if(this.loggedInUser){
+      let popover = this.popOverController.create(PersonalOptionsPage);
+      popover.present({
+        ev: ev
+      });
+    }
+    else{
+      let popover = this.popOverController.create(UserOptionsPage, {isBlocked: this.relationships.blocking,user_id: this.user.id});
+      popover.present({
+        ev: ev
+      });
+      popover.onDidDismiss(data => {
+        console.log('dismissed')
+        if(data){
+          this.relationships = data;
+        }
+    });
+    }
+  }
+
+  unblockAction(){
+    this.mastodon.unblockUser(this.user.id).map((res) =>{
+      let tempRelationships: Relationships = JSON.parse(res['_body']);
+      return tempRelationships;
+    }) .subscribe((data) => {
+      this.relationships = data;
+    })
+  }
 
 }

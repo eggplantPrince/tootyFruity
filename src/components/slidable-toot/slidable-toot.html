@@ -1,11 +1,11 @@
 <ion-item-sliding #slidingItem>
-  <ion-item id="{{toot.id}}" (click)="toggleSpoiler(toot)">
+  <ion-item id="{{toot.id}}" >
     <h4 *ngIf="toot.reblog" class="boost_label">
       <ion-icon name="repeat"></ion-icon> 
       {{toot.reblog.account.display_name | emojify}} boosted
     </h4>  
     <ion-avatar [ngClass]="{'boosted_avatar': toot.reblog}" class="inTootAva" item-left>
-        <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}">
+        <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
     </ion-avatar>  
     <div class="symbols">
       <div class="favorited" item-left *ngIf="toot.favourited">
@@ -21,7 +21,7 @@
       <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
         <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
     </div>
-    <div *ngIf="toot.spoiler_text" class="toot_content">
+    <div *ngIf="toot.spoiler_text" (click)="toggleSpoiler(toot)" class="toot_content">
       <div>
         <p>{{toot.spoiler_text}}</p>
         <p>

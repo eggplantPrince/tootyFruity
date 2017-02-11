@@ -32,7 +32,9 @@ export class TootFormComponent {
   attachedMedia: UploadedMedia[] = [];
 
 
-  constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public viewCtrl: ViewController) {
+  constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, 
+              public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, 
+              public viewCtrl: ViewController) {
     let options : any = {}
     options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
     options.mediaType=Camera.MediaType.ALLMEDIA;
@@ -47,6 +49,12 @@ export class TootFormComponent {
 
     Keyboard.disableScroll(true);
     this.newToot = new TootForm();
+  }
+
+  ngAfterViewInit(){
+    if(this.newToot.status){
+      this.countTootLength();
+    }
   }
 
   sendToot() {

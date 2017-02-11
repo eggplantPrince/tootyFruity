@@ -1,3 +1,6 @@
+import { PersonalOptionsPage } from '../pages/personal-options/personal-options';
+import { UserOptionsPage } from '../pages/user-options/user-options';
+import { SanitizeHtml } from '../pipes/sanitizeHtml';
 import { TootFormComponent } from '../components/toot-form/toot-form';
 import { NotificationItemComponent } from '../components/notification-item/notification-item';
 import { SlidableTootComponent } from '../components/slidable-toot/slidable-toot';
@@ -32,7 +35,9 @@ import { MomentModule } from 'angular2-moment';
     SlidableTootComponent,
     NotificationItemComponent,
     UserProfilePage,
-    TootFormComponent
+    TootFormComponent,
+    UserOptionsPage,
+    PersonalOptionsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -48,7 +53,10 @@ import { MomentModule } from 'angular2-moment';
     TootPage,
     NotificationsPage,
     UserProfilePage,
-    ImageSliderPage
+    ImageSliderPage,
+    ReplyTootPage,
+    UserOptionsPage,
+    PersonalOptionsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

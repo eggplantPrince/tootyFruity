@@ -2,11 +2,22 @@
 
   <ion-navbar>
     <ion-title>@{{user.acct}}</ion-title>
+    <ion-buttons *ngIf="loggedInUser" end>
+      <button ion-button icon-only menuToggle (click)="showOptions($event)"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+    <ion-buttons *ngIf="!loggedInUser" end>
+      <button (click)="showOptions($event)" class="user_settings" ion-button icon-only menuToggle>
+        <ion-icon ios="ios-settings-outline" name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons *ngIf="!loggedInUser" end>
+      <button ion-button icon-only menuToggle (click)="createNewMention()"> <ion-icon name="return-left"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-refresher pullMin="100" (ionRefresh)="doRefresh($event)">
+  <ion-refresher pullMin="150" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   
@@ -14,11 +25,17 @@
     [style.background-image]="'url(' +user.header + ')'">
   </div>
   <div class="wrapper">
-    <div class="button_wrapper">
-      <button (click)="followAction()" class="followButton teal" ion-button small>Follow</button>
+    <div *ngIf="relationships" class="button_wrapper">
+      <button *ngIf="!relationships.following && !relationships.requested && !relationships.blocking" (click)="followAction()" class="followButton teal" ion-button small>Follow</button>
+      <button *ngIf="relationships.following" (click)="unfollowAction()" class="followButton" color="danger" ion-button small>Unfollow</button>
+      <button *ngIf="relationships.blocking" (click)="unblockAction()" class="followButton" color="danger" ion-button small>Unblock</button>
+      <button *ngIf="relationships.requested" class="followButton" color="dark" ion-button small>Requested</button>
+      <ion-badge *ngIf="relationships.followed_by"> Follows You </ion-badge>
+      
+      
     </div>
     <ion-avatar> 
-      <img src="{{user.avatar}}">
+      <img src="{{user.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
     </ion-avatar> 
     <div class="display_name">
       {{user.display_name | emojify}} <br>

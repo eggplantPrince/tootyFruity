@@ -1,7 +1,6 @@
 <ion-item>
-    <ion-avatar class="inTootAva" item-left>
-      <a href="{{notification.account.url}}">
-        <img src="{{notification.account.avatar}}">
+    <ion-avatar class="inTootAva" item-left (click)="goToUserProfile(notification.account)">
+        <img src="{{notification.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
         <div class="wrapper" item-left *ngIf="notification.type=='favourite'">
           <ion-badge class="yellow fav_badge"> <ion-icon ios="ios-star" md="md-star"></ion-icon></ion-badge>
         </div>
@@ -11,7 +10,6 @@
         <div class="wrapper" item-left *ngIf="notification.type=='follow'">
           <ion-badge class="teal follow_badge"> <ion-icon ios="ios-person-add" md="md-person-add"></ion-icon> </ion-badge>
         </div>
-      </a>
     </ion-avatar>
   <h3 class="toot_author_label">
     @{{notification.account.username}}
