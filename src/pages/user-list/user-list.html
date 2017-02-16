@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+<ion-list >
+  <ion-spinner *ngIf="!users"></ion-spinner>
+  <button ion-item *ngFor="let user of users" (click)="goToProfile(user)">
+    <ion-avatar item-left>
+      <img src="{{user.avatar}}">
+    </ion-avatar>
+    <h2>{{user.acct}}</h2>
+    <p [innerHTML]="user.note"></p>
+  </button>
+</ion-list>
+
+<ion-infinite-scroll (ionInfinite)="loadMoreAccounts($event)" threshold="300px">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more users...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

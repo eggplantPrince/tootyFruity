@@ -1,3 +1,4 @@
+import { UserListPage } from '../pages/user-list/user-list';
 import { PersonalOptionsPage } from '../pages/personal-options/personal-options';
 import { UserOptionsPage } from '../pages/user-options/user-options';
 import { TootFormComponent } from '../components/toot-form/toot-form';
@@ -36,7 +37,8 @@ import { MomentModule } from 'angular2-moment';
     UserProfilePage,
     TootFormComponent,
     UserOptionsPage,
-    PersonalOptionsPage
+    PersonalOptionsPage,
+    UserListPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -55,7 +57,8 @@ import { MomentModule } from 'angular2-moment';
     ImageSliderPage,
     ReplyTootPage,
     UserOptionsPage,
-    PersonalOptionsPage
+    PersonalOptionsPage,
+    UserListPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider]
 })

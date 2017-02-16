@@ -22,6 +22,29 @@ export class APIProvider {
     this.base_url = localStorage.getItem('base_url');
   }
 
+  getFollowersOfUser(account_id:string, last_id?:string){
+    if(last_id){
+      let requestOptions: RequestOptions = new RequestOptions();
+      let params: URLSearchParams = new URLSearchParams();
+      params.set('max_id',last_id)
+      requestOptions.search  = params;
+      return this.getRequest('/api/v1/accounts/' + account_id + "/followers", requestOptions);
+    } else{
+      return this.getRequest('/api/v1/accounts/' + account_id + "/followers");
+    }
+  }
+  getFollowingOfUser(account_id:string, last_id?:string){
+    if(last_id){
+      let requestOptions: RequestOptions = new RequestOptions();
+      let params: URLSearchParams = new URLSearchParams();
+      params.set('max_id',last_id)
+      requestOptions.search  = params;
+      return this.getRequest('/api/v1/accounts/' + account_id + "/following", requestOptions);
+    } else{
+      return this.getRequest('/api/v1/accounts/' + account_id + "/following");
+    }
+  }
+
   blockUser(account_id: string){
     return this.postRequest('/api/v1/accounts/' + account_id + '/block', {})
   }
@@ -223,12 +246,12 @@ export class APIProvider {
 
   private finalizeRequestOptions(requestOptions?: RequestOptionsArgs){
     console.log('finalizing RequestOptions....')
-    let myHeader = new Headers({ 'Accept': 'application/json' });
-    myHeader.append('Authorization', 'Bearer '+ this.access_token);
+    let headers = new Headers({ 'Accept': 'application/json' });
+    headers.append('Authorization', 'Bearer '+ this.access_token);
     if(requestOptions){
-      requestOptions.headers = myHeader;
+      requestOptions.headers = headers;
     } else {
-      requestOptions = new RequestOptions({ headers: myHeader });
+      requestOptions = new RequestOptions({ headers: headers });
     }
     return requestOptions;
   }

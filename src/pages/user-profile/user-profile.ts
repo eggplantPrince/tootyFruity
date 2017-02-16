@@ -1,3 +1,4 @@
+import { UserListPage } from '../user-list/user-list';
 import { UserOptionsPage } from '../user-options/user-options';
 import { TootPage } from '../toot/toot';
 import { ModalController } from 'ionic-angular/components/modal/modal';
@@ -32,13 +33,15 @@ export class UserProfilePage {
     
     let paramUser = navParams.get('account');
     let paramMention: Mention = navParams.get('mention');
-    if(paramUser){
+
+    let loggedInUser:Account = JSON.parse(localStorage.getItem('user'));
+     if(paramUser && paramUser.id != loggedInUser.id){
       this.user = paramUser;
       console.log(this.user.header)
       console.log(this.user.avatar)
       this.getToots();
       this.loadRelationships();
-    } else if(paramMention){
+    } else if(paramMention && paramMention.id != loggedInUser.id){
       this.user = new Account();
       this.user.acct = paramMention.acct;
       this.mastodon.getAccount(paramMention.id)
@@ -55,7 +58,7 @@ export class UserProfilePage {
       )
     } 
     else {
-      this.loggedInUser = JSON.parse(localStorage.getItem('user'));
+      this.loggedInUser = loggedInUser;
       this.user = this.loggedInUser;
       this.getToots();
     }
@@ -195,7 +198,7 @@ export class UserProfilePage {
                 mentions[index].setAttribute('href', '#');
               }
             }
-            if(parsedString){
+            if(parsedString.documentElement){
               toots[index].content = parsedString.documentElement.innerHTML;
             }
           }
@@ -236,6 +239,15 @@ export class UserProfilePage {
     }) .subscribe((data) => {
       this.relationships = data;
     })
+  }
+
+  showFollowers(){
+    this.navCtrl.push(UserListPage, {title: "Followers", id: this.user.id});
+    
+  }
+
+  showFollowing(){
+    this.navCtrl.push(UserListPage, {title: "Following", id: this.user.id});
   }
 
 }

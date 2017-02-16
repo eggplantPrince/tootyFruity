@@ -43,8 +43,8 @@
     </div>  
     <ion-grid>
       <ion-row>
-        <ion-col class="left" width-50>{{user.following_count}} Follows</ion-col>
-        <ion-col  class="right" width-50>{{user.followers_count}} Followers</ion-col>
+        <ion-col on-tap="showFollowing()" class="left" width-50>{{user.following_count}} Follows</ion-col>
+        <ion-col on-tap="showFollowers()"  class="right" width-50>{{user.followers_count}} Followers</ion-col>
       </ion-row>
     </ion-grid>
   </div>

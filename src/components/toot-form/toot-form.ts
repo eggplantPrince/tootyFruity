@@ -75,6 +75,7 @@ export class TootFormComponent {
     } 
     else {
       console.log('posting new toot...')
+      console.log(this.newToot.spoiler_text)
       this.mastodon.postToot(this.newToot)
       .subscribe(
         data=> {
@@ -104,7 +105,9 @@ export class TootFormComponent {
   toggleSpoilerText() {
     if(this.spoilerFieldState == 'hidden'){
       this.spoilerFieldState = 'visible'
+      this.newToot.spoiler_text = "";
     } else {
+      this.newToot.spoiler_text = null;
       this.spoilerFieldState = 'hidden'
     }
     Keyboard.disableScroll(true);
@@ -112,10 +115,16 @@ export class TootFormComponent {
 
   countTootLength(){
     let spoilerTextLength = 0;
+    let tootContentLength = 0;
     if(this.newToot.spoiler_text) {
       spoilerTextLength = this.newToot.spoiler_text.length;
     }  
-    this.remainingCharacters = 500 - this.newToot.status.length - spoilerTextLength;
+    if(this.newToot.status){
+      tootContentLength = this.newToot.status.length
+    }
+    this.remainingCharacters = 500 - tootContentLength - spoilerTextLength;
+    console.log(this.newToot.status)
+    console.log(this.newToot.spoiler_text)
     console.log(this.remainingCharacters);
   }
 
