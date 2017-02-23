@@ -1,3 +1,4 @@
+import { TootDetailPage } from '../../pages/toot-detail/toot-detail';
 import { Account } from '../../apiClasses/account';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { NavController } from 'ionic-angular';
@@ -25,6 +26,10 @@ export class NotificationItemComponent {
 
   goToUserProfile(account: Account){
     this.navController.push(UserProfilePage, {'account' : account})
+  }
+
+  showDetail(){
+    this.navController.push(TootDetailPage, {'toot' : this.notification.status});
   }
 
 }

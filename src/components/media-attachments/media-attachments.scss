@@ -5,15 +5,6 @@ media-attachments {
 
     .singleMedia{
         max-height: $maxHeightSingle;
-    }
-    .first,.second,.third,.fourth{
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        float:left;
-    }
-
-    .singleMedia {
         img {
             max-width: 100%;
             max-height: $maxHeightSingle;
@@ -25,7 +16,13 @@ media-attachments {
             z-index: 100;
         }
     }
-
+    .first,.second,.third,.fourth{
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        float:left;
+    }
+    
     .nsfw_warning{
         min-height:$maxHeightMulti;
         background: black;

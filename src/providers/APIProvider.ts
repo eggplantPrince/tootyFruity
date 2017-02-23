@@ -22,6 +22,10 @@ export class APIProvider {
     this.base_url = localStorage.getItem('base_url');
   }
 
+  getTootThread(toot_id:string){
+    return this.getRequest('/api/v1/statuses/' + toot_id + '/context');
+  }
+
   getFollowersOfUser(account_id:string, last_id?:string){
     if(last_id){
       let requestOptions: RequestOptions = new RequestOptions();
@@ -224,6 +228,7 @@ export class APIProvider {
 
   private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
+    console.log('GET REQUEST ' + url + " with params: " + requestOptions.search);
     return this.http.get(this.base_url + url, requestOptions);
   }
 
@@ -245,7 +250,6 @@ export class APIProvider {
   }
 
   private finalizeRequestOptions(requestOptions?: RequestOptionsArgs){
-    console.log('finalizing RequestOptions....')
     let headers = new Headers({ 'Accept': 'application/json' });
     headers.append('Authorization', 'Bearer '+ this.access_token);
     if(requestOptions){

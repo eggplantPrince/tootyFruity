@@ -1,3 +1,4 @@
+import { Utility } from '../../providers/utility';
 import { Notification } from '../../apiClasses/notification';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component } from '@angular/core';
@@ -17,7 +18,7 @@ export class NotificationsPage {
 
   notifications: Notification[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
+  constructor(public utility: Utility,public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
     let notificationCacheString = localStorage.getItem('notificationsCache');
     if(notificationCacheString){
       console.log('notifications loading from cache....')
@@ -26,7 +27,7 @@ export class NotificationsPage {
         console.log('cached notifications are weird.. reloading them')
         this.getNotifications();
       } else {
-        this.notifications = JSON.parse(notificationCacheString);
+        this.notifications = this.beautifyNotifications(JSON.parse(notificationCacheString));
       }
     } else {
       this.getNotifications();
@@ -40,7 +41,7 @@ export class NotificationsPage {
     })
     .subscribe(
       data=>  {
-        this.notifications = this.beautifyMentions(data);
+        this.notifications = this.beautifyNotifications(data);
         this.cacheContent();
       },
       error => console.log(JSON.stringify(error))
@@ -64,7 +65,7 @@ export class NotificationsPage {
       this.mastodon.getNotifications(undefined,id)
       .map( res => {
         let tempNotifications: Notification[] = JSON.parse(res['_body']);
-        return this.beautifyMentions(tempNotifications);
+        return this.beautifyNotifications(tempNotifications);
       })
       .subscribe(
         data=>  {
@@ -88,11 +89,11 @@ export class NotificationsPage {
   }
 
   loadOlderNotifications(infiniteScroll: InfiniteScroll){
-    let id = this.notifications[this.notifications.length -1].id;
+    let id = this.notifications[this.notifications.length-1].id;
     this.mastodon.getNotifications(id)
     .map( res => {
       let tempNotifications: Notification[] = JSON.parse(res['_body']);
-      return tempNotifications;
+      return this.beautifyNotifications(tempNotifications);
     })
     .subscribe(
       data=>  {
@@ -102,6 +103,9 @@ export class NotificationsPage {
             this.notifications.push(newNotifications[i]);
           }
           infiniteScroll.complete();
+          if(data.length == 0){
+            infiniteScroll.enable(false);
+          }
         }
       }),
       error => {
@@ -115,27 +119,13 @@ export class NotificationsPage {
     console.log('notifications are cached!')
   }
 
-  beautifyMentions(notifications: Notification[]){
+  beautifyNotifications(notifications: Notification[]){
     for( let index = 0; index < notifications.length; index ++){
-      if(notifications[index].type=="mention"){
-        if(notifications[index].status.content.indexOf('<p>') == -1){
-          notifications[index].status.content = '<p>' + notifications[index].status.content + '</p>'
-        }
-        //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
-          let domParser = new DOMParser();
-          let parsedString = domParser.parseFromString(notifications[index].status.content,"text/html");
-          let mentions = parsedString.getElementsByTagName('a');
-          for(let index = 0; index < mentions.length; index ++){
-            if(mentions[index].innerHTML.indexOf("@") !=  -1){
-              mentions[index].setAttribute('href', '#');
-            }
-          }
-          if(parsedString){
-            notifications[index].status.content = parsedString.documentElement.innerHTML;
-          }
-        }
+      if(notifications[index].status){
+        notifications[index].status = this.utility.beautifyToot(notifications[index].status);
       }
-    return notifications;  
   }
+  return notifications;  
 
+}
 }

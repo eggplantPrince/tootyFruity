@@ -48,9 +48,12 @@
     </button>
   </ion-item-options>
   <!--- right slide options -->
-  <ion-item-options (ionSwipe)="composeReplyTo(toot,slidingItem)" side="right">
-    <button expandable (click)="composeReplyTo(toot,slidingItem)" ion-button color="primary">
+  <ion-item-options (ionSwipe)="showDetailPage(toot, slidingItem)" side="right">
+    <button (click)="composeReplyTo(toot,slidingItem)" ion-button color="primary">
       <ion-icon name="return-left"></ion-icon>
+    </button>
+    <button expandable (click)="showDetailPage(toot, slidingItem)" ion-button color="light">
+      <ion-icon name="more"></ion-icon>
     </button>
   </ion-item-options>
 </ion-item-sliding>  

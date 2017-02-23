@@ -1,4 +1,5 @@
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
+import { TootDetailPage } from '../../pages/toot-detail/toot-detail';
 import { Account } from '../../apiClasses/account';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { ReplyTootPage } from '../../pages/reply-toot/reply-toot';
@@ -149,6 +150,11 @@ export class SlidableTootComponent {
 
   goToUserProfile(account: Account){
     this.navController.push(UserProfilePage, {'account' : account})
+  }
+
+  showDetailPage(toot: Toot, slidingItem: ItemSliding){
+    this.navController.push(TootDetailPage, {'toot' : toot});
+    slidingItem.close();
   }
 
 }

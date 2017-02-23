@@ -1,3 +1,4 @@
+import { Utility } from '../../providers/utility';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component, ViewChild, Renderer } from '@angular/core';
@@ -15,7 +16,7 @@ export class HomePage {
   timelineSwitching: boolean = false;
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
+  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
     let tootCacheString = localStorage.getItem('tootCache')
     if(tootCacheString){
       console.log('toots loading from cache....')
@@ -41,7 +42,7 @@ export class HomePage {
     this.mastodon.getTimeline(this.timelineType)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body']);
-      return this.beautifyToots(tempToots);
+      return this.utility.beautifyToots(tempToots);
     })
     .subscribe(
       data=>  {
@@ -78,7 +79,7 @@ export class HomePage {
       this.mastodon.getTimeline(this.timelineType,undefined,id)
       .map( res => {
         let tempToots: Toot[] = JSON.parse(res['_body']);
-        return this.beautifyToots(tempToots)
+        return this.utility.beautifyToots(tempToots)
       })
       .subscribe(
         data=>  {
@@ -101,42 +102,13 @@ export class HomePage {
     }
   }
 
-  beautifyToots(toots: Toot[]){
-    for( let index = 0; index < toots.length; index ++){
-          if(toots[index].reblog){
-            // switch booster and boosted for easier display logic
-            let boosterToot = toots[index];
-            toots[index] = toots[index].reblog
-            toots[index].reblog = boosterToot;
-            toots[index].reblog.reblog = null;
-          }
-          if(toots[index].content.indexOf('<p>') == -1){
-            toots[index].content = '<p>' + toots[index].content + '</p>'
-          }
-          
-          if(toots[index].mentions && toots[index].mentions.length > 0){
-            let domParser = new DOMParser();
-            let parsedString = domParser.parseFromString(toots[index].content,"text/html");
-            let mentions = parsedString.getElementsByTagName('a');
-            for(let index = 0; index < mentions.length; index ++){
-              if(mentions[index].innerHTML.indexOf("@") !=  -1){
-                mentions[index].setAttribute('href', '#');
-              }
-            }
-            toots[index].content = parsedString.documentElement.innerHTML;
-          }
-      }
-    return toots;  
-  }
-  
-
   loadOlderToots(infiniteScroll: InfiniteScroll) {
     let lastToot = this.toots[this.toots.length -1];
     let id = this.actualTootID(lastToot);
     this.mastodon.getTimeline(this.timelineType, id)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])
-      return this.beautifyToots(tempToots);
+      return this.utility.beautifyToots(tempToots);
     })
     .subscribe(
       data => {
