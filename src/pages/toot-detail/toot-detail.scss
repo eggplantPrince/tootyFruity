@@ -1,19 +1,31 @@
 page-toot-detail {
-    ion-card-content {
-        p {
-            color:black !important;
+    .mainToot {
+        .list-md .item, .item-md, .item-ios, .item-inner{
+            border-width: 0 !important;
         }
-    }
-    media-attachments{
-        .singleMedia{
-            max-height: 100% !important;
-            float: left;
-            img {
-                width: fit-content;
-                max-height: 100% !important;
-                
+        ion-item {
+            p,a{
+                font-size: 16px;
             }
+        }
+        ion-item-options {
+            border: none;
         }
     }
 
+    .tootInfo {
+        border: none;
+        background: #f4f4f4;
+        height: 40px;
+        padding-left: 40px;
+        font-size:  12px;
+    }
+
+    .timestamp {
+        display: inline-block;
+        font-size: 12px;
+        padding-top: 8px;
+        color: #8e8e8e;
+        vertical-align: middle;
+        }
 }

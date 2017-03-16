@@ -33,7 +33,7 @@ export class TootDetailPage {
       this.ancestors = ancestors;
       this.descendants = descendants;
       if(ancestors.length > descendants.length){
-        this.content.scrollToBottom;
+        this.content.scrollToBottom();
       }
     })
   }

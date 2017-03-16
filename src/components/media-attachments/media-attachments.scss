@@ -5,7 +5,7 @@ media-attachments {
 
     .singleMedia{
         max-height: $maxHeightSingle;
-        img {
+        img, video {
             max-width: 100%;
             max-height: $maxHeightSingle;
             margin:0 auto;

@@ -12,6 +12,8 @@
   <allow-navigation href="http://192.168.0.220:8100"/>
   <allow-navigation href="http://10.0.1.64:8100"/>
   <allow-navigation href="http://10.0.1.64:8101"/>
+  <allow-navigation href="http://192.168.42.1:8100"/>
+  <allow-navigation href="http://172.20.10.3:8101"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
@@ -26,18 +28,18 @@
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" density="xhdpi"/>
     <icon src="resources/android/icon/drawable-xxhdpi-icon.png" density="xxhdpi"/>
     <icon src="resources/android/icon/drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
-    <splash src="resources/android/splash/drawable-land-ldpi-screen.png" density="land-ldpi"/>
-    <splash src="resources/android/splash/drawable-land-mdpi-screen.png" density="land-mdpi"/>
-    <splash src="resources/android/splash/drawable-land-hdpi-screen.png" density="land-hdpi"/>
-    <splash src="resources/android/splash/drawable-land-xhdpi-screen.png" density="land-xhdpi"/>
-    <splash src="resources/android/splash/drawable-land-xxhdpi-screen.png" density="land-xxhdpi"/>
-    <splash src="resources/android/splash/drawable-land-xxxhdpi-screen.png" density="land-xxxhdpi"/>
-    <splash src="resources/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
-    <splash src="resources/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
-    <splash src="resources/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
-    <splash src="resources/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
-    <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
-    <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+    <splash src="resources/android/splash/drawable-mdpi.png" density="land-ldpi"/>
+    <splash src="resources/android/splash/drawable-mdpi.png" density="land-mdpi"/>
+    <splash src="resources/android/splash/drawable-hdpi.png" density="land-hdpi"/>
+    <splash src="resources/android/splash/drawable-xhdpi.png" density="land-xhdpi"/>
+    <splash src="resources/android/splash/drawable-xxhdpi.png" density="land-xxhdpi"/>
+    <splash src="resources/android/splash/drawable-xxxhdpi.png" density="land-xxxhdpi"/>
+    <splash src="resources/android/splash/drawable-mdpi.png" density="port-ldpi"/>
+    <splash src="resources/android/splash/drawable-mdpi.png" density="port-mdpi"/>
+    <splash src="resources/android/splash/drawable-hdpi.png" density="port-hdpi"/>
+    <splash src="resources/android/splash/drawable-xhdpi.png" density="port-xhdpi"/>
+    <splash src="resources/android/splash/drawable-xxhdpi.png" density="port-xxhdpi"/>
+    <splash src="resources/android/splash/drawable-xxxhdpi.png" density="port-xxxhdpi"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
@@ -72,6 +74,7 @@
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
   </platform>
   <preference name="webviewbounce" value="false"/>
+  <preference name="AllowInlineMediaPlayback" value="true"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
@@ -81,7 +84,7 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="AutoHideSplashScreen" value="false"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="1000"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

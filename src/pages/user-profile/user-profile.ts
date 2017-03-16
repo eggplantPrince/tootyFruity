@@ -1,3 +1,4 @@
+import { Utility } from '../../providers/utility';
 import { UserListPage } from '../user-list/user-list';
 import { UserOptionsPage } from '../user-options/user-options';
 import { TootPage } from '../toot/toot';
@@ -29,7 +30,7 @@ export class UserProfilePage {
   relationships: Relationships;
 
 
-  constructor(private modalController: ModalController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public popOverController: PopoverController) {
+  constructor(private utility:Utility, private modalController: ModalController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public popOverController: PopoverController) {
     
     let paramUser = navParams.get('account');
     let paramMention: Mention = navParams.get('mention');
@@ -110,7 +111,7 @@ export class UserProfilePage {
   getToots(){
     this.mastodon.getTootsOfUser(this.user.id).map(
     (res) =>{
-      return this.beautifyToots(JSON.parse(res['_body']))
+      return this.utility.beautifyToots(JSON.parse(res['_body']))
     })
     .subscribe(
       data => {
@@ -157,7 +158,7 @@ export class UserProfilePage {
     this.mastodon.getTootsOfUser(this.user.id, id, undefined)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])
-      return this.beautifyToots(tempToots);
+      return this.utility.beautifyToots(tempToots);
     })
     .subscribe(
       data => {
@@ -175,41 +176,6 @@ export class UserProfilePage {
       } 
     );
   }
-
-  beautifyToots(toots: Toot[]){
-    for( let index = 0; index < toots.length; index ++){
-          if(toots[index].reblog){
-            // switch booster and boosted for easier display logic
-            let boosterToot = toots[index];
-            toots[index] = toots[index].reblog
-            toots[index].reblog = boosterToot;
-            toots[index].reblog.reblog = null;
-          }
-          if(toots[index].content.indexOf('<p>') == -1){
-            toots[index].content = '<p>' + toots[index].content + '</p>'
-          }
-          //toots[index].content = toots[index].content.replace(/(<([^>]+)>)/ig, '');
-          if(toots[index].mentions && toots[index].mentions.length > 0){
-            let domParser = new DOMParser();
-            let parsedString = domParser.parseFromString(toots[index].content,"text/html");
-            let mentions = parsedString.getElementsByTagName('a');
-            for(let index = 0; index < mentions.length; index ++){
-              if(mentions[index].innerHTML.indexOf("@") !=  -1){
-                mentions[index].setAttribute('href', '#');
-              }
-            }
-            if(parsedString.documentElement){
-              toots[index].content = parsedString.documentElement.innerHTML;
-            }
-          }
-
-          // if(toots[index].account.avatar == "/avatars/original/missing.png"){
-          //   toots[index].account.avatar = 'assets/img/pineapple_avatar.png' 
-          // }
-      }
-    return toots;  
-  }
-  
 
   showOptions(ev: UIEvent){
     if(this.loggedInUser){

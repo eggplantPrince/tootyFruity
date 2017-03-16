@@ -5,14 +5,32 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content #content>
   <ion-list can-swipe="true">
+    
     <ng-container *ngFor="let toot of ancestors">
         <slidable-toot [toot]="toot"></slidable-toot>
     </ng-container>  
-  </ion-list>
+    <slidable-toot [toot]="mainToot" class="mainToot"></slidable-toot>
+    <ion-item-divider text-center no-lines class="tootInfo">
+          <div class="timestamp">
+            {{mainToot.created_at | date:"dd.MM.yy 'at' H:mm"}}
+          </div>
+          <button class="orange_outline" ion-button icon-left clear small>
+            <ion-icon *ngIf="!mainToot.favourited"name="star-outline"></ion-icon>
+            <ion-icon *ngIf="mainToot.favourited"name="star"></ion-icon>
+            <div>{{mainToot.favourites_count}}</div>
+          </button>
+          <button *ngIf="mainToot.visibility=='private'" ion-button icon-left clear small color="dark">
+            <ion-icon ios="ios-lock" md="md-lock"></ion-icon>
+          </button>
+          <button *ngIf="mainToot.visibility!='private'"class='purple_outline' ion-button icon-left clear small>
+            <ion-icon ios="md-repeat" name="repeat"></ion-icon>
+            <div>{{mainToot.reblogs_count}}</div>
+          </button>
+    </ion-item-divider>
 
-  <ion-card class="mainToot">
+  <!-- ion-card class="mainToot">
 
     <ion-item>
       <ion-avatar item-left>
@@ -28,34 +46,11 @@
       <media-attachments [mediaAttachments]="mainToot.media_attachments"></media-attachments>
     </ion-card-content>
 
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="return-left"></ion-icon>
-        </button>
-      </ion-col>
-      <ion-col>
-        <button class="orange_outline" ion-button icon-left clear small>
-          <ion-icon *ngIf="!mainToot.favourited"name="star-outline"></ion-icon>
-          <ion-icon *ngIf="mainToot.favourited"name="star"></ion-icon>
-          <div>{{mainToot.favourites_count}}</div>
-        </button>
-      </ion-col>
-      <ion-col>
-        <button *ngIf="mainToot.visibility=='private'" ion-button icon-left clear small color="dark">
-          <ion-icon ios="ios-lock" md="md-lock"></ion-icon>
-        </button>
-        <button *ngIf="mainToot.visibility!='private'"class='purple_outline' ion-button icon-left clear small>
-          <ion-icon ios="md-repeat" name="repeat"></ion-icon>
-          <div>{{mainToot.reblogs_count}}</div>
-        </button>
-      </ion-col>
-    </ion-row>
+    
 
-  </ion-card>
+  </ion-card -->
 
-  <ion-list can-swipe="true">
-    <ng-container *ngFor="let toot of descendants">
+      <ng-container *ngFor="let toot of descendants">
         <slidable-toot [toot]="toot"></slidable-toot>
       </ng-container>  
   </ion-list>

@@ -23,17 +23,23 @@ export class Utility {
       toot.content = '<p>' + toot.content + '</p>'
     }
     
-    if(toot.mentions && toot.mentions.length > 0){
+    if(toot.mentions && toot.mentions.length > 0 || toot.media_attachments[0]){
       let domParser = new DOMParser();
       let parsedString = domParser.parseFromString(toot.content,"text/html");
-      let mentions = parsedString.getElementsByTagName('a');
-      for(let index = 0; index < mentions.length; index ++){
-        if(mentions[index].innerHTML.indexOf("@") !=  -1){
-          mentions[index].setAttribute('href', '#');
+      let links = parsedString.getElementsByTagName('a');
+      for(let index = 0; index < links.length; index ++){
+        if(links[index].innerHTML.indexOf("@") !=  -1){
+          links[index].setAttribute('href', '#');
+        }
+        if(toot.media_attachments[0] && toot.media_attachments[0].type != "video"){
+          if(links[index].getAttribute('href').indexOf('/media/') != -1){
+            links[index].innerHTML = '';
+          }
         }
       }
       toot.content = parsedString.documentElement.innerHTML;
     }
+
     return toot;
   }
 

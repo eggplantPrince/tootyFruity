@@ -24,8 +24,8 @@ export class SlidableTootComponent {
 
   @Input()
   toot: Toot;
-
   relationship: string;
+
 
   constructor(private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
   }
@@ -36,7 +36,6 @@ export class SlidableTootComponent {
       let elements = this.elRef.nativeElement.querySelectorAll('a');
       for(let index = 0; index < elements.length; index++){
         elements[index].addEventListener('click', (event) => {
-          let target = event.target || event.srcElement || event.currentTarget;
           let username = event.target.innerHTML;
           console.log(username)
           for(let i = 0; i<this.toot.mentions.length; i++){
@@ -156,5 +155,6 @@ export class SlidableTootComponent {
     this.navController.push(TootDetailPage, {'toot' : toot});
     slidingItem.close();
   }
+
 
 }

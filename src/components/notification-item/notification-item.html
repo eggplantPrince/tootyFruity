@@ -1,5 +1,5 @@
-<ion-item on-tap="showDetail()">
-    <ion-avatar class="inTootAva" item-left (click)="goToUserProfile(notification.account)">
+<ion-item>
+    <ion-avatar class="inTootAva" item-left on-tap="goToUserProfile(notification.account)">
         <img src="{{notification.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
         <div class="wrapper" item-left *ngIf="notification.type=='favourite'">
           <ion-badge class="yellow fav_badge"> <ion-icon ios="ios-star" md="md-star"></ion-icon></ion-badge>
@@ -18,7 +18,7 @@
   <span class="notification_type_label" *ngIf="notification.type=='reblog'">boosted your status</span>
   <span class="notification_type_label" *ngIf="notification.type=='favourite'">favourited your status</span>  
 
-  <div *ngIf="notification.type!='follow'" class="toot_content">
+  <div  on-tap="showDetail()" *ngIf="notification.type!='follow'" class="toot_content">
     <p *ngIf="notification.status.spoiler_text">{{notification.status.spoiler_text}}</p>
     <div [innerHTML]="notification.status.content | emojify"> </div>
   </div>

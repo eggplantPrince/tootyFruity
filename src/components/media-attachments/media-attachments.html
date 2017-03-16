@@ -56,3 +56,20 @@
     </div> 
   </div>
 </div>  
+
+<div *ngIf="mediaAttachments[0] != null &&  mediaAttachments[0].type == 'gifv'">
+  <div *ngIf="mediaAttachments.length == 1" class="singleMedia">
+    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
+      <div class="nsfw_warning" (click)="toggleWarning()">
+        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
+        <div class="nsfw_text_wrapper">
+          <p>This image has been marked as NSFW / Sensitive.</p>
+          <p>Tab on the box to reveal it </p>
+        </div>
+      </div>
+    </div> 
+    <video poster="{{mediaAttachments[0].preview_url}}" autoplay loop muted webkit-playsinline="true" playsinline="true" webkit-playsinline playsinline>
+      <source src="{{mediaAttachments[0].url}}" type="video/mp4">
+    </video>
+  </div>
+</div>
