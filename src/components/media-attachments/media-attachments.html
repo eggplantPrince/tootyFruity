@@ -1,75 +1,38 @@
-<div *ngIf="mediaAttachments[0] != null && mediaAttachments[0].type=='image'">
-  <div *ngIf="mediaAttachments.length == 1" class="singleMedia">
-    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
-      <div class="nsfw_warning" (click)="toggleWarning()">
-        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
-        <div class="nsfw_text_wrapper">
-          <p>This image has been marked as NSFW / Sensitive.</p>
-          <p>Tab on the box to reveal it </p>
-        </div>
+<div class="{{divClassName[mediaAttachments.length-1]}}">
+  
+  <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
+    <div class="nsfw_warning" (click)="toggleWarning()">
+      <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
+      <div class="nsfw_text_wrapper">
+        <p>This image has been marked as NSFW / Sensitive.</p>
+        <p>Tab on the box to reveal it </p>
       </div>
-    </div> 
-    <img (click)="showSlideShowFrom(0)" src="{{mediaAttachments[0].preview_url}}"/> 
+    </div>
   </div>  
-  <div *ngIf="mediaAttachments.length > 1">
-    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
-      <div class="nsfw_warning" (click)="toggleWarning()">
-        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
-        <div class="nsfw_text_wrapper">
-          <p>This image has been marked as NSFW / Sensitive.</p>
-          <p>Tab on the box to reveal it </p>
-        </div>
-      </div>
-    </div>  
-    <div class="two" *ngIf="mediaAttachments.length == 2">
-      <div class="first" (click)="showSlideShowFrom(0)"
-        [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
-      </div>
-      <div class="second" (click)="showSlideShowFrom(1)" 
-          [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
-      </div>
-    </div>  
-    <div class="three" *ngIf="mediaAttachments.length == 3">
-        <div class="first" (click)="showSlideShowFrom(0)"
-          [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
-        </div>
-          <div class="second" (click)="showSlideShowFrom(1)"
-            [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
-          </div>
-          <div class="third" (click)="showSlideShowFrom(2)"
-            [style.background-image]="'url(' + mediaAttachments[2].preview_url + ')'">
-          </div>  
-    </div>  
-    <div class="four" *ngIf="mediaAttachments.length == 4">
-        <div class="first" (click)="showSlideShowFrom(0)"
-          [style.background-image]="'url(' + mediaAttachments[0].preview_url + ')'">
-        </div>
-          <div class="second" (click)="showSlideShowFrom(1)"
-            [style.background-image]="'url(' + mediaAttachments[1].preview_url + ')'">
-          </div>
-          <div class="third" (click)="showSlideShowFrom(2)"
-            [style.background-image]="'url(' + mediaAttachments[2].preview_url + ')'">
-          </div>  
-          <div class="fourth" (click)="showSlideShowFrom(3)"
-            [style.background-image]="'url(' + mediaAttachments[3].preview_url + ')'">
-          </div>  
-    </div> 
-  </div>
-</div>  
+  
+  <ng-container *ngFor="let media of mediaAttachments; let i = index">
+  
+    <div *ngIf="media.type == 'image'" class="{{mediaClassName[i]}}" (click)="showSlideshowFrom(i)"
+      [style.background-image]="'url(' + media.preview_url + ')'">
 
-<div *ngIf="mediaAttachments[0] != null &&  mediaAttachments[0].type == 'gifv'">
-  <div *ngIf="mediaAttachments.length == 1" class="singleMedia">
-    <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
-      <div class="nsfw_warning" (click)="toggleWarning()">
-        <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
-        <div class="nsfw_text_wrapper">
-          <p>This image has been marked as NSFW / Sensitive.</p>
-          <p>Tab on the box to reveal it </p>
+      <!-- im here to determine the size of a single image -->
+      <img *ngIf="mediaAttachments.length == 1" src="{{media.preview_url}}"> 
+    </div>    
+
+    <div *ngIf="media.type == 'gifv' && isiOS" class="{{mediaClassName[i]}}" >
+      <div class="playButtonWrapper">
+        
+        <div class="playButton" *ngIf="media.type =='video' || media.type == 'gifv' && isiOS">
+          <ion-icon name="play"></ion-icon>
         </div>
+        <video poster="{{media.preview_url}}" class="gifv ios {{mediaClassName[i]}}" loop muted>
+          <source src="{{media.url}}" type ="video/mp4">
+        </video>
       </div>
-    </div> 
-    <video poster="{{mediaAttachments[0].preview_url}}" autoplay loop muted webkit-playsinline="true" playsinline="true" webkit-playsinline playsinline>
-      <source src="{{mediaAttachments[0].url}}" type="video/mp4">
+    </div>
+    <video *ngIf="media.type == 'gifv' && !isiOS" poster="{{media.preview_url}}"
+          class="gifv {{mediaClassName[i]}}" loop autoplay muted>
+      <source src="{{media.url}}" type ="video/mp4">
     </video>
-  </div>
+  </ng-container>
 </div>

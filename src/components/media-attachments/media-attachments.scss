@@ -2,13 +2,64 @@ media-attachments {
     $maxHeightMulti: 200px;
     $maxHeightSingle: 300px;
 
+    .playButtonWrapper {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        .playButton {
+            z-index: 90;
+            color:white;
+            border: 2px solid white;
+            background: rgba(0,0,0,0.3);
+            font-size: 23px;
+            height: 30px;
+            width: 30px;
+            border-radius: 20px;
+            position: relative;
+            margin: 0 auto;
+            top: 50%;
+	        transform: translateY(-50%);
+            ion-icon {
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-35%,-50%);
+            }
+        }
+    }
+
+    video {
+        max-height: 100%;
+        max-width: 100%;
+    }
 
     .singleMedia{
+        .playButtonWrapper {
+            float:left;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .playButton {
+                min-width: 30px;
+                margin:none;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
         max-height: $maxHeightSingle;
-        img, video {
+        .first {
             max-width: 100%;
             max-height: $maxHeightSingle;
             margin:0 auto;
+            position: relative;
+            img, video {
+                max-height: $maxHeightSingle;
+            }
+            video {
+                margin-left: -30px;
+            }
+
         }
         .nsfw_warning {
             min-height: $maxHeightSingle;
@@ -24,6 +75,7 @@ media-attachments {
     }
     
     .nsfw_warning{
+        z-index: 100;
         min-height:$maxHeightMulti;
         background: black;
         width:100%;
@@ -53,6 +105,21 @@ media-attachments {
     .two, .three, .four {
         width: 100%;
         height: $maxHeightMulti;
+        video {
+            border: none !important;
+            z-index: 1;
+            margin-top: -30px;
+            width: 100% !important;
+            height: 100% !important;
+            display: inline-block;
+            -webkit-background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            background-size:100% 100%;
+            object-fit:cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size:cover;
+        }
     }
 
     .four {

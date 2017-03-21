@@ -52,9 +52,6 @@ export class SlidableTootComponent {
     }
   }
 
-
-
-
   boostToot(toot: Toot, slidingItem:ItemSliding){
     localStorage.setItem('homeRefreshNeeded', 'true');
     localStorage.setItem('notificationRefreshNeeded', 'true');

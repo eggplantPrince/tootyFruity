@@ -6,8 +6,7 @@
 
 
 <ion-content #content>
-  <ion-list can-swipe="true">
-    
+  <ion-list can-swipe="true">   
     <ng-container *ngFor="let toot of ancestors">
         <slidable-toot [toot]="toot"></slidable-toot>
     </ng-container>  
@@ -29,27 +28,6 @@
             <div>{{mainToot.reblogs_count}}</div>
           </button>
     </ion-item-divider>
-
-  <!-- ion-card class="mainToot">
-
-    <ion-item>
-      <ion-avatar item-left>
-        <img src="{{mainToot.account.avatar}}">
-      </ion-avatar>
-      <h2>{{mainToot.account.display_name | emojify}}</h2>
-      <p>@{{mainToot.account.acct}}</p>
-    </ion-item>
-
-    <ion-card-content >
-      <p *ngIf="mainToot.spoiler_text">{{mainToot.spoiler_text}}<br></p> 
-      <div [innerHTML]="mainToot.content | emojify"></div>
-      <media-attachments [mediaAttachments]="mainToot.media_attachments"></media-attachments>
-    </ion-card-content>
-
-    
-
-  </ion-card -->
-
       <ng-container *ngFor="let toot of descendants">
         <slidable-toot [toot]="toot"></slidable-toot>
       </ng-container>  

@@ -1,0 +1,24 @@
+<!--
+  Generated template for the SingleMedia component.
+
+  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+  for more info on Angular 2 Components.
+-->
+
+<div class="{{divClassName[mediaAttachments.length]}}" *ngFor="let i = 0; i<mediaAttachments.length; i++">
+  <div *ngIf="mediaAttachments[i].type == 'image'" class="{{mediaClassName[i]}}" (click)="showSlideshowFrom(i)"
+    [style.background-image]="'url(' + mediaAttachments[i].preview_url + ')'">
+  </div>    
+  <video *ngIf="mediaAttachments[i].type == 'gifv' && isiOS" 
+         poster="{{mediaAttachments[i].preview_url}}"
+         class="gifv ios {{mediaClassName[i]}}"
+         loop muted>
+    <source src="{{mediaAttachments[i].url}}" type ="video/mp4">
+  </video>
+  <video *ngIf="mediaAttachments[i].type == 'gifv' && !isiOS" 
+         poster="{{mediaAttachments[i].preview_url}}"
+         class="gifv {{mediaClassName[i]}}"
+         loop autoplay muted>
+    <source src="{{mediaAttachments[i].url}}" type ="video/mp4">
+  </video>
+</div>
