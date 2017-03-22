@@ -43,7 +43,7 @@ export class LoginPage {
       let credentials: OAuthCredentials;
       let data = {
         client_name: 'TootyFruity',
-        redirect_uris: 'http://tootyfruity.kevinegli/redirect',
+        redirect_uris: 'http://tootyfruity.kevinegli.ch/redirect',
         scopes: 'read write follow'
       }
       let final_url = this.instanceRootURL + '/api/v1/apps'

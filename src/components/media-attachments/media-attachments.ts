@@ -42,10 +42,9 @@ export class MediaAttachmentsComponent {
     for(let index = 0; index < elements.length; index++){
       elements[index].addEventListener('click', (event) => {
         let video = event.target;
-        if(video.paused){
-          video.play();
-        } else {
-          video.pause();
+        video.play();
+        if(!this.isiOS) {
+          video.webkitEnterFullscreen();
         }
       }); 
     }

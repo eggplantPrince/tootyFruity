@@ -19,20 +19,21 @@
       <img *ngIf="mediaAttachments.length == 1" src="{{media.preview_url}}"> 
     </div>    
 
-    <div *ngIf="media.type == 'gifv' && isiOS" class="{{mediaClassName[i]}}" >
+    <div *ngIf="media.type == 'gifv' && isiOS || media.type == 'video'" class="{{mediaClassName[i]}}" >
       <div class="playButtonWrapper">
-        
-        <div class="playButton" *ngIf="media.type =='video' || media.type == 'gifv' && isiOS">
+        <div class="playButton">
           <ion-icon name="play"></ion-icon>
         </div>
-        <video poster="{{media.preview_url}}" class="gifv ios {{mediaClassName[i]}}" loop muted>
+        <video poster="{{media.preview_url}}" [class.ios]="isiOS" loop>
           <source src="{{media.url}}" type ="video/mp4">
         </video>
       </div>
     </div>
-    <video *ngIf="media.type == 'gifv' && !isiOS" poster="{{media.preview_url}}"
-          class="gifv {{mediaClassName[i]}}" loop autoplay muted>
-      <source src="{{media.url}}" type ="video/mp4">
-    </video>
+    <div *ngIf="media.type == 'gifv' && !isiOS"  class="{{mediaClassName[i]}}" >
+      <video poster="{{media.preview_url}}"
+            class="gifv" loop autoplay muted>
+        <source src="{{media.url}}" type ="video/mp4">
+      </video>
+    </div>
   </ng-container>
 </div>

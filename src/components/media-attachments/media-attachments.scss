@@ -72,6 +72,7 @@ media-attachments {
         background-position: center center;
         background-size: cover;
         float:left;
+        overflow: hidden;
     }
     
     .nsfw_warning{
@@ -108,7 +109,6 @@ media-attachments {
         video {
             border: none !important;
             z-index: 1;
-            margin-top: -30px;
             width: 100% !important;
             height: 100% !important;
             display: inline-block;
@@ -119,6 +119,9 @@ media-attachments {
             -webkit-background-size: cover;
             -moz-background-size: cover;
             background-size:cover;
+        }
+        video.ios {
+            margin-top: -30px;
         }
     }
 
