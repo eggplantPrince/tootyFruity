@@ -21,7 +21,7 @@ export class ReplyTootPage {
     this.replyingToot = params.get('replyingToot');
     this.newToot = new TootForm();
     this.newToot.in_reply_to_id = this.replyingToot.id;
-    this.newToot.status = "@"+this.replyingToot.account.username;
+    this.newToot.status = "@"+this.replyingToot.account.acct;
     Keyboard.disableScroll(true);
   }
 

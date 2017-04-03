@@ -44,7 +44,7 @@ export class MediaAttachmentsComponent {
         let video = event.target;
         video.play();
         if(!this.isiOS) {
-          video.webkitEnterFullscreen();
+          video.webkitRequestFullscreen();
         }
       }); 
     }

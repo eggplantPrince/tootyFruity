@@ -31,7 +31,7 @@ export class Utility {
         if(links[index].innerHTML.indexOf("@") !=  -1){
           links[index].setAttribute('href', '#');
         }
-        if(toot.media_attachments[0] && toot.media_attachments[0].type != "video"){
+        if(toot.media_attachments[0]){
           if(links[index].getAttribute('href').indexOf('/media/') != -1){
             links[index].innerHTML = '';
           }
