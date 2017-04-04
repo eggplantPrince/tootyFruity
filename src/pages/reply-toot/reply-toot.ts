@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import { Mention } from '../../apiClasses/mention';
 import { Account } from '../../apiClasses/account';
+=======
+>>>>>>> e624713b064e0bb5047ff39f61ab39c1dd6d2025
 import { TootForm } from '../../apiClasses/tootForm';
 import { Toot } from '../../apiClasses/toot';
 import { Component } from '@angular/core';
