@@ -9,12 +9,6 @@ import { APIProvider } from '../../providers/APIProvider';
 import { Toot } from '../../apiClasses/toot';
 import { Component, ElementRef, Input, Renderer } from '@angular/core';
 
-/*
-  Generated class for the SlideableToot component.
-
-  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
-  for more info on Angular 2 Components.
-*/
 @Component({
   selector: 'slidable-toot',
   templateUrl: 'slidable-toot.html',

@@ -23,6 +23,7 @@ export class TootFormComponent {
   newToot: TootForm;
   
   spoilerFieldState: string = 'hidden';
+  @Input()
   spoilerToggle: Boolean;
   remainingCharacters: number = 500;
   picturePickerOptions: CameraOptions;
@@ -55,6 +56,10 @@ export class TootFormComponent {
     if(this.newToot.status){
       this.countTootLength();
     }
+    let lastVisibility = localStorage.getItem('lastVisibility');
+    if(this.newToot.visibility == 'public' && lastVisibility) {
+      this.newToot.visibility = lastVisibility;
+    }
   }
 
   sendToot() {
@@ -85,9 +90,11 @@ export class TootFormComponent {
             position: 'top',
             cssClass: 'success_toast'
           });
+        if(this.newToot.in_reply_to_id == null) {
+          localStorage.setItem('lastVisibility', this.newToot.visibility);
+        }
         toast.present();  
         this.newToot = new TootForm();
-        localStorage.setItem('lastVisibility', this.newToot.visibility);
         },
         error => console.log(JSON.stringify(error))
       );

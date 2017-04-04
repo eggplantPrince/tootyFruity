@@ -49,6 +49,7 @@ media-attachments {
         }
         max-height: $maxHeightSingle;
         .first {
+            border-radius: 10px;
             max-width: 100%;
             max-height: $maxHeightSingle;
             margin:0 auto;
@@ -125,6 +126,50 @@ media-attachments {
         }
     }
 
+     .two {
+        .first, .second {
+            height: 100%;
+            width: 50%;
+        }
+
+        .first {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-right: 1px solid white;
+        }
+
+        .second {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-left: 1px solid white;
+        }
+    }
+
+    .three {
+        .first {
+            height: 100%;
+            width: 50%;
+            border-right: 1px solid white;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .second, .third {
+            height: 50%;
+            width: 50%;
+            border-left: 1px solid white;
+        }
+
+        .second {
+            border-top-right-radius: 10px;
+            border-bottom: 1px solid white;
+        }
+
+        .third{
+            border-bottom-right-radius: 10px;
+            border-top: 1px solid white;
+        }
+    }
+
     .four {
         .first, .second, .third, .fourth {
             height: 50%;
@@ -146,41 +191,22 @@ media-attachments {
         .third, .fourth {
             border-top: 1px solid white;
         }
-    }
 
-    .two {
-        .first, .second {
-            height: 100%;
-            width: 50%;
-        }
 
         .first {
-            border-right: 1px solid white;
+            border-top-left-radius: 10px;
         }
 
         .second {
-            border-left: 1px solid white;
-        }
-    }
-
-    .three {
-        .first {
-            height: 100%;
-            width: 50%;
-            border-right: 1px solid white;
-        }
-        .second, .third {
-            height: 50%;
-            width: 50%;
-            border-left: 1px solid white;
+            border-top-right-radius: 10px;
         }
 
-        .second {
-            border-bottom: 1px solid white;
+        .third {
+            border-bottom-left-radius: 10px;
         }
 
-        .third{
-            border-top: 1px solid white;
+        .fourth {
+            border-bottom-right-radius: 10px;
         }
     }
 }

@@ -40,7 +40,7 @@ export class MyApp {
           this.rootPage = LoginPage
      } else {
           this.rootPage = TabsPage;
-            //fetching users stuff once for internal stuff
+            //fetching users account once for internal stuff
             this.mastodon.getAuthenticatedUser().map( res => {
               let loggedInUser: Account = JSON.parse(res['_body']);
               return loggedInUser;

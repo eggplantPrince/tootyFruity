@@ -19,7 +19,7 @@
 
   <ion-list can-swipe="true">
     <ng-container *ngFor="let notification of notifications">
-      <slidable-toot *ngIf="notification.type == 'mention'" [toot]="notification.status"></slidable-toot>
+      <slidable-toot *ngIf="notification.type == 'mention' && notification.status" [toot]="notification.status"></slidable-toot>
       <notification-item id=""*ngIf="notification.type != 'mention'" [notification]="notification"></notification-item>
     </ng-container>
   </ion-list>  

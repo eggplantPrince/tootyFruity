@@ -10,6 +10,7 @@ export class Toot {
   in_reply_to_id: string;
   reblog: Toot;
   spoiler_visible: boolean = false;
+  spoiler_text: string;
   content: string;
   sensitive: boolean;
   created_at: string;

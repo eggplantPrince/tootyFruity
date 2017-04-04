@@ -154,7 +154,7 @@ export class UserProfilePage {
     let lastToot = this.userToots[this.userToots.length -1];
     console.log('last id: ' + lastToot.content)
     let id;
-    lastToot.reblog ? id=lastToot.reblog : id=lastToot.id;
+    lastToot.reblog ? id=lastToot.reblog.id : id=lastToot.id;
     this.mastodon.getTootsOfUser(this.user.id, id, undefined)
     .map( res => {
       let tempToots: Toot[] = JSON.parse(res['_body'])
