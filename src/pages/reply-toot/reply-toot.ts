@@ -1,4 +1,3 @@
-import { Mention } from '../../apiClasses/mention';
 import { Account } from '../../apiClasses/account';
 import { TootForm } from '../../apiClasses/tootForm';
 import { Toot } from '../../apiClasses/toot';
