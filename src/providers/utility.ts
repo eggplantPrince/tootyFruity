@@ -1,3 +1,4 @@
+import { AuthedAccount } from '../apiClasses/authedAccount';
 import { Toot } from '../apiClasses/toot';
 import { Injectable } from '@angular/core'
 
@@ -41,6 +42,29 @@ export class Utility {
     }
 
     return toot;
+  }
+
+  public saveCurrentAccount(currentAccount : AuthedAccount){
+    localStorage.setItem('currentAccount', JSON.stringify(currentAccount));
+    let accountList = localStorage.getItem('accountList')
+    if(accountList){
+      let userList: AuthedAccount[] = JSON.parse(accountList);
+      for(let i = 0; i < userList.length; i++){
+        if(userList[i].accessToken == currentAccount.accessToken){
+          userList[i] = currentAccount;
+          localStorage.setItem('accountList', JSON.stringify(userList));
+        }
+      }
+    }
+  }
+
+  public getCurrentAccount() : AuthedAccount {
+    let string = localStorage.getItem('currentAccount');
+    if(string){
+      return JSON.parse(string);
+    } else {
+      return null;
+    }
   }
 
 }

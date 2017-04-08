@@ -1,5 +1,8 @@
 <ion-header>
   <ion-navbar>
+    <button class="currentAccountAvatar" (click)="showAccountSwitcher($event)" ion-button icon-only menuToggle>
+      <img src="{{currentAccount.mastodonAccount.avatar}}">
+    </button>
     <ion-title>Timeline</ion-title>
     <ion-buttons end>
       <ion-spinner *ngIf="timelineSwitching"></ion-spinner>

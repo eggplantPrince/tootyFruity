@@ -1,0 +1,21 @@
+<ion-list no-lines>
+  <ng-container *ngFor="let account of accounts">
+    <ion-item-sliding>
+      <ion-item (click)="changeAccountTo(account)">
+        <ion-avatar item-left>
+            <img src="{{account.mastodonAccount.avatar}}">
+        </ion-avatar>
+        <h3>@{{account.mastodonAccount.acct}}</h3>
+      </ion-item>
+      <ion-item-options side="right">
+        <button (click)="removeAccount(account)" ion-button color="danger">
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ng-container>
+  <ion-item (click)="addAccount()">
+     <ion-icon large item-left name="add"></ion-icon>
+     <h3 class="addAccount">Add Account</h3>
+  </ion-item>
+ </ion-list>  

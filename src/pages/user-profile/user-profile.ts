@@ -1,3 +1,6 @@
+import { SwitcherService } from '../../providers/switcherService';
+import { Subscription } from 'rxjs/Rx';
+import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
 import { UserListPage } from '../user-list/user-list';
 import { UserOptionsPage } from '../user-options/user-options';
@@ -29,13 +32,15 @@ export class UserProfilePage {
   loggedInUser: Account = null;
   relationships: Relationships;
 
+  private subscription: Subscription;
 
-  constructor(private utility:Utility, private modalController: ModalController, public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, public popOverController: PopoverController) {
+  constructor(private utility:Utility, private modalController: ModalController, public navCtrl: NavController,
+              public navParams: NavParams, private mastodon: APIProvider, public popOverController: PopoverController, private switcherService: SwitcherService) {
     
     let paramUser = navParams.get('account');
     let paramMention: Mention = navParams.get('mention');
 
-    let loggedInUser:Account = JSON.parse(localStorage.getItem('user'));
+    let loggedInUser:Account = utility.getCurrentAccount().mastodonAccount;
      if(paramUser && paramUser.id != loggedInUser.id){
       this.user = paramUser;
       console.log(this.user.header)
@@ -62,6 +67,12 @@ export class UserProfilePage {
       this.loggedInUser = loggedInUser;
       this.user = this.loggedInUser;
       this.getToots();
+
+      this.subscription = this.switcherService.getAccount().subscribe(account => {
+        this.loggedInUser = account.mastodonAccount;
+        this.user = account.mastodonAccount;
+        this.getToots();
+      })
     }
 
     if(this.user.header == '/headers/original/missing.png'){
@@ -128,7 +139,9 @@ export class UserProfilePage {
       })
       .subscribe(data => {
         let account: Account = data;
-        localStorage.setItem('user', JSON.stringify(account));
+        let currentAccount: AuthedAccount = this.utility.getCurrentAccount();
+        currentAccount.mastodonAccount = account;
+        this.utility.saveCurrentAccount(currentAccount);
         this.loggedInUser = account;
         this.user = account;
         this.getToots();

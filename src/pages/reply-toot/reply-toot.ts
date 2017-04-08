@@ -1,3 +1,4 @@
+import { Utility } from '../../providers/utility';
 import { Account } from '../../apiClasses/account';
 import { TootForm } from '../../apiClasses/tootForm';
 import { Toot } from '../../apiClasses/toot';
@@ -18,6 +19,7 @@ export class ReplyTootPage {
   
   constructor(
     public viewCtrl: ViewController,
+    public utility: Utility,
     params: NavParams
   ) {
     this.replyingToot = params.get('replyingToot');
@@ -38,7 +40,7 @@ export class ReplyTootPage {
 
   getMentionsForStatus() : string {
     status = "";
-    let authedUser: Account = JSON.parse(localStorage.getItem('user'));
+    let authedUser: Account = this.utility.getCurrentAccount().mastodonAccount;
     if(this.replyingToot.account.acct != authedUser.acct) {
       status = "@" + this.replyingToot.account.acct + " ";
     }

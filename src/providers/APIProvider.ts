@@ -1,3 +1,5 @@
+import { Utility } from './utility';
+import { AuthedAccount } from '../apiClasses/authedAccount';
 import { FileUploadOptions, FileUploadResult } from 'ionic-native/dist/esm';
 import { TootForm } from '../apiClasses/tootForm';
 import { RequestOptionsArgs } from '@angular/http/src/interfaces';
@@ -11,15 +13,17 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class APIProvider {
-  access_token: string;
-  base_url:string;
   fileTransfer: Transfer;
+  currentAccount: AuthedAccount;
 
   mediaUploadsProgress:any = {};
 
-  constructor(public http: Http, public storage: Storage) {
-    this.access_token = localStorage.getItem('access_token')
-    this.base_url = localStorage.getItem('base_url');
+  constructor(public http: Http, public storage: Storage, public utility: Utility) {
+    this.currentAccount = utility.getCurrentAccount();
+  }
+
+  setCurrentAccount(currentAccount: AuthedAccount){
+    this.currentAccount = currentAccount;
   }
 
   getTootThread(toot_id:string){
@@ -144,7 +148,7 @@ export class APIProvider {
       default:
         return null;  
     }
-    options.headers = {'Authorization' : 'Bearer '+ this.access_token}
+    options.headers = {'Authorization' : 'Bearer '+ this.currentAccount.accessToken}
     console.log(fileURL);
     console.log(JSON.stringify(options))
     let uploadOptions: FileUploadOptions;
@@ -157,10 +161,11 @@ export class APIProvider {
     //     console.log(JSON.stringify(this.mediaUploadsProgress))
     //   }
     // })
-    return this.fileTransfer.upload(fileURL, this.base_url + "/api/v1/media", uploadOptions);
+    return this.fileTransfer.upload(fileURL, this.currentAccount.instanceUrl + "/api/v1/media", uploadOptions);
   }
 
   getTimeline(type: string,  max_id?: string, since_id?: string): Observable<Response> {
+    console.log(this.currentAccount.mastodonAccount.acct);
     if(max_id == undefined && since_id == undefined){
       return this.getRequest('/api/v1/timelines/' + type)
     } else {
@@ -229,12 +234,12 @@ export class APIProvider {
   private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
     console.log('GET REQUEST ' + url + " with params: " + requestOptions.search);
-    return this.http.get(this.base_url + url, requestOptions);
+    return this.http.get(this.currentAccount.instanceUrl + url, requestOptions);
   }
 
   private postRequest(apiUrl:string, body:any): Observable<Response>{
     let requestOptions = this.finalizeRequestOptions();
-    return this.http.post(this.base_url + apiUrl, body, requestOptions);
+    return this.http.post(this.currentAccount.instanceUrl + apiUrl, body, requestOptions);
   } 
 
   preAuthPost(api_url: string, body: any): Observable<any>{
@@ -251,7 +256,7 @@ export class APIProvider {
 
   private finalizeRequestOptions(requestOptions?: RequestOptionsArgs){
     let headers = new Headers({ 'Accept': 'application/json' });
-    headers.append('Authorization', 'Bearer '+ this.access_token);
+    headers.append('Authorization', 'Bearer '+ this.currentAccount.accessToken);
     if(requestOptions){
       requestOptions.headers = headers;
     } else {

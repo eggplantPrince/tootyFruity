@@ -1,3 +1,6 @@
+import { Utility } from '../../providers/utility';
+import { Account } from '../../apiClasses/account';
+import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { MyApp } from '../../app/app.component';
 import { APIProvider } from '../../providers/APIProvider';
 import { MastodonCredentials } from '../../assets/auth.ts';
@@ -7,23 +10,35 @@ import { App, NavController, ViewController } from 'ionic-angular';
 import { InAppBrowser } from 'ionic-native';
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
-  providers: [APIProvider]
+  templateUrl: 'login.html'
 })
 export class LoginPage {
 
   instanceRootURL: string = "mastodon.social";
+  currentAccount: AuthedAccount = new AuthedAccount();
+
+  isFirstTime: boolean = true;
 
   constructor(
+      public utility: Utility,
       public viewCtrl: ViewController,
       public appCtrl: App,
       public navCtrl: NavController,
-      public mastodon: APIProvider) {
+      private mastodon: APIProvider) {
         
       }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.isFirstTime = localStorage.getItem('currentAccount') == null;
+  }
+
+  dismiss(){
+    if(this.navCtrl.parent) {
+        this.navCtrl.parent.select(0);
+      } else {
+        this.viewCtrl.dismiss();
+      }
   }
 
   startAuthentication() {
@@ -33,7 +48,7 @@ export class LoginPage {
       this.instanceRootURL = 'https://'+this.instanceRootURL;
     }
     console.log('instance root url: ' + this.instanceRootURL);
-    localStorage.setItem('base_url', this.instanceRootURL);
+    this.currentAccount.instanceUrl = this.instanceRootURL;
     //no need for new client_id nor secret when mastodon
     if(this.instanceRootURL.search('mastodon.social') > -1){
       this.authorizeApp(new MastodonCredentials());
@@ -66,7 +81,7 @@ export class LoginPage {
       }
       let querystring = this.encodeQueryData(data);
       let fullURL = this.instanceRootURL + '/oauth/authorize?' + querystring;
-      let browser = new InAppBrowser(fullURL, '_blank');
+      let browser = new InAppBrowser(fullURL, '_blank', 'clearcache=yes');
       browser.on('loadstart')
         .subscribe(
           ((event) => {
@@ -96,9 +111,30 @@ export class LoginPage {
       (result) =>{
         console.log('access token: ' + result.access_token);
         console.log('scope: ' + result.scope)
-        localStorage.setItem('access_token', result.access_token);
-        this.navCtrl.setRoot(MyApp);
-        //this.navCtrl.parent.select(0);
+        this.currentAccount.accessToken = result.access_token;
+        this.mastodon.setCurrentAccount(this.currentAccount);
+        
+        this.mastodon.getAuthenticatedUser().map( res => {
+          let currentUser: Account = JSON.parse(res['_body']);
+          return currentUser;
+        })
+        .subscribe(data => {
+          let mastoAccount: Account = data;
+          this.currentAccount.mastodonAccount = mastoAccount;
+          this.utility.saveCurrentAccount(this.currentAccount);
+          this.mastodon.setCurrentAccount(this.currentAccount);
+          let accountsString = localStorage.getItem('accountList');
+          let accounts: AuthedAccount[];
+          if(accountsString){
+            accounts = JSON.parse(accountsString);
+            accounts.push(this.currentAccount);
+          } else {
+            accounts = [this.currentAccount];
+          }
+          localStorage.setItem('accountList', JSON.stringify(accounts));
+          this.navCtrl.setRoot(MyApp);
+        })
+
       })  
 
   }

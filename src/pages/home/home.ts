@@ -1,40 +1,61 @@
+import { Subscription } from 'rxjs/Rx';
+import { SwitcherService } from '../../providers/switcherService';
+import { PopoverController } from 'ionic-angular/components/popover/popover';
+import { AccountSwitcherPage } from '../account-switcher/account-switcher';
+import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
-import { Component, ViewChild, Renderer } from '@angular/core';
+import { Component, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Content, InfiniteScroll, ModalController, NavController } from 'ionic-angular';
 import { Toot } from '../../apiClasses/toot';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html',
-  providers: [APIProvider]
+  templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnDestroy{
   public toots : Toot[];
+
+  public currentAccount: AuthedAccount;
+
+  private subscription: Subscription;
+
   timelineType: string = "home";
   timelineSwitching: boolean = false;
   @ViewChild(Content) content: Content;
 
-  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, public mastodon: APIProvider, public modalController: ModalController) {
-    let tootCacheString = localStorage.getItem('tootCache')
-    if(tootCacheString){
-      console.log('toots loading from cache....')
-      let cachedToots: Toot[] = JSON.parse(tootCacheString);
-      if(cachedToots.length == 0) {
+  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, 
+              private mastodon: APIProvider, public modalController: ModalController, public popOverController: PopoverController, private switcherService : SwitcherService) {
+    this.currentAccount = utility.getCurrentAccount();
+    let tootCache = this.currentAccount.tootCache;
+    if(tootCache){
+      if(tootCache.length == 0) {
         console.log('cachedToots are weird.. reloading them')
         this.loadTimeline();
       } else {
-        this.toots = JSON.parse(tootCacheString);
+        this.toots = tootCache;
       }
     } else {
       this.loadTimeline();
     }
+
+    this.subscription = this.switcherService.getAccount().subscribe(account => {
+      this.currentAccount = account;
+      if(this.currentAccount.tootCache){
+        this.toots = this.currentAccount.tootCache;
+      } else {
+        this.loadTimeline();
+      }
+    })
+    
   }
 
   public cacheContent(){
-    console.log('home is cached!')
-    localStorage.setItem('tootCache', JSON.stringify(this.toots));
+    if(this.utility.getCurrentAccount().mastodonAccount.id == this.currentAccount.mastodonAccount.id){
+      this.currentAccount.tootCache = this.toots;
+      this.utility.saveCurrentAccount(this.currentAccount);
+    }
   }
 
    loadTimeline() {
@@ -140,5 +161,17 @@ export class HomePage {
         this.loadTimeline();
         break;
     }
+  }
+
+  showAccountSwitcher(ev: UIEvent){
+    let popover = this.popOverController.create(AccountSwitcherPage);
+    popover.present({
+      ev: ev
+    });
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
   }
 }

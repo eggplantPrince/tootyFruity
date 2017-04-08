@@ -1,5 +1,7 @@
+import { SwitcherService } from '../providers/switcherService';
 import { Utility } from '../providers/utility';
 import { UserListPage } from '../pages/user-list/user-list';
+import { AccountSwitcherPage } from '../pages/account-switcher/account-switcher';
 import { TootDetailPage } from '../pages/toot-detail/toot-detail';
 import { PersonalOptionsPage } from '../pages/personal-options/personal-options';
 import { UserOptionsPage } from '../pages/user-options/user-options';
@@ -41,7 +43,8 @@ import { MomentModule } from 'angular2-moment';
     UserOptionsPage,
     PersonalOptionsPage,
     UserListPage,
-    TootDetailPage
+    TootDetailPage,
+    AccountSwitcherPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -62,8 +65,9 @@ import { MomentModule } from 'angular2-moment';
     UserOptionsPage,
     PersonalOptionsPage,
     UserListPage,
-    TootDetailPage
+    TootDetailPage,
+    AccountSwitcherPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider, Utility]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider, Utility, SwitcherService]
 })
 export class AppModule {}

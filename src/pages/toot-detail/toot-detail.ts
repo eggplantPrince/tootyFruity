@@ -14,7 +14,7 @@ export class TootDetailPage {
   descendants: Toot[];
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider) {
     this.mainToot = this.navParams.get('toot')
     this.getThread();
   }

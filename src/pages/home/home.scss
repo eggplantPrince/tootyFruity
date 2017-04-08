@@ -1,7 +1,16 @@
 page-home {
     ion-navbar {
         ion-buttons{
-            padding-right: 5px;
+            padding-right: 12px;
+        }
+
+        .currentAccountAvatar {
+            img {
+                margin-left: 12px;
+                border-radius: 25px; 
+                width: 25px;
+                height: 25px;
+            }
         }
     }
 }

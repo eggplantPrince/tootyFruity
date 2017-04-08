@@ -1,7 +1,10 @@
+import { SwitcherService } from '../../providers/switcherService';
+import { Subscription } from 'rxjs/Rx';
+import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
 import { Notification } from '../../apiClasses/notification';
 import { APIProvider } from '../../providers/APIProvider';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { InfiniteScroll, NavController, NavParams } from 'ionic-angular';
 
 /*
@@ -14,24 +17,35 @@ import { InfiniteScroll, NavController, NavParams } from 'ionic-angular';
   selector: 'page-notifications',
   templateUrl: 'notifications.html'
 })
-export class NotificationsPage {
+export class NotificationsPage implements OnDestroy{
 
   notifications: Notification[];
+  currentAccount: AuthedAccount;
 
-  constructor(public utility: Utility,public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
-    let notificationCacheString = localStorage.getItem('notificationsCache');
-    if(notificationCacheString){
-      console.log('notifications loading from cache....')
-      let cachedNotifications = JSON.parse(notificationCacheString);
-      if(cachedNotifications.length == 0) {
+  private subscription: Subscription;
+
+  constructor(public utility: Utility,public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider,
+              private switcherService: SwitcherService) {
+    this.currentAccount = this.utility.getCurrentAccount();
+    if(this.currentAccount.notificationsCache){
+      if(this.currentAccount.notificationsCache.length == 0) {
         console.log('cached notifications are weird.. reloading them')
         this.getNotifications();
       } else {
-        this.notifications = this.beautifyNotifications(JSON.parse(notificationCacheString));
+        this.notifications = this.beautifyNotifications(this.currentAccount.notificationsCache);
       }
     } else {
       this.getNotifications();
     }
+
+    this.subscription = this.switcherService.getAccount().subscribe(account => {
+      this.currentAccount = account;
+      if(this.currentAccount.notificationsCache){
+        this.notifications = this.currentAccount.notificationsCache;
+      } else {
+        this.getNotifications();
+      }
+    })
   }
 
   getNotifications(){
@@ -51,8 +65,7 @@ export class NotificationsPage {
 
   doRefresh(refresher) {
     let forceRefresh = localStorage.getItem('notificationRefreshNeeded');
-    if(forceRefresh == 'true'){
-      console.log('force reload needed in notifications because favs / boosts have changed');
+    if(forceRefresh == 'true' || !this.notifications[0]){
       this.getNotifications();
       localStorage.setItem('notificationRefreshNeeded', 'false');
       setTimeout(() => {
@@ -115,8 +128,11 @@ export class NotificationsPage {
   };
 
   public cacheContent(){
-    localStorage.setItem('notificationsCache', JSON.stringify(this.notifications))
-    console.log('notifications are cached!')
+    if(this.utility.getCurrentAccount().mastodonAccount.id == this.currentAccount.mastodonAccount.id){
+      this.currentAccount.notificationsCache = this.notifications;
+      this.utility.saveCurrentAccount(this.currentAccount);
+      console.log('notifications are cached!')
+    }
   }
 
   beautifyNotifications(notifications: Notification[]){
@@ -124,8 +140,12 @@ export class NotificationsPage {
       if(notifications[index].status){
         notifications[index].status = this.utility.beautifyToot(notifications[index].status);
       }
+    }
+    return notifications;  
   }
-  return notifications;  
-
-}
+  
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+  }
 }

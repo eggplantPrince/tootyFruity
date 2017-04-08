@@ -15,7 +15,7 @@ export class UserListPage {
   users: Account[];
   max_id: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider) {
     this.title = navParams.get('title');
     this.id = navParams.get('id');
     this.title == "Following" ? this.getFollowing() : this.getFollowers();

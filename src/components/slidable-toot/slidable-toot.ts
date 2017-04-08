@@ -1,3 +1,4 @@
+import { Utility } from '../../providers/utility';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { TootDetailPage } from '../../pages/toot-detail/toot-detail';
 import { Account } from '../../apiClasses/account';
@@ -11,8 +12,7 @@ import { Component, ElementRef, Input, Renderer } from '@angular/core';
 
 @Component({
   selector: 'slidable-toot',
-  templateUrl: 'slidable-toot.html',
-  providers: [APIProvider]
+  templateUrl: 'slidable-toot.html'
 })
 export class SlidableTootComponent {
 
@@ -21,7 +21,7 @@ export class SlidableTootComponent {
   relationship: string;
 
 
-  constructor(private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
+  constructor(private utility: Utility, private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
   }
 
 
@@ -78,7 +78,7 @@ export class SlidableTootComponent {
 
   favStatus(toot: Toot, slidingItem: ItemSliding){
 
-    let user: Account = JSON.parse(localStorage.getItem('user'));
+    let user: Account = this.utility.getCurrentAccount().mastodonAccount;
     if(toot.content.indexOf(user.username) != -1) {
       console.log('special toot has been faved. setting force refresh to true')
       localStorage.setItem('homeRefreshNeeded', 'true');

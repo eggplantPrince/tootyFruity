@@ -34,7 +34,7 @@ export class TootFormComponent {
 
 
   constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, 
-              public navCtrl: NavController, public navParams: NavParams, public mastodon: APIProvider, 
+              public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider, 
               public viewCtrl: ViewController) {
     let options : any = {}
     options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;

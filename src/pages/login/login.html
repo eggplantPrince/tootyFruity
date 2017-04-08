@@ -6,9 +6,12 @@
 
 
 <ion-content padding>
-<div>
+<div *ngIf="isFirstTime">
    Welcome to TootyFruity, the app for the open social media platform Mastodon.
    You can also use other instances, just overwrite the default domain.
+ </div>
+ <div *ngIf="!isFirstTime">
+  To add an adition account, just enter the domain of the instace your account is registered to.
  </div>
   
  <ion-item>
