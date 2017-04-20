@@ -1,4 +1,12 @@
 page-user-list {
+
+    ion-avatar {
+        img {
+            position: absolute;
+            top: 15px;
+        }
+    }
+    
     ion-spinner{
         display:block;
         width: 40px;

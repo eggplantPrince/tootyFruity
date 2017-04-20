@@ -6,7 +6,7 @@
 -->
 
 <ion-content on-tap="dismiss()">
-  <ion-slides zoom loop="false" initialSlide="{{slideFromNumber}}"  #slides style="background-color: black">
+  <ion-slides zoom="true" loop="false" initialSlide="{{slideFromNumber}}" #slides style="background-color: black">
   <ion-slide *ngFor="let image of mediaAttachments">
     <img src="{{image.url}}">
   </ion-slide>

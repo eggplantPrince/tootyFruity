@@ -4,7 +4,7 @@
   </ion-item>
   <ion-item>
     <ion-label style="color: grey" id="characterCounter" stacked> {{remainingCharacters}}</ion-label>
-    <ion-textarea [(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
+    <ion-textarea autocomplete="true" spellcheck="true"[(ngModel)]="newToot.status" (ngModelChange)="countTootLength()" rows="4" name="status" placeholder="What's up?"></ion-textarea>
   </ion-item>
   <ion-item *ngIf="newToot.media_ids">
     <ion-label>Sensitive Media?</ion-label>

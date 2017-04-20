@@ -13,13 +13,13 @@
   <ng-container *ngFor="let media of mediaAttachments; let i = index">
   
     <div *ngIf="media.type == 'image'" class="{{mediaClassName[i]}}" (click)="showSlideshowFrom(i)"
-      [style.background-image]="'url(' + media.preview_url + ')'">
+      [style.background-image]="'url(' + media.preview_url + ')'" [ngClass]="{'hideMedia': !hideWarning}" >
 
       <!-- im here to determine the size of a single image -->
       <img *ngIf="mediaAttachments.length == 1" src="{{media.preview_url}}"> 
     </div>    
 
-    <div *ngIf="media.type == 'gifv' && isiOS || media.type == 'video'" class="{{mediaClassName[i]}}" >
+    <div *ngIf="media.type == 'gifv' && isiOS || media.type == 'video'" class="{{mediaClassName[i]}}" [ngClass]="{'hideMedia': !hideWarning}" >
       <div class="playButtonWrapper">
         <div class="playButton">
           <ion-icon name="play"></ion-icon>
@@ -29,7 +29,7 @@
         </video>
       </div>
     </div>
-    <div *ngIf="media.type == 'gifv' && !isiOS"  class="{{mediaClassName[i]}}" >
+    <div *ngIf="media.type == 'gifv' && !isiOS"  class="{{mediaClassName[i]}}" [ngClass]="{'hideMedia': !hideWarning}" >
       <video poster="{{media.preview_url}}"
             class="gifv" loop autoplay muted>
         <source src="{{media.url}}" type ="video/mp4">

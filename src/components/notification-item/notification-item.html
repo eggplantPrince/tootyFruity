@@ -12,11 +12,11 @@
         </div>
     </ion-avatar>
   <h3 class="toot_author_label">
-    @{{notification.account.username}}
+    @{{notification.account.acct}}
   </h3>  
   <span class="notification_type_label" *ngIf="notification.type=='follow'">followed you</span>
-  <span class="notification_type_label" *ngIf="notification.type=='reblog'">boosted your status</span>
-  <span class="notification_type_label" *ngIf="notification.type=='favourite'">favourited your status</span>  
+  <span class="notification_type_label" *ngIf="notification.type=='reblog'">boosted</span>
+  <span class="notification_type_label" *ngIf="notification.type=='favourite'">favourited</span>  
 
   <div  on-tap="showDetail()" *ngIf="notification.type!='follow'" class="toot_content">
     <p *ngIf="notification.status.spoiler_text">{{notification.status.spoiler_text}}</p>

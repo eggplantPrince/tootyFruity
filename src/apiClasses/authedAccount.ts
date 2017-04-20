@@ -7,4 +7,5 @@ export class AuthedAccount {
     tootCache: Toot[];
     notificationsCache: Notification[];
     instanceUrl: string;
+    fullUsername: string;
 }

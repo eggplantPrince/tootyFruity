@@ -20,6 +20,13 @@ export class APIProvider {
 
   constructor(public http: Http, public storage: Storage, public utility: Utility) {
     this.currentAccount = utility.getCurrentAccount();
+
+    let headers = new Headers({ 'Accept': 'application/json' });
+
+    let requestOptions = new RequestOptions({ headers: headers });
+    http.get('https://atropos2.dyndns.info/', requestOptions).subscribe(data => {
+      console.log(data)
+    })
   }
 
   setCurrentAccount(currentAccount: AuthedAccount){

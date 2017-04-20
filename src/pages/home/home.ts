@@ -69,7 +69,9 @@ export class HomePage implements OnDestroy{
       data=>  {
         let tempToots: Toot[] = data;
         this.toots = tempToots;
-        this.cacheContent();
+        if(this.timelineType == "home"){
+          this.cacheContent();
+        }
         this.timelineSwitching = false;
       },
       error => console.log(JSON.stringify(error))
@@ -85,6 +87,9 @@ export class HomePage implements OnDestroy{
 
   doRefresh(refresher) {
     let forceRefresh = localStorage.getItem('homeRefreshNeeded');
+    if(this.toots.length > 20){
+      this.toots = this.toots.slice(0,19);
+    }
     if(forceRefresh == 'true'){
       console.log('force reload needed in home because favs / boosts have changed');
       this.loadTimeline();

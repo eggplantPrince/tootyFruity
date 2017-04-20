@@ -41,13 +41,14 @@ export class UserProfilePage {
     let paramMention: Mention = navParams.get('mention');
 
     let loggedInUser:Account = utility.getCurrentAccount().mastodonAccount;
-     if(paramUser && paramUser.id != loggedInUser.id){
+    //not logged in user
+    if(paramUser && paramUser.id != loggedInUser.id){
       this.user = paramUser;
-      console.log(this.user.header)
-      console.log(this.user.avatar)
       this.getToots();
       this.loadRelationships();
-    } else if(paramMention && paramMention.id != loggedInUser.id){
+    }
+    // user comes from Mention 
+    else if(paramMention && paramMention.id != loggedInUser.id){
       this.user = new Account();
       this.user.acct = paramMention.acct;
       this.mastodon.getAccount(paramMention.id)
@@ -63,6 +64,7 @@ export class UserProfilePage {
         }
       )
     } 
+    // is logged in user
     else {
       this.loggedInUser = loggedInUser;
       this.user = this.loggedInUser;
@@ -140,11 +142,13 @@ export class UserProfilePage {
       .subscribe(data => {
         let account: Account = data;
         let currentAccount: AuthedAccount = this.utility.getCurrentAccount();
-        currentAccount.mastodonAccount = account;
-        this.utility.saveCurrentAccount(currentAccount);
-        this.loggedInUser = account;
-        this.user = account;
-        this.getToots();
+        if(currentAccount.mastodonAccount.id == account.id){
+          currentAccount.mastodonAccount = account;
+          this.utility.saveCurrentAccount(currentAccount);
+          this.loggedInUser = account;
+          this.user = account;
+          this.getToots();
+        }
         setTimeout(() => {
               console.log('refresh completed');
               refresher.complete();

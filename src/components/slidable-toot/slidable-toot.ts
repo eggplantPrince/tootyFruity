@@ -124,7 +124,17 @@ export class SlidableTootComponent {
   }
 
   toggleSpoiler(toot: Toot){
+    let originalClass = document.getElementById(toot.id).className;
+    if(toot.spoiler_visible){
+      document.getElementById(toot.id).className += ' newlySpoilerClosed'
+    }
+    if(!toot.spoiler_visible){
+      document.getElementById(toot.id).className += ' newlySpoilerOpen'
+    }
     toot.spoiler_visible = ! toot.spoiler_visible;
+    setTimeout(() => {
+      document.getElementById(toot.id).className = originalClass
+    }, 2000)
   }
   
 

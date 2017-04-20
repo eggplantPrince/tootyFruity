@@ -164,12 +164,29 @@ slidable-toot {
         color:white;
         display:none;
     }
+    
     .show_spoiler {
         color:black;
-        animation-iteration-count: 1;
-        animation-name: fadein;
-        animation-duration: 2s;
-        animation-timing-function: ease-in;
+        max-height: 2000px;
+    }
+
+    .newlySpoilerClosed{
+        .hide_spoiler {
+            animation-iteration-count: 1;
+            animation-name: fadein;
+            animation-duration: 2s;
+            animation-timing-function: ease-in;
+            animation-direction: reverse;
+        }
+    }
+
+    .newlySpoilerOpen {
+        .show_spoiler {       
+            animation-iteration-count: 1;
+            animation-name: fadein;
+            animation-duration: 2s;
+            animation-timing-function: ease-in;
+        }
     }
 
     @keyframes fadein {

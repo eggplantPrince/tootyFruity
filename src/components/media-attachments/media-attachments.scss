@@ -48,26 +48,41 @@ media-attachments {
             }
         }
         max-height: $maxHeightSingle;
+        min-height: $maxHeightMulti;
         .first {
             border-radius: 10px;
             max-width: 100%;
+            min-height: $maxHeightMulti;
             max-height: $maxHeightSingle;
             margin:0 auto;
             position: relative;
+            img {
+                opacity: 0;
+            }
             img, video {
+                min-height: $maxHeightMulti;
                 max-height: $maxHeightSingle;
+                -webkit-background-size: 100% 100%;
+                -moz-background-size: 100% 100%;
+                background-size:100% 100%;
+                object-fit:cover;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                background-size:cover;
             }
             video {
                 margin-left: -30px;
             }
-
-        }
-        .nsfw_warning {
-            min-height: $maxHeightSingle;
-            min-width: 100%;
-            z-index: 100;
         }
     }
+
+    .singleMedia .hideMedia {
+        max-height: $maxHeightMulti;
+        .first, img, video {
+            max-height: $maxHeightMulti;
+        }
+    }
+
     .first,.second,.third,.fourth{
         background-repeat: no-repeat;
         background-position: center center;
@@ -83,18 +98,21 @@ media-attachments {
         width:100%;
         position: absolute;
         color:white;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
         ion-icon{
-            font-size: 70px;
+            font-size: 50px;
+            width: 100%;
             text-align: center;
-            padding-top: 35px;
             display: block;
         }
 
         .nsfw_text_wrapper{
+            padding: 10px;
             width: 100%;
-            padding: 0 10px;
             text-align: center;
-            display:inline-block;
+            display:block;
             white-space: normal;
             word-wrap: normal;
         }

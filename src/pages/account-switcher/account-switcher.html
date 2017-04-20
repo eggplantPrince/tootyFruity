@@ -5,7 +5,7 @@
         <ion-avatar item-left>
             <img src="{{account.mastodonAccount.avatar}}">
         </ion-avatar>
-        <h3>@{{account.mastodonAccount.acct}}</h3>
+        <h3>{{account.fullUsername}}</h3>
       </ion-item>
       <ion-item-options side="right">
         <button (click)="removeAccount(account)" ion-button color="danger">

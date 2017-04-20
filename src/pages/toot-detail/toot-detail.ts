@@ -21,6 +21,9 @@ export class TootDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TootDetailPage');
+    if(this.mainToot.media_attachments[0]){
+      console.log(this.mainToot.media_attachments[0].type);
+    }
   }
 
   getThread(){
