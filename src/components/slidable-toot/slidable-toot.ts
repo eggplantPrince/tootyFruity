@@ -143,7 +143,7 @@ export class SlidableTootComponent {
             message: "This Toot can't be boosted cuz it's marked as private",
             duration: 5000,
             position: 'top'
-          });
+          }).subscribe();
     slidingItem.close();          
   }
 
