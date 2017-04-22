@@ -50,7 +50,8 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-actionsheet",
     "cordova-plugin-camera",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-x-toast"
   ],
   "cordovaPlatforms": [],
   "description": "TootyFruity: An Ionic project"

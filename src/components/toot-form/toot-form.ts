@@ -10,21 +10,12 @@ import {
     ViewController
 } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions} from '@ionic-native/action-sheet';
-import { Toast } from '@ionic-native/toast';
+import { Toast, ToastOptions } from '@ionic-native/toast';
 import { TootForm } from '../../apiClasses/tootForm';
 import { APIProvider } from '../../providers/APIProvider';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
-
-/*
-
-
-  Generated class for the TootForm component.
-
-  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
-  for more info on Angular 2 Components.
-*/
 @Component({
   selector: 'toot-form',
   templateUrl: 'toot-form.html'
@@ -77,17 +68,18 @@ export class TootFormComponent {
 
   sendToot() {
     if(this.newToot.status == null ){
-      let toast = this.toaster.showWithOptions({
-        message: 'Your toot needs some fruit (aka content)!',
-        duration: 3000,
-        position: 'top'
-      });
+      console.log('should be a toast')
+      this.toaster.show(
+        'Your toot needs some fruit (aka content)!',
+        '3000',
+        'top'
+      ).subscribe();
     } else if(this.remainingCharacters < 0) {
-      let toast = this.toaster.showWithOptions({
+      this.toaster.showWithOptions({
         message: 'Wow! You used too many characters, try shortening it down',
         duration: 3000,
         position: 'top'
-      });
+      }).subscribe();
     } 
     else {
       console.log('posting new toot...')
@@ -103,7 +95,7 @@ export class TootFormComponent {
               backgroundColor: '#4CAF50',
               textColor: 'white'
             }
-          });
+          }).subscribe();
         if(this.newToot.in_reply_to_id == null) {
           localStorage.setItem('lastVisibility', this.newToot.visibility);
         }
@@ -154,7 +146,7 @@ export class TootFormComponent {
           message: 'You picked too many images. I cannot add more, sorry about that :( ',
           duration: 3000,
           position: 'top'
-        });
+        }).subscribe();
         return;
     }
     let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
@@ -197,7 +189,7 @@ export class TootFormComponent {
             message: 'I can only handle .jpg, .png, and .gif files. Sorry :(',
             duration: 3000,
             position: 'top'
-          });
+          }).subscribe();
           return null;
         } 
         promise.then((data) => {
