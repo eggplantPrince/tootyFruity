@@ -3,7 +3,7 @@ import { Account } from '../../apiClasses/account';
 import { TootForm } from '../../apiClasses/tootForm';
 import { Toot } from '../../apiClasses/toot';
 import { Component } from '@angular/core';
-import { Keyboard } from 'ionic-native';
+import { Keyboard } from '@ionic-native/keyboard';
 import { NavParams, ViewController } from 'ionic-angular';
 
 
@@ -20,6 +20,7 @@ export class ReplyTootPage {
   constructor(
     public viewCtrl: ViewController,
     public utility: Utility,
+    public keyboard: Keyboard,
     params: NavParams
   ) {
     this.replyingToot = params.get('replyingToot');
@@ -31,7 +32,7 @@ export class ReplyTootPage {
       this.hasSpoilerText = true;
     }
     this.newToot.visibility = this.replyingToot.visibility;
-    Keyboard.disableScroll(true);
+    this.keyboard.disableScroll(true);
   }
 
   dismiss(){

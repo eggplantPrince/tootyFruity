@@ -1,10 +1,9 @@
 import { Subscription } from 'rxjs/Rx';
 import { SwitcherService } from '../../providers/switcherService';
-import { PopoverController } from 'ionic-angular/components/popover/popover';
+import { PopoverController } from 'ionic-angular';
 import { AccountSwitcherPage } from '../account-switcher/account-switcher';
 import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
-import { ToastController } from 'ionic-angular/components/toast/toast';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Content, InfiniteScroll, ModalController, NavController } from 'ionic-angular';
@@ -25,7 +24,7 @@ export class HomePage implements OnDestroy{
   timelineSwitching: boolean = false;
   @ViewChild(Content) content: Content;
 
-  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, public toaster: ToastController, 
+  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, 
               private mastodon: APIProvider, public modalController: ModalController, public popOverController: PopoverController, private switcherService : SwitcherService) {
     this.currentAccount = utility.getCurrentAccount();
     let tootCache = this.currentAccount.tootCache;

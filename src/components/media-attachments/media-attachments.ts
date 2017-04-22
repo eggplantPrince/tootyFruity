@@ -1,6 +1,6 @@
 import { Platform } from 'ionic-angular';
 import { ImageSliderPage } from '../../pages/image-slider/image-slider';
-import { ModalController } from 'ionic-angular/components/modal/modal';
+import { ModalController } from 'ionic-angular';
 import { MediaAttachment } from '../../apiClasses/media-attachment';
 import { Component, ElementRef, Input } from '@angular/core';
 

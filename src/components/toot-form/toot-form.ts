@@ -1,18 +1,21 @@
 import { ImageSliderPage } from '../../pages/image-slider/image-slider';
-import { ModalController } from 'ionic-angular/components/modal/modal';
-import { Camera, CameraOptions, FileUploadResult } from 'ionic-native/dist/esm';
+import { FileUploadResult } from '@ionic-native/transfer';
 import { UploadedMedia } from '../../apiClasses/uploaded-media';
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams, Platform, ToastController, ViewController } from 'ionic-angular';
-import { TootForm } from '../../apiClasses/tootForm'
-import { Keyboard, ActionSheet } from 'ionic-native';
+import {
+    ModalController,
+    NavController,
+    NavParams,
+    Platform,
+    ViewController
+} from 'ionic-angular';
+import { ActionSheet, ActionSheetOptions} from '@ionic-native/action-sheet';
+import { Toast, ToastOptions } from '@ionic-native/toast';
+import { TootForm } from '../../apiClasses/tootForm';
 import { APIProvider } from '../../providers/APIProvider';
-/*
-  Generated class for the TootForm component.
+import { Keyboard } from '@ionic-native/keyboard';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
-  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
-  for more info on Angular 2 Components.
-*/
 @Component({
   selector: 'toot-form',
   templateUrl: 'toot-form.html'
@@ -33,22 +36,23 @@ export class TootFormComponent {
   attachedMedia: UploadedMedia[] = [];
 
 
-  constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, 
+  constructor(platform: Platform, public modalController: ModalController, public toaster: Toast, 
               public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider, 
-              public viewCtrl: ViewController) {
+              public viewCtrl: ViewController, public camera: Camera,
+              public actionSheetCtrl: ActionSheet, public keyboard: Keyboard) {
     let options : any = {}
-    options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
-    options.mediaType=Camera.MediaType.ALLMEDIA;
+    options.sourceType = camera.PictureSourceType.PHOTOLIBRARY;
+    options.mediaType=camera.MediaType.ALLMEDIA;
     options.quality = 100;
     if(platform.is('ios')){
       console.log('platform is ios, setting image destination type to native...')
-      options.destinationType=Camera.DestinationType.NATIVE_URI;
+      options.destinationType=camera.DestinationType.NATIVE_URI;
     } else {
-      options.destinationType=Camera.DestinationType.FILE_URI;
+      options.destinationType=camera.DestinationType.FILE_URI;
     }
     this.picturePickerOptions = options;
 
-    Keyboard.disableScroll(true);
+    keyboard.disableScroll(true);
     this.newToot = new TootForm();
   }
 
@@ -64,19 +68,18 @@ export class TootFormComponent {
 
   sendToot() {
     if(this.newToot.status == null ){
-      let toast = this.toaster.create({
-        message: 'Your toot needs some fruit (aka content)!',
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();  
+      console.log('should be a toast')
+      this.toaster.show(
+        'Your toot needs some fruit (aka content)!',
+        '3000',
+        'top'
+      ).subscribe();
     } else if(this.remainingCharacters < 0) {
-      let toast = this.toaster.create({
+      this.toaster.showWithOptions({
         message: 'Wow! You used too many characters, try shortening it down',
         duration: 3000,
         position: 'top'
-      });
-      toast.present();
+      }).subscribe();
     } 
     else {
       console.log('posting new toot...')
@@ -84,16 +87,18 @@ export class TootFormComponent {
       this.mastodon.postToot(this.newToot)
       .subscribe(
         data=> {
-          let toast = this.toaster.create({
+          let toast = this.toaster.showWithOptions({
             message: '🍇🍌🍍TOOT SENT 🍊🍋🍒',
             duration: 2000,
             position: 'top',
-            cssClass: 'success_toast'
-          });
+            styling: {
+              backgroundColor: '#4CAF50',
+              textColor: 'white'
+            }
+          }).subscribe();
         if(this.newToot.in_reply_to_id == null) {
           localStorage.setItem('lastVisibility', this.newToot.visibility);
         }
-        toast.present();  
         this.newToot = new TootForm();
         },
         error => console.log(JSON.stringify(error))
@@ -117,7 +122,7 @@ export class TootFormComponent {
       this.newToot.spoiler_text = null;
       this.spoilerFieldState = 'hidden'
     }
-    Keyboard.disableScroll(true);
+    this.keyboard.disableScroll(true);
   }
 
   countTootLength(){
@@ -137,21 +142,20 @@ export class TootFormComponent {
 
   handleImagePicking(){
     if(this.attachedMedia.length == 4){
-      let toast = this.toaster.create({
+      let toast = this.toaster.showWithOptions({
           message: 'You picked too many images. I cannot add more, sorry about that :( ',
           duration: 3000,
           position: 'top'
-        });
-        toast.present();
+        }).subscribe();
         return;
     }
     let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
-    ActionSheet.show({
+    let actionSheet = this.actionSheetCtrl.show({
       'title': 'How do you want to upload?',
       'buttonLabels': buttonLabels,
       'addCancelButtonWithLabel': 'Cancel',
       'androidTheme' : 5
-    }).then((buttonIndex: number) => {
+    }as ActionSheetOptions).then((buttonIndex: number) => {
       switch(buttonIndex){
         case(1):
           this.picturePickerOptions.quality = 60;
@@ -170,7 +174,7 @@ export class TootFormComponent {
   }
 
   singleImagePicker(){
-    Camera.getPicture(this.picturePickerOptions).then((imgURL) => {
+    this.camera.getPicture(this.picturePickerOptions).then((imgURL) => {
       this.uploadMedia(imgURL);
     }, (err) => { console.log(JSON.stringify(err))});
   }
@@ -181,12 +185,11 @@ export class TootFormComponent {
         this.isUploading = true
         let promise: Promise<FileUploadResult> = this.mastodon.uploadMedia(imgURL)
         if(promise == null){
-          let toast = this.toaster.create({
+          let toast = this.toaster.showWithOptions({
             message: 'I can only handle .jpg, .png, and .gif files. Sorry :(',
             duration: 3000,
             position: 'top'
-          });
-          toast.present();
+          }).subscribe();
           return null;
         } 
         promise.then((data) => {

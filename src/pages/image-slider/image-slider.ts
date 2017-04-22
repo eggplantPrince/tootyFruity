@@ -1,4 +1,4 @@
-import { ModalController } from 'ionic-angular/components/modal/modal';
+import { ModalController } from 'ionic-angular';
 import { MediaAttachment } from '../../apiClasses/media-attachment';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';

@@ -2,10 +2,9 @@ import { SwitcherService } from '../../providers/switcherService';
 import { Utility } from '../../providers/utility';
 import { APIProvider } from '../../providers/APIProvider';
 import { LoginPage } from '../login/login';
-import { ModalController } from 'ionic-angular/components/modal/modal';
 import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 
 /*
   Generated class for the AccountSwitcher page.

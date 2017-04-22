@@ -5,7 +5,7 @@ import { Utility } from '../../providers/utility';
 import { UserListPage } from '../user-list/user-list';
 import { UserOptionsPage } from '../user-options/user-options';
 import { TootPage } from '../toot/toot';
-import { ModalController } from 'ionic-angular/components/modal/modal';
+import { ModalController } from 'ionic-angular';
 import { Relationships } from '../../apiClasses/relationships';
 import { Mention } from '../../apiClasses/mention';
 import { APIProvider } from '../../providers/APIProvider';

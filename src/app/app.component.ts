@@ -1,14 +1,13 @@
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthedAccount } from '../apiClasses/authedAccount';
 import { Account } from '../apiClasses/account';
 import { APIProvider } from '../providers/APIProvider';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { Storage } from '@ionic/storage';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
-import { InAppBrowser } from 'ionic-native';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 declare var window: any;
 
@@ -18,13 +17,13 @@ declare var window: any;
 export class MyApp {
   rootPage;
 
-  constructor(platform: Platform, storage: Storage, private mastodon: APIProvider) {
+  constructor(platform: Platform, private mastodon: APIProvider, public splashscreen: SplashScreen, public inAppBrowser: InAppBrowser, public statusBar: StatusBar) {
     platform.ready().then(() => {
-      window.open = (url, target?, opts?) => new InAppBrowser(url, target, opts);
+      window.open = (url, target?, opts?) => this.inAppBrowser.create(url, target, opts);
       this.setRootPage();
       // Okay, so the platform is ready and our plugins are available.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      statusBar.styleDefault();
+      splashscreen.hide();
     });
  }
 
