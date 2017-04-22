@@ -1,13 +1,26 @@
 import { ImageSliderPage } from '../../pages/image-slider/image-slider';
-import { ModalController } from 'ionic-angular/components/modal/modal';
-import { Camera, CameraOptions, FileUploadResult } from 'ionic-native/dist/esm';
+import { FileUploadResult } from '@ionic-native/transfer';
 import { UploadedMedia } from '../../apiClasses/uploaded-media';
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams, Platform, ToastController, ViewController } from 'ionic-angular';
-import { TootForm } from '../../apiClasses/tootForm'
-import { Keyboard, ActionSheet } from 'ionic-native';
+import {
+    ActionSheetController,
+    ActionSheetOptions,
+    ModalController,
+    NavController,
+    NavParams,
+    Platform,
+    ToastController,
+    ViewController
+} from 'ionic-angular';
+import { TootForm } from '../../apiClasses/tootForm';
 import { APIProvider } from '../../providers/APIProvider';
+import { Keyboard } from '@ionic-native/keyboard';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
+
 /*
+
+
   Generated class for the TootForm component.
 
   See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
@@ -35,20 +48,21 @@ export class TootFormComponent {
 
   constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, 
               public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider, 
-              public viewCtrl: ViewController) {
+              public viewCtrl: ViewController, public camera: Camera,
+              public actionSheetCtrl: ActionSheetController, public keyboard: Keyboard) {
     let options : any = {}
-    options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
-    options.mediaType=Camera.MediaType.ALLMEDIA;
+    options.sourceType = camera.PictureSourceType.PHOTOLIBRARY;
+    options.mediaType=camera.MediaType.ALLMEDIA;
     options.quality = 100;
     if(platform.is('ios')){
       console.log('platform is ios, setting image destination type to native...')
-      options.destinationType=Camera.DestinationType.NATIVE_URI;
+      options.destinationType=camera.DestinationType.NATIVE_URI;
     } else {
-      options.destinationType=Camera.DestinationType.FILE_URI;
+      options.destinationType=camera.DestinationType.FILE_URI;
     }
     this.picturePickerOptions = options;
 
-    Keyboard.disableScroll(true);
+    keyboard.disableScroll(true);
     this.newToot = new TootForm();
   }
 
@@ -117,7 +131,7 @@ export class TootFormComponent {
       this.newToot.spoiler_text = null;
       this.spoilerFieldState = 'hidden'
     }
-    Keyboard.disableScroll(true);
+    this.keyboard.disableScroll(true);
   }
 
   countTootLength(){
@@ -146,12 +160,14 @@ export class TootFormComponent {
         return;
     }
     let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
-    ActionSheet.show({
+    let actionSheet = this.actionSheetCtrl.create({
       'title': 'How do you want to upload?',
       'buttonLabels': buttonLabels,
       'addCancelButtonWithLabel': 'Cancel',
       'androidTheme' : 5
-    }).then((buttonIndex: number) => {
+    }as ActionSheetOptions);
+    
+    actionSheet.present().then((buttonIndex: number) => {
       switch(buttonIndex){
         case(1):
           this.picturePickerOptions.quality = 60;
@@ -170,7 +186,7 @@ export class TootFormComponent {
   }
 
   singleImagePicker(){
-    Camera.getPicture(this.picturePickerOptions).then((imgURL) => {
+    this.camera.getPicture(this.picturePickerOptions).then((imgURL) => {
       this.uploadMedia(imgURL);
     }, (err) => { console.log(JSON.stringify(err))});
   }

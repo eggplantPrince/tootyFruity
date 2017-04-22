@@ -1,9 +1,9 @@
 import { Utility } from './utility';
 import { AuthedAccount } from '../apiClasses/authedAccount';
-import { FileUploadOptions, FileUploadResult } from 'ionic-native/dist/esm';
+import { FileUploadOptions, FileUploadResult } from '@ionic-native/transfer';
 import { TootForm } from '../apiClasses/tootForm';
 import { RequestOptionsArgs } from '@angular/http/src/interfaces';
-import { Transfer } from 'ionic-native';
+import { Transfer } from '@ionic-native/transfer';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions, Response, URLSearchParams } from '@angular/http';
@@ -13,12 +13,11 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class APIProvider {
-  fileTransfer: Transfer;
   currentAccount: AuthedAccount;
 
   mediaUploadsProgress:any = {};
 
-  constructor(public http: Http, public storage: Storage, public utility: Utility) {
+  constructor(public http: Http, public storage: Storage, public utility: Utility, public transfer: Transfer) {
     this.currentAccount = utility.getCurrentAccount();
 
     let headers = new Headers({ 'Accept': 'application/json' });
@@ -127,7 +126,7 @@ export class APIProvider {
   }
 
   uploadMedia(fileURL: string): Promise<FileUploadResult>{
-    this.fileTransfer = new Transfer();
+    let fileTransfer = this.transfer.create();
     let options: any = {};
     let mediaType = fileURL.substring(fileURL.lastIndexOf('.'));
     //.GIF?BSDFH
@@ -168,7 +167,7 @@ export class APIProvider {
     //     console.log(JSON.stringify(this.mediaUploadsProgress))
     //   }
     // })
-    return this.fileTransfer.upload(fileURL, this.currentAccount.instanceUrl + "/api/v1/media", uploadOptions);
+    return fileTransfer.upload(fileURL, this.currentAccount.instanceUrl + "/api/v1/media", uploadOptions);
   }
 
   getTimeline(type: string,  max_id?: string, since_id?: string): Observable<Response> {

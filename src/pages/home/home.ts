@@ -1,10 +1,10 @@
 import { Subscription } from 'rxjs/Rx';
 import { SwitcherService } from '../../providers/switcherService';
-import { PopoverController } from 'ionic-angular/components/popover/popover';
+import { PopoverController } from 'ionic-angular';
 import { AccountSwitcherPage } from '../account-switcher/account-switcher';
 import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
-import { ToastController } from 'ionic-angular/components/toast/toast';
+import { ToastController } from 'ionic-angular';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Content, InfiniteScroll, ModalController, NavController } from 'ionic-angular';

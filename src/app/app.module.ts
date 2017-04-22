@@ -1,3 +1,5 @@
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { HttpModule } from '@angular/http/http';
 import { SwitcherService } from '../providers/switcherService';
 import { Utility } from '../providers/utility';
 import { UserListPage } from '../pages/user-list/user-list';
@@ -24,6 +26,8 @@ import { LoginPage } from '../pages/login/login';
 import { Storage } from '@ionic/storage';
 import { EmojifyModule } from 'angular2-emojify';
 import { MomentModule } from 'angular2-moment';
+import { BrowserModule } from '@angular/platform-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @NgModule({
   declarations: [
@@ -49,7 +53,9 @@ import { MomentModule } from 'angular2-moment';
   imports: [
     IonicModule.forRoot(MyApp),
     EmojifyModule,
-    MomentModule
+    MomentModule,
+    BrowserModule,
+    HttpModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -68,6 +74,6 @@ import { MomentModule } from 'angular2-moment';
     TootDetailPage,
     AccountSwitcherPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider, Utility, SwitcherService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider, Utility, SwitcherService, InAppBrowser, SplashScreen]
 })
 export class AppModule {}
