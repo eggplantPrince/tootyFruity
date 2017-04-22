@@ -2,7 +2,7 @@ import { Utility } from '../../providers/utility';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { TootDetailPage } from '../../pages/toot-detail/toot-detail';
 import { Account } from '../../apiClasses/account';
-import { ToastController } from 'ionic-angular';
+import { Toast } from '@ionic-native/toast';
 import { ReplyTootPage } from '../../pages/reply-toot/reply-toot';
 import { ModalController } from 'ionic-angular';
 import { ItemSliding, NavController } from 'ionic-angular';
@@ -21,7 +21,7 @@ export class SlidableTootComponent {
   relationship: string;
 
 
-  constructor(private utility: Utility, private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: ToastController) {
+  constructor(private utility: Utility, private mastodon: APIProvider, private elRef: ElementRef,private renderer: Renderer, private navController: NavController, private modalController: ModalController, private toaster: Toast) {
   }
 
 
@@ -139,12 +139,11 @@ export class SlidableTootComponent {
   
 
   showPrivateInfoToast(slidingItem: ItemSliding){
-    let toast = this.toaster.create({
+    let toast = this.toaster.showWithOptions({
             message: "This Toot can't be boosted cuz it's marked as private",
             duration: 5000,
             position: 'top'
           });
-    toast.present();
     slidingItem.close();          
   }
 

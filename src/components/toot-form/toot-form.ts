@@ -3,15 +3,14 @@ import { FileUploadResult } from '@ionic-native/transfer';
 import { UploadedMedia } from '../../apiClasses/uploaded-media';
 import { Component, Input } from '@angular/core';
 import {
-    ActionSheetController,
-    ActionSheetOptions,
     ModalController,
     NavController,
     NavParams,
     Platform,
-    ToastController,
     ViewController
 } from 'ionic-angular';
+import { ActionSheet, ActionSheetOptions} from '@ionic-native/action-sheet';
+import { Toast } from '@ionic-native/toast';
 import { TootForm } from '../../apiClasses/tootForm';
 import { APIProvider } from '../../providers/APIProvider';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -46,10 +45,10 @@ export class TootFormComponent {
   attachedMedia: UploadedMedia[] = [];
 
 
-  constructor(platform: Platform, public modalController: ModalController, public toaster: ToastController, 
+  constructor(platform: Platform, public modalController: ModalController, public toaster: Toast, 
               public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider, 
               public viewCtrl: ViewController, public camera: Camera,
-              public actionSheetCtrl: ActionSheetController, public keyboard: Keyboard) {
+              public actionSheetCtrl: ActionSheet, public keyboard: Keyboard) {
     let options : any = {}
     options.sourceType = camera.PictureSourceType.PHOTOLIBRARY;
     options.mediaType=camera.MediaType.ALLMEDIA;
@@ -78,19 +77,17 @@ export class TootFormComponent {
 
   sendToot() {
     if(this.newToot.status == null ){
-      let toast = this.toaster.create({
+      let toast = this.toaster.showWithOptions({
         message: 'Your toot needs some fruit (aka content)!',
         duration: 3000,
         position: 'top'
       });
-      toast.present();  
     } else if(this.remainingCharacters < 0) {
-      let toast = this.toaster.create({
+      let toast = this.toaster.showWithOptions({
         message: 'Wow! You used too many characters, try shortening it down',
         duration: 3000,
         position: 'top'
       });
-      toast.present();
     } 
     else {
       console.log('posting new toot...')
@@ -98,16 +95,18 @@ export class TootFormComponent {
       this.mastodon.postToot(this.newToot)
       .subscribe(
         data=> {
-          let toast = this.toaster.create({
+          let toast = this.toaster.showWithOptions({
             message: '🍇🍌🍍TOOT SENT 🍊🍋🍒',
             duration: 2000,
             position: 'top',
-            cssClass: 'success_toast'
+            styling: {
+              backgroundColor: '#4CAF50',
+              textColor: 'white'
+            }
           });
         if(this.newToot.in_reply_to_id == null) {
           localStorage.setItem('lastVisibility', this.newToot.visibility);
         }
-        toast.present();  
         this.newToot = new TootForm();
         },
         error => console.log(JSON.stringify(error))
@@ -151,23 +150,20 @@ export class TootFormComponent {
 
   handleImagePicking(){
     if(this.attachedMedia.length == 4){
-      let toast = this.toaster.create({
+      let toast = this.toaster.showWithOptions({
           message: 'You picked too many images. I cannot add more, sorry about that :( ',
           duration: 3000,
           position: 'top'
         });
-        toast.present();
         return;
     }
     let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
-    let actionSheet = this.actionSheetCtrl.create({
+    let actionSheet = this.actionSheetCtrl.show({
       'title': 'How do you want to upload?',
       'buttonLabels': buttonLabels,
       'addCancelButtonWithLabel': 'Cancel',
       'androidTheme' : 5
-    }as ActionSheetOptions);
-    
-    actionSheet.present().then((buttonIndex: number) => {
+    }as ActionSheetOptions).then((buttonIndex: number) => {
       switch(buttonIndex){
         case(1):
           this.picturePickerOptions.quality = 60;
@@ -197,12 +193,11 @@ export class TootFormComponent {
         this.isUploading = true
         let promise: Promise<FileUploadResult> = this.mastodon.uploadMedia(imgURL)
         if(promise == null){
-          let toast = this.toaster.create({
+          let toast = this.toaster.showWithOptions({
             message: 'I can only handle .jpg, .png, and .gif files. Sorry :(',
             duration: 3000,
             position: 'top'
           });
-          toast.present();
           return null;
         } 
         promise.then((data) => {

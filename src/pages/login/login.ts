@@ -7,7 +7,7 @@ import { MastodonCredentials } from '../../assets/auth.ts';
 import { OAuthCredentials}  from '../../apiClasses/OAuthCredentials';
 import { Component } from '@angular/core';
 import { App, NavController, ViewController } from 'ionic-angular';
-import { InAppBrowser } from 'ionic-native';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -24,7 +24,8 @@ export class LoginPage {
       public viewCtrl: ViewController,
       public appCtrl: App,
       public navCtrl: NavController,
-      private mastodon: APIProvider) {
+      private mastodon: APIProvider,
+      public inAppBrowser: InAppBrowser) {
         
       }
 
@@ -81,7 +82,7 @@ export class LoginPage {
       }
       let querystring = this.encodeQueryData(data);
       let fullURL = this.instanceRootURL + '/oauth/authorize?' + querystring;
-      let browser = new InAppBrowser(fullURL, '_blank', 'clearcache=yes');
+      let browser = this.inAppBrowser.create(fullURL, '_blank', 'clearcache=yes');
       browser.on('loadstart')
         .subscribe(
           ((event) => {

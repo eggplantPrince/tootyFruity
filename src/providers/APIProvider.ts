@@ -7,7 +7,6 @@ import { Transfer } from '@ionic-native/transfer';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions, Response, URLSearchParams } from '@angular/http';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -17,7 +16,7 @@ export class APIProvider {
 
   mediaUploadsProgress:any = {};
 
-  constructor(public http: Http, public storage: Storage, public utility: Utility, public transfer: Transfer) {
+  constructor(public http: Http, public utility: Utility, public transfer: Transfer) {
     this.currentAccount = utility.getCurrentAccount();
 
     let headers = new Headers({ 'Accept': 'application/json' });

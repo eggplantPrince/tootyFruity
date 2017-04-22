@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "4.0.0",
     "@ionic-native/camera": "^3.5.0",
     "@ionic-native/core": "3.4.2",
+    "@ionic-native/toast": "3.4.2",
+    "@ionic-native/action-sheet": "3.4.2",
     "@ionic-native/splash-screen": "3.4.2",
     "@ionic-native/in-app-browser": "3.4.2",
     "@ionic-native/keyboard": "3.4.2",

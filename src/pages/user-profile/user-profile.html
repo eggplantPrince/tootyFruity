@@ -3,15 +3,15 @@
   <ion-navbar>
     <ion-title>@{{user.acct}}</ion-title>
     <ion-buttons *ngIf="loggedInUser" end>
-      <button ion-button icon-only menuToggle (click)="showOptions($event)"><ion-icon name="more"></ion-icon></button>
+      <button ion-button icon-only  (click)="showOptions($event)"><ion-icon name="more"></ion-icon></button>
     </ion-buttons>
     <ion-buttons *ngIf="!loggedInUser" end>
-      <button (click)="showOptions($event)" class="user_settings" ion-button icon-only menuToggle>
+      <button (click)="showOptions($event)" class="user_settings" ion-button icon-only>
         <ion-icon ios="ios-settings-outline" name="settings"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons *ngIf="!loggedInUser" end>
-      <button ion-button icon-only menuToggle (click)="createNewMention()"> <ion-icon name="return-left"></ion-icon></button>
+      <button ion-button icon-only (click)="createNewMention()"> <ion-icon name="return-left"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

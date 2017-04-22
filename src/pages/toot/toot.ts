@@ -1,7 +1,7 @@
 import { NavParams, ViewController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { TootForm } from '../../apiClasses/tootForm'
-import { Keyboard } from 'ionic-native';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @Component({
   selector: 'page-toot',
@@ -13,8 +13,8 @@ export class TootPage {
   newToot: TootForm;
   isModal: boolean = false;
 
-  constructor(private viewCtrl: ViewController, private navParams: NavParams) {
-    Keyboard.disableScroll(true);
+  constructor(private viewCtrl: ViewController, private navParams: NavParams, private keyboard: Keyboard) {
+    keyboard.disableScroll(true);
     this.newToot = new TootForm();
     let status = navParams.get('tootStatus');
     if(status){

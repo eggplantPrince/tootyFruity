@@ -1,5 +1,8 @@
+import { Camera } from '@ionic-native/camera';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Transfer } from '@ionic-native/transfer';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { HttpModule } from '@angular/http/http';
+import { HttpModule } from '@angular/http/';
 import { SwitcherService } from '../providers/switcherService';
 import { Utility } from '../providers/utility';
 import { UserListPage } from '../pages/user-list/user-list';
@@ -23,11 +26,13 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TootPage } from '../pages/toot/toot';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { LoginPage } from '../pages/login/login';
-import { Storage } from '@ionic/storage';
 import { EmojifyModule } from 'angular2-emojify';
 import { MomentModule } from 'angular2-moment';
 import { BrowserModule } from '@angular/platform-browser';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Keyboard } from "@ionic-native/keyboard";
+import { Toast } from '@ionic-native/toast';
+import { ActionSheet } from '@ionic-native/action-sheet';
 
 @NgModule({
   declarations: [
@@ -74,6 +79,17 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     TootDetailPage,
     AccountSwitcherPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Storage, APIProvider, Utility, SwitcherService, InAppBrowser, SplashScreen]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, 
+  APIProvider, 
+  Utility, 
+  SwitcherService, 
+  InAppBrowser, 
+  SplashScreen, 
+  Keyboard, 
+  Transfer, 
+  StatusBar, 
+  Camera,
+  Toast,
+  ActionSheet]
 })
 export class AppModule {}
