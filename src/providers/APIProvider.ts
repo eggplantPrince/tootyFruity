@@ -233,6 +233,16 @@ export class APIProvider {
     return this.postRequest('/api/v1/statuses/'+tootID+'/unreblog', data);
   }
 
+  search(q: string, resolve:boolean = true){
+    let requestOptions: RequestOptions = new RequestOptions();
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('q', q)
+    params.set('resolve', resolve.toString())
+    requestOptions.search = params
+    
+    return this.getRequest('/api/v1/search/', requestOptions);
+  }
+
   private getRequest(url: string, requestOptions?: RequestOptionsArgs): Observable<Response> {
     requestOptions = this.finalizeRequestOptions(requestOptions);
     console.log('GET REQUEST ' + url + " with params: " + requestOptions.search);

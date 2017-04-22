@@ -1,9 +1,11 @@
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController, Modal } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { HomePage } from '../home/home';
 import { NotificationsPage } from '../notifications/notifications';
-import { TootPage } from '../toot/toot'
-import { UserProfilePage } from '../user-profile/user-profile'
+import { TootPage } from '../toot/toot';
+import { UserProfilePage } from '../user-profile/user-profile';
+import { SearchPage } from '../search/search';
+import { Toot } from '../../apiClasses/toot';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -11,16 +13,21 @@ import { UserProfilePage } from '../user-profile/user-profile'
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = HomePage;
-  tab2Root: any = NotificationsPage;
-  tab3Root: any = TootPage;
-  tab4Root: any = UserProfilePage;
+  homeRoot: any = HomePage;
+  notificationsRoot: any = NotificationsPage;
+  searchRoot: any = SearchPage;
+  profileRoot: any = UserProfilePage;
 
-  constructor(public navCtrl: NavController) {     
+  constructor(public navCtrl: NavController, public modalController: ModalController) {     
+
   }
 
 
   scrollToTop(clickedIndex : number){
   }
 
+  composeToot() {
+    let modal = this.modalController.create(TootPage)
+    modal.present();
+  }
 }
