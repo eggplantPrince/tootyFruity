@@ -17,6 +17,7 @@ import { ImageSliderPage } from '../pages/image-slider/image-slider';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { MediaAttachmentsComponent } from '../components/media-attachments/media-attachments';
 import { ReplyTootPage } from '../pages/reply-toot/reply-toot';
+import { SearchPage } from '../pages/search/search'
 import { APIProvider } from '../providers/APIProvider';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -53,7 +54,8 @@ import { ActionSheet } from '@ionic-native/action-sheet';
     PersonalOptionsPage,
     UserListPage,
     TootDetailPage,
-    AccountSwitcherPage
+    AccountSwitcherPage,
+    SearchPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -77,7 +79,8 @@ import { ActionSheet } from '@ionic-native/action-sheet';
     PersonalOptionsPage,
     UserListPage,
     TootDetailPage,
-    AccountSwitcherPage
+    AccountSwitcherPage,
+    SearchPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, 
   APIProvider, 

@@ -1,6 +1,6 @@
-<form (ngSubmit)="sendToot()">
+<form id="toot-form" (ngSubmit)="sendToot()">
   <ion-item *ngIf="spoilerToggle">
-    <ion-input (ngModelChange)="countTootLength()" type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Text for spoiler warning"></ion-input>
+    <ion-input (ngModelChange)="countTootLength()" type="text" [(ngModel)]="newToot.spoiler_text" name="spoiler_text" placeholder="Content warning"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label style="color: grey" id="characterCounter" stacked> {{remainingCharacters}}</ion-label>
@@ -10,28 +10,23 @@
     <ion-label>Sensitive Media?</ion-label>
     <ion-checkbox [(ngModel)]="newToot.sensitive" name="sensitive"></ion-checkbox>
   </ion-item>
-  <ion-item>
-    <ion-label>Spoiler Warning?</ion-label>
-    <ion-checkbox [(ngModel)]="spoilerToggle" name="spoilerToggle" (ngModelChange)="toggleSpoilerText();"></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Visibility</ion-label>
-    <ion-select [interface]="action-sheet" name="tootVisibility" [(ngModel)]="newToot.visibility">
-      <ion-option value="public">Public</ion-option>
-      <ion-option value="unlisted">Hide from public Timeline</ion-option>
-      <ion-option value="private">Private</ion-option>
-    </ion-select>
-  </ion-item>
   <ion-grid>
     <ion-row>
-      <ion-col width-80>
-        <button type="submit" ion-button round block>Toot</button>    
+      <ion-col width-20>
+        <button type="button" ion-button block (click)="toggleSpoilerText();" *ngIf="spoilerToggle">CW</button>
+        <button type="button" ion-button block (click)="toggleSpoilerText();" *ngIf="!spoilerToggle" color="light">CW</button>
       </ion-col>
       <ion-col width-20>
-        <button *ngIf="!isUploading" type="button" ion-button round block (click)="handleImagePicking()">
+        <button *ngIf="!isUploading" type="button" ion-button block (click)="handleImagePicking()">
            <ion-icon ios="ios-image" md="md-image"></ion-icon>
         </button>
         <ion-spinner *ngIf="isUploading" name="crescent"></ion-spinner>
+      </ion-col>
+      <ion-col width-40></ion-col>
+      <ion-col width-20 right>
+        <button type="button" ion-button block (click)="handleTootVisibility()">
+           <ion-icon [name]="visibilityIcon" md="md-image"></ion-icon>
+        </button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="newToot.media_ids">

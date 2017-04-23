@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Search</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar (search)="performSearch($event)"></ion-searchbar>
+  <ion-list>
+    <ion-list-header *ngIf="accounts">Accounts</ion-list-header>
+    <button ion-item *ngFor="let user of accounts" (click)="goToProfile(user)">
+      <ion-avatar item-left>
+        <img src="{{user.avatar}}">
+      </ion-avatar>
+      <h2>{{user.acct}}</h2>
+      <p [innerHTML]="user.note"></p>
+    </button>
+    <ion-list-header *ngIf="statuses">Statuses</ion-list-header>
+    <ion-item *ngFor="let toot of statuses">
+      <slidable-toot [toot]="toot"></slidable-toot>
+    </ion-item>
+    <ion-list-header *ngIf="hashtags">Hashtags</ion-list-header>
+    <ion-item *ngFor="let item of hashtags">
+      #{{ item }}
+    </ion-item>
+  </ion-list>
+</ion-content>

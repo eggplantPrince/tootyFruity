@@ -26,6 +26,8 @@ export class TootFormComponent {
   newToot: TootForm;
   
   spoilerFieldState: string = 'hidden';
+  visibilityIcon: string = 'globe';
+
   @Input()
   spoilerToggle: Boolean;
   remainingCharacters: number = 500;
@@ -115,12 +117,11 @@ export class TootFormComponent {
   }
 
   toggleSpoilerText() {
-    if(this.spoilerFieldState == 'hidden'){
-      this.spoilerFieldState = 'visible'
+    this.spoilerToggle = !this.spoilerToggle;
+    if(this.spoilerToggle){
       this.newToot.spoiler_text = "";
     } else {
       this.newToot.spoiler_text = null;
-      this.spoilerFieldState = 'hidden'
     }
     this.keyboard.disableScroll(true);
   }
@@ -171,6 +172,49 @@ export class TootFormComponent {
           break;
       }
     });
+  }
+
+  handleTootVisibility(){
+    console.log('vis clicked');
+    let buttonLabels = [
+      'Public',
+      'Unlisted',
+      'Private',
+      'Direct'
+    ]
+    const options: ActionSheetOptions = {
+      'title': 'Toot Visibility',
+      'buttonLabels': buttonLabels,
+      'addCancelButtonWithLabel': 'Cancel',
+      'androidTheme': 5
+    };
+
+    this.actionSheetCtrl.show(options).then(
+      (buttonIndex: number) => {
+        switch(buttonIndex){
+          case(1):
+            this.newToot.visibility = 'public';
+            this.visibilityIcon = 'globe';
+            console.log('Public clicked');
+            break;
+          case(2):
+            this.newToot.visibility = 'unlisted';
+            this.visibilityIcon = 'unlock';
+            console.log('Unlisted clicked');
+            break;
+          case(3):
+            this.newToot.visibility = 'private';
+            this.visibilityIcon = 'lock'
+            console.log('Private clicked');
+            break;
+          case(4):
+            this.newToot.visibility = 'direct';
+            this.visibilityIcon = 'mail'
+            console.log('Direct clicked');
+            break;
+        }
+      }
+    );
   }
 
   singleImagePicker(){
