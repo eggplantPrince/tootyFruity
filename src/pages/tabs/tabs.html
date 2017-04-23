@@ -1,6 +1,14 @@
 <ion-tabs preloadTabs #myTabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Notifications" tabIcon="notifications"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Toot" tabIcon="megaphone"></ion-tab>
-  <ion-tab [root]="tab4Root" tabTitle="Profile" tabIcon="person"></ion-tab>
+  <ion-tab [root]="homeRoot" tabTitle="Home" tabIcon="home"></ion-tab>
+  <ion-tab [root]="notificationsRoot" tabTitle="Notifications" tabIcon="notifications"></ion-tab>
+  <ion-tab >Toot Button</ion-tab>
+  <ion-tab [root]="searchRoot" tabTitle="Search" tabIcon="search"></ion-tab>
+  <ion-tab [root]="profileRoot" tabTitle="Profile" tabIcon="person"></ion-tab>
+
 </ion-tabs>
+<ion-fab center class="toot-fab">
+  <button ion-fab class="purple" 
+    (click)="composeToot()">
+    <ion-icon name="megaphone"></ion-icon>
+  </button>
+</ion-fab>
