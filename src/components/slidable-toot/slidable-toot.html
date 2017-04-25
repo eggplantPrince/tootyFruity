@@ -1,27 +1,32 @@
 <ion-item-sliding #slidingItem>
-  <ion-item id="{{toot.id}}" >
+  <ion-item id="{{toot.id}}">
     <h4 *ngIf="toot.reblog" class="boost_label">
-      <ion-icon name="repeat"></ion-icon> 
+      <ion-icon name="repeat"></ion-icon>
       {{toot.reblog.account.display_name | emojify}} boosted
-    </h4>  
+    </h4>
     <ion-avatar [ngClass]="{'boosted_avatar': toot.reblog}" class="inTootAva" item-left>
-        <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
-    </ion-avatar>  
-    <div class="symbols">
-      <div class="favorited" item-left *ngIf="toot.favourited">
-        <ion-icon ios="ios-star" md="md-star"></ion-icon>
+      <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
+    </ion-avatar>
+
+    <div id="tootHeader">
+      <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3>
+      <span class="toot_author_username">@{{toot.account.username}}</span>
+      <span class="timestamp">{{toot.created_at | amTimeAgo:true }}</span>
+      <div class="symbols">
+        <div class="favorited" item-left *ngIf="toot.favourited">
+          <ion-icon ios="ios-star" md="md-star"></ion-icon>
+        </div>
+        <div class="boosted" item-left *ngIf="toot.reblogged">
+          <ion-badge class="purple boost_badge">
+            <ion-icon name="repeat"></ion-icon>
+          </ion-badge>
+        </div>
       </div>
-      <div class="boosted" item-left *ngIf="toot.reblogged">
-        <ion-badge class="purple boost_badge"> <ion-icon name="repeat"></ion-icon> </ion-badge>
-      </div>
-    </div>  
-    <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3> 
-    <span class="toot_author_username">@{{toot.account.username}}
-    </span>
-    
+    </div>
+
     <div *ngIf="!toot.spoiler_text">
       <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
-        <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
+      <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
     </div>
     <div *ngIf="toot.spoiler_text" (click)="toggleSpoiler(toot)" class="toot_content">
       <div>
@@ -29,20 +34,21 @@
         <p>
           <ion-badge class="show_badge" color="dark" [hidden]="toot.spoiler_visible">Show more...</ion-badge>
           <ion-badge class="show_badge" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
-        </p>  
-      </div> 
+        </p>
+      </div>
       <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}">
         <div [innerHTML]='toot.content | emojify'></div>
         <media-attachments [mediaAttachments]="toot.media_attachments"></media-attachments>
-      </div>     
-    </div> 
-  </ion-item>  
+      </div>
+    </div>
+  </ion-item>
   <!--- left slide options -->
   <ion-item-options (ionSwipe)="favStatus(toot,slidingItem)" side="left">
     <button expandable (click)="favStatus(toot,slidingItem)" ion-button class="orange">
       <ion-icon name="ios-star-outline"></ion-icon>
     </button>
-    <button *ngIf="toot.visibility=='public' || toot.visibility=='unlisted'" (click)="boostToot(toot,slidingItem)" ion-button class="purple">
+    <button *ngIf="toot.visibility=='public' || toot.visibility=='unlisted'" (click)="boostToot(toot,slidingItem)" ion-button
+      class="purple">
       <ion-icon name="repeat"></ion-icon> 
     </button>
     <button *ngIf="toot.visibility=='private'" ion-button color="dark" (click)="showPrivateInfoToast(slidingItem)">
@@ -58,4 +64,4 @@
       <ion-icon name="more"></ion-icon>
     </button>
   </ion-item-options>
-</ion-item-sliding>  
+</ion-item-sliding>

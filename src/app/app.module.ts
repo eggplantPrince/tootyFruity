@@ -34,6 +34,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Keyboard } from "@ionic-native/keyboard";
 import { Toast } from '@ionic-native/toast';
 import { ActionSheet } from '@ionic-native/action-sheet';
+import '../patch/moment_short_locale.js';
 
 @NgModule({
   declarations: [
