@@ -11,7 +11,7 @@
 
 <ion-list >
   <ion-spinner *ngIf="!users"></ion-spinner>
-  <button ion-item *ngFor="let user of users" (click)="goToProfile(user)">
+  <button ion-item *ngFor="let user of users" on-tap="goToProfile(user)">
     <ion-avatar item-left>
       <img src="{{user.avatar}}">
     </ion-avatar>

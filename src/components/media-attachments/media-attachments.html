@@ -1,7 +1,7 @@
 <div class="{{divClassName[mediaAttachments.length-1]}}">
   
   <div class="nsfw_wrapper" [hidden]="hideWarning || !mediaIsSensitive">
-    <div class="nsfw_warning" (click)="toggleWarning()">
+    <div class="nsfw_warning" on-tap="toggleWarning()">
       <ion-icon center ios="ios-alert" md="md-alert"></ion-icon>
       <div class="nsfw_text_wrapper">
         <p>This image has been marked as NSFW / Sensitive.</p>
@@ -12,7 +12,7 @@
   
   <ng-container *ngFor="let media of mediaAttachments; let i = index">
   
-    <div *ngIf="media.type == 'image'" class="{{mediaClassName[i]}}" (click)="showSlideshowFrom(i)"
+    <div *ngIf="media.type == 'image'" class="{{mediaClassName[i]}}" on-tap="showSlideshowFrom(i)"
       [style.background-image]="'url(' + media.preview_url + ')'" [ngClass]="{'hideMedia': !hideWarning}" >
 
       <!-- im here to determine the size of a single image -->

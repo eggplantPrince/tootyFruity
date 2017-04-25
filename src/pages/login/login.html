@@ -18,5 +18,5 @@
     <ion-label floating>Instance domain</ion-label>
     <ion-input [(ngModel)]="instanceRootURL" type="text" id="instance" value="mastodon.social"></ion-input>
   </ion-item>
-  <button (click)="startAuthentication()" ion-button round block>Authorize</button> 
+  <button on-tap="startAuthentication()" ion-button round block>Authorize</button> 
 </ion-content>

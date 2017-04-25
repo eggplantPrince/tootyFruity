@@ -9,8 +9,8 @@ import {
     Platform,
     ViewController
 } from 'ionic-angular';
-import { ActionSheet, ActionSheetOptions} from '@ionic-native/action-sheet';
-import { Toast, ToastOptions } from '@ionic-native/toast';
+import { ActionSheetController } from 'ionic-angular'
+import { Toast } from '@ionic-native/toast';
 import { TootForm } from '../../apiClasses/tootForm';
 import { APIProvider } from '../../providers/APIProvider';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -41,7 +41,7 @@ export class TootFormComponent {
   constructor(platform: Platform, public modalController: ModalController, public toaster: Toast, 
               public navCtrl: NavController, public navParams: NavParams, private mastodon: APIProvider, 
               public viewCtrl: ViewController, public camera: Camera,
-              public actionSheetCtrl: ActionSheet, public keyboard: Keyboard) {
+              public actionSheetCtrl: ActionSheetController, public keyboard: Keyboard) {
     let options : any = {}
     options.sourceType = camera.PictureSourceType.PHOTOLIBRARY;
     options.mediaType=camera.MediaType.ALLMEDIA;
@@ -89,7 +89,7 @@ export class TootFormComponent {
       this.mastodon.postToot(this.newToot)
       .subscribe(
         data=> {
-          let toast = this.toaster.showWithOptions({
+          this.toaster.showWithOptions({
             message: '🍇🍌🍍TOOT SENT 🍊🍋🍒',
             duration: 2000,
             position: 'top',
@@ -143,78 +143,81 @@ export class TootFormComponent {
 
   handleImagePicking(){
     if(this.attachedMedia.length == 4){
-      let toast = this.toaster.showWithOptions({
+      this.toaster.showWithOptions({
           message: 'You picked too many images. I cannot add more, sorry about that :( ',
           duration: 3000,
           position: 'top'
         }).subscribe();
         return;
     }
-    let buttonLabels = ['Fast Upload', 'Full Size (and GIFs!)'];
-    let actionSheet = this.actionSheetCtrl.show({
-      'title': 'How do you want to upload?',
-      'buttonLabels': buttonLabels,
-      'addCancelButtonWithLabel': 'Cancel',
-      'androidTheme' : 5
-    }as ActionSheetOptions).then((buttonIndex: number) => {
-      switch(buttonIndex){
-        case(1):
-          this.picturePickerOptions.quality = 60;
-          this.picturePickerOptions.targetWidth = 800;
-          this.picturePickerOptions.targetHeight = 800;
-          this.singleImagePicker();
-          break;
-        case(2):
-          this.picturePickerOptions.quality = 100;
-          this.picturePickerOptions.targetWidth = 0;
-          this.picturePickerOptions.targetHeight = 0;
-          this.singleImagePicker();
-          break;
-      }
-    });
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'How do you want to upload?',
+      buttons: [
+        { text: 'Fast Upload',
+          handler: () => {
+            this.picturePickerOptions.quality = 60;
+            this.picturePickerOptions.targetWidth = 800;
+            this.picturePickerOptions.targetHeight = 800;
+            this.singleImagePicker();
+          }},
+        { text: 'Full Size (and GIFs!)',
+          handler: () => {
+            this.picturePickerOptions.quality = 100;
+            this.picturePickerOptions.targetWidth = 0;
+            this.picturePickerOptions.targetHeight = 0;
+            this.singleImagePicker();
+          }
+          },
+        { text: 'Cancel',
+          role: 'cancel'}
+      ]
+    })
+    actionSheet.present();
   }
 
   handleTootVisibility(){
-    console.log('vis clicked');
-    let buttonLabels = [
-      'Public',
-      'Unlisted',
-      'Private',
-      'Direct'
-    ]
-    const options: ActionSheetOptions = {
-      'title': 'Toot Visibility',
-      'buttonLabels': buttonLabels,
-      'addCancelButtonWithLabel': 'Cancel',
-      'androidTheme': 5
-    };
-
-    this.actionSheetCtrl.show(options).then(
-      (buttonIndex: number) => {
-        switch(buttonIndex){
-          case(1):
+    let sheet = this.actionSheetCtrl.create({
+      title: 'Toot Visibility',
+      buttons: [
+        {
+          text: 'Public',
+          icon: 'globe',
+          handler: () => {
             this.newToot.visibility = 'public';
             this.visibilityIcon = 'globe';
-            console.log('Public clicked');
-            break;
-          case(2):
+          }
+        },
+        {
+          text: 'Unlisted',
+          icon: 'unlock',
+          handler: () => {
             this.newToot.visibility = 'unlisted';
             this.visibilityIcon = 'unlock';
-            console.log('Unlisted clicked');
-            break;
-          case(3):
+          }
+        },
+        {
+          text: 'Private',
+          icon: 'lock',
+          handler: () => {
             this.newToot.visibility = 'private';
             this.visibilityIcon = 'lock'
-            console.log('Private clicked');
-            break;
-          case(4):
+          }
+        },
+        {
+          text: 'Direct',
+          icon: 'mail',
+          handler: () => {
             this.newToot.visibility = 'direct';
             this.visibilityIcon = 'mail'
-            console.log('Direct clicked');
-            break;
+          }
+        },
+        {
+         text: 'Cancel',
+         role: 'cancel',
         }
-      }
-    );
+      ]
+    })
+    sheet.present();
   }
 
   singleImagePicker(){
@@ -229,7 +232,7 @@ export class TootFormComponent {
         this.isUploading = true
         let promise: Promise<FileUploadResult> = this.mastodon.uploadMedia(imgURL)
         if(promise == null){
-          let toast = this.toaster.showWithOptions({
+          this.toaster.showWithOptions({
             message: 'I can only handle .jpg, .png, and .gif files. Sorry :(',
             duration: 3000,
             position: 'top'

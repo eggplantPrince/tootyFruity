@@ -1,16 +1,17 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons>
-      <button class="currentAccountAvatar" (click)="showAccountSwitcher($event)" ion-button icon-only>
+      <button class="currentAccountAvatar" on-tap="showAccountSwitcher($event)" ion-button icon-only>
         <img src="{{currentAccount.mastodonAccount.avatar}}">
       </button>
     </ion-buttons>
     <ion-title>Timeline</ion-title>
     <ion-buttons end>
       <ion-spinner *ngIf="timelineSwitching"></ion-spinner>
-      <button *ngIf="!timelineSwitching" ion-button icon-only (click)="toggleTimelineType()">
-        <span *ngIf="timelineType == 'home'">🌏</span>
-        <span *ngIf="timelineType == 'public'">🏠</span>
+      <button *ngIf="!timelineSwitching" ion-button icon-only on-tap="switchTimelineType()">
+        <span *ngIf="timelineType == 'home'">🏠</span>
+        <span *ngIf="timelineType == 'public'">🌏</span>
+        <span *ngIf="timelineType == 'local'">🏙️</span>
       </button>
     </ion-buttons>
   </ion-navbar>

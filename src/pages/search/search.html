@@ -7,7 +7,7 @@
   <ion-searchbar (search)="performSearch($event)"></ion-searchbar>
   <ion-list>
     <ion-list-header *ngIf="accounts">Accounts</ion-list-header>
-    <button ion-item *ngFor="let user of accounts" (click)="goToProfile(user)">
+    <button ion-item *ngFor="let user of accounts" on-tap="goToProfile(user)">
       <ion-avatar item-left>
         <img src="{{user.avatar}}">
       </ion-avatar>
@@ -19,7 +19,7 @@
       <slidable-toot [toot]="toot"></slidable-toot>
     </ion-item>
     <ion-list-header *ngIf="hashtags">Hashtags</ion-list-header>
-    <ion-item *ngFor="let item of hashtags">
+    <ion-item *ngFor="let item of hashtags" on-tap="goToHashtag(item)">
       #{{ item }}
     </ion-item>
   </ion-list>

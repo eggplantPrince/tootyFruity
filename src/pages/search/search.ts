@@ -1,3 +1,4 @@
+import { HashtagPage } from '../hashtag/hashtag';
 import { APIProvider } from '../../providers/APIProvider';
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
@@ -46,7 +47,7 @@ export class SearchPage {
   }
 
   goToHashtag(hashtag: string) {
-
+    this.navCtrl.push(HashtagPage, {'hashtag': hashtag});
   }
 
 }

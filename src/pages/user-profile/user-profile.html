@@ -3,15 +3,15 @@
   <ion-navbar>
     <ion-title>@{{user.acct}}</ion-title>
     <ion-buttons *ngIf="loggedInUser" end>
-      <button ion-button icon-only  (click)="showOptions($event)"><ion-icon name="more"></ion-icon></button>
+      <button ion-button icon-only  on-tap="showOptions($event)"><ion-icon name="more"></ion-icon></button>
     </ion-buttons>
     <ion-buttons *ngIf="!loggedInUser" end>
-      <button (click)="showOptions($event)" class="user_settings" ion-button icon-only>
+      <button on-tap="showOptions($event)" class="user_settings" ion-button icon-only>
         <ion-icon ios="ios-settings-outline" name="settings"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons *ngIf="!loggedInUser" end>
-      <button ion-button icon-only (click)="createNewMention()"> <ion-icon name="return-left"></ion-icon></button>
+      <button ion-button icon-only on-tap="createNewMention()"> <ion-icon name="return-left"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -26,9 +26,9 @@
   </div>
   <div class="wrapper">
     <div *ngIf="relationships" class="button_wrapper">
-      <button *ngIf="!relationships.following && !relationships.requested && !relationships.blocking" (click)="followAction()" class="followButton teal" ion-button small>Follow</button>
-      <button *ngIf="relationships.following" (click)="unfollowAction()" class="followButton" color="danger" ion-button small>Unfollow</button>
-      <button *ngIf="relationships.blocking" (click)="unblockAction()" class="followButton" color="danger" ion-button small>Unblock</button>
+      <button *ngIf="!relationships.following && !relationships.requested && !relationships.blocking" on-tap="followAction()" class="followButton teal" ion-button small>Follow</button>
+      <button *ngIf="relationships.following" on-tap="unfollowAction()" class="followButton" color="danger" ion-button small>Unfollow</button>
+      <button *ngIf="relationships.blocking" on-tap="unblockAction()" class="followButton" color="danger" ion-button small>Unblock</button>
       <button *ngIf="relationships.requested" class="followButton" color="dark" ion-button small>Requested</button>
       <ion-badge *ngIf="relationships.followed_by"> Follows You </ion-badge>
       
