@@ -18,14 +18,14 @@ export class APIProvider {
 
   constructor(public http: Http, public utility: Utility, public transfer: Transfer) {
     this.currentAccount = utility.getCurrentAccount();
-
-    let headers = new Headers({ 'Accept': 'application/json' });
-
-    let requestOptions = new RequestOptions({ headers: headers });
   }
 
   setCurrentAccount(currentAccount: AuthedAccount){
     this.currentAccount = currentAccount;
+  }
+
+  getHashtag(hashtag:string){
+    return this.getRequest('/api/v1/timelines/tag/' + hashtag);
   }
 
   getTootThread(toot_id:string){
@@ -168,11 +168,15 @@ export class APIProvider {
 
   getTimeline(type: string,  max_id?: string, since_id?: string): Observable<Response> {
     console.log(this.currentAccount.mastodonAccount.acct);
-    if(max_id == undefined && since_id == undefined){
+    if(max_id == undefined && since_id == undefined && type !='local'){
       return this.getRequest('/api/v1/timelines/' + type)
     } else {
       let requestOptions: RequestOptions = new RequestOptions();
       let params: URLSearchParams = new URLSearchParams();
+      if(type == 'local'){
+        params.set('local', 'true');
+        var type='public';
+      }
       if(max_id){
         params.set('max_id', max_id)
       }

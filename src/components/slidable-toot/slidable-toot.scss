@@ -14,6 +14,13 @@ slidable-toot {
         top: 15px ;
     }
 
+    .spoiler_badge {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .toot_author_label {
         font-weight: bold !important;
         display: inline-block;

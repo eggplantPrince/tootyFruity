@@ -16,14 +16,8 @@ export class ImageSliderPage {
     public viewCtrl: ViewController,
     public modalController: ModalController) {
       this.mediaAttachments = navParams.get('mediaAttachments');
-      this.slideFromNumber = navParams.get('slideFromNumber');
-      
+      this.slideFromNumber = navParams.get('slideFromNumber');  
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ImageSliderPage');
-  }
-
 
   dismiss(){
       this.viewCtrl.dismiss();

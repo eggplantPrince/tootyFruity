@@ -1,3 +1,4 @@
+import { HashtagPage } from '../pages/hashtag/hashtag';
 import { Camera } from '@ionic-native/camera';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Transfer } from '@ionic-native/transfer';
@@ -55,7 +56,8 @@ import { ActionSheet } from '@ionic-native/action-sheet';
     UserListPage,
     TootDetailPage,
     AccountSwitcherPage,
-    SearchPage
+    SearchPage,
+    HashtagPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -80,7 +82,8 @@ import { ActionSheet } from '@ionic-native/action-sheet';
     UserListPage,
     TootDetailPage,
     AccountSwitcherPage,
-    SearchPage
+    SearchPage,
+    HashtagPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, 
   APIProvider, 

@@ -13,30 +13,30 @@
   <ion-grid>
     <ion-row>
       <ion-col width-20>
-        <button type="button" ion-button block (click)="toggleSpoilerText();" *ngIf="spoilerToggle">CW</button>
-        <button type="button" ion-button block (click)="toggleSpoilerText();" *ngIf="!spoilerToggle" color="light">CW</button>
+        <button type="button" ion-button block on-tap="toggleSpoilerText();" *ngIf="spoilerToggle" color="dark">CW</button>
+        <button type="button" ion-button block on-tap="toggleSpoilerText();" *ngIf="!spoilerToggle" color="light">CW</button>
       </ion-col>
       <ion-col width-20>
-        <button *ngIf="!isUploading" type="button" ion-button block (click)="handleImagePicking()">
+        <button *ngIf="!isUploading" type="button" ion-button block on-tap="handleImagePicking()">
            <ion-icon ios="ios-image" md="md-image"></ion-icon>
         </button>
         <ion-spinner *ngIf="isUploading" name="crescent"></ion-spinner>
       </ion-col>
       <ion-col width-40></ion-col>
       <ion-col width-20 right>
-        <button type="button" ion-button block (click)="handleTootVisibility()">
-           <ion-icon [name]="visibilityIcon" md="md-image"></ion-icon>
+        <button type="button" ion-button block on-tap="handleTootVisibility()">
+           <ion-icon [name]="visibilityIcon"></ion-icon>
         </button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="newToot.media_ids">
       <ion-col *ngFor="let media of attachedMedia" width-25>
-          <img  (click)="showSlideShowFrom(index)" src="{{media.preview_url}}">
+          <img  on-tap="showSlideShowFrom(index)" src="{{media.preview_url}}">
       </ion-col>
     </ion-row>  
     <ion-row *ngIf="newToot.media_ids">
       <ion-col *ngFor="let media of attachedMedia" width-25>
-        <button ion-button type="button" style="font-size: 13px;max-height:50px;" block color="dark" (click)="removeAttachment(media)">Remove</button>
+        <button ion-button type="button" style="font-size: 13px;max-height:50px;" block color="dark" on-tap="removeAttachment(media)">Remove</button>
       </ion-col>
     </ion-row>    
   </ion-grid>

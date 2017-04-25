@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Rx';
 import { SwitcherService } from '../../providers/switcherService';
-import { PopoverController } from 'ionic-angular';
+import { PopoverController, ActionSheetController } from 'ionic-angular';
 import { AccountSwitcherPage } from '../account-switcher/account-switcher';
 import { AuthedAccount } from '../../apiClasses/authedAccount';
 import { Utility } from '../../providers/utility';
@@ -24,7 +24,7 @@ export class HomePage implements OnDestroy{
   timelineSwitching: boolean = false;
   @ViewChild(Content) content: Content;
 
-  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, 
+  constructor(public utility: Utility, public navCtrl: NavController, private renderer: Renderer, public actionSheetCtrl: ActionSheetController,
               private mastodon: APIProvider, public modalController: ModalController, public popOverController: PopoverController, private switcherService : SwitcherService) {
     this.currentAccount = utility.getCurrentAccount();
     let tootCache = this.currentAccount.tootCache;
@@ -152,19 +152,45 @@ export class HomePage implements OnDestroy{
     );
   }
 
-  toggleTimelineType(){
-    this.timelineSwitching = true;
-    this.content.scrollToTop(0);
-    switch(this.timelineType){
-      case('home'):
-        this.timelineType = 'public'
-        this.loadTimeline();
-        break;
-      case('public'):
-        this.timelineType = 'home';
-        this.loadTimeline();
-        break;
-    }
+  switchTimelineType(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Choose Timeline',
+      buttons: [
+        { text: 'Home',
+          handler: () => {
+            if(this.timelineType != 'home'){
+              this.content.scrollToTop(0);
+              this.timelineSwitching = true;
+              this.timelineType = 'home';
+              this.loadTimeline();
+            }
+          }
+        },
+        { text: 'Local',
+          handler: () => {
+            if(this.timelineType != 'local'){
+              this.content.scrollToTop(0);
+              this.timelineSwitching = true;
+              this.timelineType = 'local';
+              this.loadTimeline();
+            }
+          }
+        },
+        { text: 'Public',
+          handler: () => {
+            if(this.timelineType != 'public'){
+              this.content.scrollToTop(0);
+              this.timelineSwitching = true;
+              this.timelineType = 'public';
+              this.loadTimeline();
+            }
+          }
+        },
+        { text: 'Cancel',
+          role: 'cancel'}
+      ]
+    })
+    actionSheet.present();
   }
 
   showAccountSwitcher(ev: UIEvent){

@@ -5,7 +5,7 @@
       {{toot.reblog.account.display_name | emojify}} boosted
     </h4>  
     <ion-avatar [ngClass]="{'boosted_avatar': toot.reblog}" class="inTootAva" item-left>
-        <img (click)="goToUserProfile(toot.account)" src="{{toot.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
+        <img on-tap="goToUserProfile(toot.account)" src="{{toot.account.avatar}}" onerror="this.src='assets/img/pineapple_avatar.png'">
     </ion-avatar>  
     <div class="symbols">
       <div class="favorited" item-left *ngIf="toot.favourited">
@@ -23,12 +23,12 @@
       <div class="toot_content" [innerHTML]='toot.content | emojify'></div>
         <media-attachments [mediaAttachments]="toot.media_attachments" [mediaIsSensitive]="toot.sensitive"></media-attachments>
     </div>
-    <div *ngIf="toot.spoiler_text" (click)="toggleSpoiler(toot)" class="toot_content">
+    <div *ngIf="toot.spoiler_text"class="toot_content">
       <div>
         <p>{{toot.spoiler_text}}</p>
         <p>
-          <ion-badge class="show_badge" color="dark" [hidden]="toot.spoiler_visible">Show more...</ion-badge>
-          <ion-badge class="show_badge" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
+          <ion-badge class="spoiler_badge"  on-tap="toggleSpoiler(toot)" color="dark" [hidden]="toot.spoiler_visible">Show more...</ion-badge>
+          <ion-badge class="spoiler_badge"  on-tap="toggleSpoiler(toot)" color="dark" [hidden]="!toot.spoiler_visible">Show less... </ion-badge>
         </p>  
       </div> 
       <div [ngClass]="{'show_spoiler' : toot.spoiler_visible,'hide_spoiler' : !toot.spoiler_visible}">
@@ -39,22 +39,22 @@
   </ion-item>  
   <!--- left slide options -->
   <ion-item-options (ionSwipe)="favStatus(toot,slidingItem)" side="left">
-    <button expandable (click)="favStatus(toot,slidingItem)" ion-button class="orange">
+    <button expandable on-tap="favStatus(toot,slidingItem)" ion-button class="orange">
       <ion-icon name="ios-star-outline"></ion-icon>
     </button>
-    <button *ngIf="toot.visibility=='public' || toot.visibility=='unlisted'" (click)="boostToot(toot,slidingItem)" ion-button class="purple">
+    <button *ngIf="toot.visibility=='public' || toot.visibility=='unlisted'" on-tap="boostToot(toot,slidingItem)" ion-button class="purple">
       <ion-icon name="repeat"></ion-icon> 
     </button>
-    <button *ngIf="toot.visibility=='private'" ion-button color="dark" (click)="showPrivateInfoToast(slidingItem)">
+    <button *ngIf="toot.visibility=='private'" ion-button color="dark" on-tap="showPrivateInfoToast(slidingItem)">
       <ion-icon ios="ios-lock" md="md-lock"></ion-icon>
     </button>
   </ion-item-options>
   <!--- right slide options -->
   <ion-item-options (ionSwipe)="showDetailPage(toot, slidingItem)" side="right">
-    <button (click)="composeReplyTo(toot,slidingItem)" ion-button color="primary">
+    <button on-tap="composeReplyTo(toot,slidingItem)" ion-button color="primary">
       <ion-icon name="return-left"></ion-icon>
     </button>
-    <button expandable (click)="showDetailPage(toot, slidingItem)" ion-button color="light">
+    <button expandable on-tap="showDetailPage(toot, slidingItem)" ion-button color="light">
       <ion-icon name="more"></ion-icon>
     </button>
   </ion-item-options>

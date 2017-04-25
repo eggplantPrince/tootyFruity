@@ -1,3 +1,4 @@
+import { HashtagPage } from '../../pages/hashtag/hashtag';
 import { Utility } from '../../providers/utility';
 import { UserProfilePage } from '../../pages/user-profile/user-profile';
 import { TootDetailPage } from '../../pages/toot-detail/toot-detail';
@@ -26,23 +27,29 @@ export class SlidableTootComponent {
 
 
   ngAfterViewInit(){
-    if(this.toot.mentions != undefined && this.toot.mentions.length > 0){
-      let elements = this.elRef.nativeElement.querySelectorAll('a');
-      for(let index = 0; index < elements.length; index++){
-        elements[index].addEventListener('click', (event) => {
-          let username = event.target.innerHTML;
-          console.log(username)
-          for(let i = 0; i<this.toot.mentions.length; i++){
-            if(username.indexOf("@") == 0){
-              username = username.substring(1)
-            }
-            if(this.toot.mentions[i].acct.indexOf(username) != -1){
-              this.navController.push(UserProfilePage, {'mention' : this.toot.mentions[i]});
-            }
+    let mentionElements = this.elRef.nativeElement.querySelectorAll('a.mention');
+    for(let index = 0; index < mentionElements.length; index++){
+      mentionElements[index].addEventListener('click', (event) => {
+        let username = event.target.innerHTML;
+        console.log(username)
+        for(let i = 0; i<this.toot.mentions.length; i++){
+          if(username.indexOf("@") == 0){
+            username = username.substring(1)
           }
-        }); 
+          if(this.toot.mentions[i].acct.indexOf(username) != -1){
+            this.navController.push(UserProfilePage, {'mention' : this.toot.mentions[i]});
+          }
+        }
+      }); 
+    }
 
-      }
+    let hashtagElements = this.elRef.nativeElement.querySelectorAll('a.hashtag');
+    for(let index = 0; index < hashtagElements.length; index++){
+       hashtagElements[index].addEventListener('click', (event) => {
+        let hashtag = event.target.innerHTML;
+        console.log(hashtag)
+        this.navController.push(HashtagPage, {'hashtag': hashtag})
+      });
     }
   }
 
@@ -139,7 +146,7 @@ export class SlidableTootComponent {
   
 
   showPrivateInfoToast(slidingItem: ItemSliding){
-    let toast = this.toaster.showWithOptions({
+    this.toaster.showWithOptions({
             message: "This Toot can't be boosted cuz it's marked as private",
             duration: 5000,
             position: 'top'
