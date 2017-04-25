@@ -11,7 +11,7 @@
     <div id="tootHeader">
       <h3 class="toot_author_label">{{toot.account.display_name | emojify}}</h3>
       <span class="toot_author_username">@{{toot.account.username}}</span>
-      <span class="timestamp">{{toot.created_at | amTimeAgo:true }}</span>
+      <span *ngIf="!toot.reblogged && !toot.favourited" class="timestamp">{{toot.created_at | amTimeAgo:true }}</span>
       <div class="symbols">
         <div class="favorited" item-left *ngIf="toot.favourited">
           <ion-icon ios="ios-star" md="md-star"></ion-icon>
